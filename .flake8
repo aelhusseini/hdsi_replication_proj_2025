@@ -1,0 +1,16 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, W503
+exclude = 
+    __pypackages__,
+    .pdm-build,
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .eggs,
+    *.egg-info,
+    .venv,
+    venv,
+    .mypy_cache,
+    .pytest_cache

@@ -1,0 +1,68 @@
+[project]
+name = "hdsi-lifesciences-kg"
+version = "0.1.0"
+description = "Life Sciences Knowledge Graph Agent with Streamlit, LangGraph, and Anthropic"
+authors = [
+    {name = "HDSI Team", email = "team@hdsi.edu"},
+]
+dependencies = [
+    "streamlit>=1.29.0",
+    "langgraph>=0.0.20",
+    "anthropic>=0.18.1",
+    "neo4j>=5.15.0",
+    "pandas>=2.1.4",
+    "numpy>=1.26.2",
+    "plotly>=5.18.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "pydantic>=2.5.3",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=7.4.3",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.1",
+]
+lint = [
+    "black>=23.12.1",
+    "flake8>=7.0.0",
+    "mypy>=1.7.1",
+    "isort>=5.13.2",
+]
+
+[tool.pdm.scripts]
+app = "streamlit run src/web/app.py"
+load-data = "python scripts/load_data.py"
+quickstart = "python scripts/quickstart.py"
+test = "pytest tests/ -v"
+format = {shell = "black . && isort ."}
+lint = {shell = "flake8 . && mypy ."}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = [
+    "__pypackages__/",
+    ".pdm-build/",
+    "build/",
+    "dist/",
+]

@@ -1,0 +1,16 @@
+disease_id,disease_name,category,prevalence,severity
+D001,Type2_Diabetes,metabolic,high,moderate
+D002,Hypertension,cardiovascular,high,moderate
+D003,Alzheimer,neurological,medium,severe
+D004,Breast_Cancer,oncology,medium,severe
+D005,Asthma,respiratory,high,mild
+D006,Rheumatoid_Arthritis,autoimmune,medium,moderate
+D007,Parkinsons,neurological,low,severe
+D008,COPD,respiratory,medium,severe
+D009,Heart_Disease,cardiovascular,high,severe
+D010,Lupus,autoimmune,low,moderate
+D011,Colon_Cancer,oncology,medium,severe
+D012,Depression,psychiatric,high,moderate
+D013,Osteoporosis,skeletal,medium,mild
+D014,Kidney_Disease,renal,medium,severe
+D015,Hepatitis_C,infectious,low,moderate
