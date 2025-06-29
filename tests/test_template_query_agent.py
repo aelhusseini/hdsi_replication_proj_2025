@@ -1,18 +1,18 @@
 """
-Tests for the simple agent module.
+Tests for the template query agent module.
 """
 
 from unittest.mock import Mock
 
-from src.agents.simple_agent import SimpleAgent
+from src.agents.template_query_agent import TemplateQueryAgent
 
 
-class TestSimpleAgent:
+class TestTemplateQueryAgent:
 
     def setup_method(self):
         """Setup test fixtures."""
         self.mock_graph_interface = Mock()
-        self.agent = SimpleAgent(self.mock_graph_interface)
+        self.agent = TemplateQueryAgent(self.mock_graph_interface)
 
     def test_get_genes_for_disease(self):
         """Test getting genes for a disease."""

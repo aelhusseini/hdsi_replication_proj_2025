@@ -2,7 +2,7 @@
 
 ## 🎓 Learning Project: LangGraph and Knowledge Graphs
 
-An interactive learning project designed for undergraduate students to learn **LangGraph workflows** and **knowledge graph concepts** through practical biomedical AI applications.
+An interactive learning project designed for beginner to advanced users to learn **LangGraph workflows** and **knowledge graph concepts** through practical biomedical AI applications.
 
 ## 📚 What You'll Learn
 
@@ -12,7 +12,7 @@ An interactive learning project designed for undergraduate students to learn **L
 - **AI Integration**: Combining language models with structured knowledge
 - **Biomedical Applications**: Real-world use cases in drug discovery and personalized medicine
 
-## 🚀 Quick Start for Students
+## 🚀 Quick Start for Users
 
 1. **Start with the Tutorial**: Open `tutorial_langgraph_knowledge_graphs.ipynb`
 2. **Try the Application**: Run the Streamlit app for interactive learning
@@ -46,7 +46,7 @@ An interactive learning project designed for undergraduate students to learn **L
 
 2. **Clone the repository**:
    ```bash
-   cd hdsi_replication_proj_2025
+   cd biomedical_kg_project
    ```
 
 3. **Install dependencies**:
@@ -58,7 +58,7 @@ An interactive learning project designed for undergraduate students to learn **L
 
 1. **Clone the repository**:
    ```bash
-   cd hdsi_replication_proj_2025
+   cd biomedical_kg_project
    ```
 
 2. **Create a virtual environment**:
@@ -86,16 +86,16 @@ An interactive learning project designed for undergraduate students to learn **L
 ## Project Structure
 
 ```
-hdsi_replication_proj_2025/
+biomedical_kg_project/
 ├── src/                      # Source code
 │   ├── agents/                  # AI agent implementations
-│   │   ├── educational_agent.py   # 🎓 ACTIVE: Learning-focused LangGraph agent (used in web app)
-│   │   ├── langgraph_agent.py     # 📚 EXAMPLE: Full-featured LangGraph agent (educational reference)
-│   │   ├── simple_agent.py        # 📚 EXAMPLE: Template-based agent (educational reference)
+│   │   ├── advanced_ai_agent.py     # 🎓 ACTIVE: Learning-focused LangGraph agent (used in web app)
+│   │   ├── workflow_agent.py        # 📚 EXAMPLE: Full-featured LangGraph agent (learning reference)
+│   │   ├── template_query_agent.py  # 📚 EXAMPLE: Template-based agent (learning reference)
 │   │   └── graph_interface.py     # Neo4j database interface
 │   └── web/                     # Streamlit web interface
 │       └── app.py                 # Main learning interface
-├── educational/              # Learning materials
+├── docs/                     # Documentation and learning materials
 │   ├── exercises/               # Learning exercises
 │   │   └── learning_exercises.py  # Progressive challenges
 │   ├── tutorials/               # Interactive tutorials
@@ -123,7 +123,7 @@ hdsi_replication_proj_2025/
 
 ## 🏃‍♂️ Running the Application
 
-### For Students (Recommended)
+### For Users (Recommended)
 1. **Load sample data**:
    ```bash
    pdm run load-data
@@ -131,14 +131,14 @@ hdsi_replication_proj_2025/
 
 2. **Start learning with the tutorial**:
    ```bash
-   jupyter notebook tutorial_langgraph_knowledge_graphs.ipynb
+   jupyter notebook docs/tutorials/langgraph-tutorial.ipynb
    ```
 
 3. **Try the interactive app**:
    ```bash
    pdm run app
    ```
-   Then select "🎓 Educational Mode" in the sidebar.
+   Then explore the interactive learning interface.
 
 4. **Verify everything works**:
    ```bash
@@ -170,10 +170,10 @@ This project teaches you to:
    - Understand real-world applications in drug discovery
    - Build domain-specific AI assistants
 
-## 📖 Educational Resources
+## 📖 Learning Resources
 
 - **📔 Tutorial Notebook**: Step-by-step interactive learning
-- **🎓 Educational Mode**: Streamlit interface with exercises
+- **🎓 Learning Mode**: Streamlit interface with exercises
 - **📚 Learning Guide**: Structured 6-week curriculum
 - **🏋️ Progressive Exercises**: From beginner to expert level
 - **🔧 Example Code**: Three different agent implementations

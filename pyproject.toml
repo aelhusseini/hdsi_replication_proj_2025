@@ -1,9 +1,9 @@
 [project]
-name = "hdsi-lifesciences-kg"
+name = "biomedical-lifesciences-kg"
 version = "0.1.0"
 description = "Life Sciences Knowledge Graph Agent with Streamlit, LangGraph, and Anthropic"
 authors = [
-    {name = "HDSI Team", email = "team@hdsi.edu"},
+    {name = "Development Team", email = "team@example.com"},
 ]
 dependencies = [
     "streamlit>=1.29.0",
@@ -16,6 +16,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "requests>=2.31.0",
     "pydantic>=2.5.3",
+    "networkx>=3.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"

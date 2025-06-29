@@ -1,9 +1,9 @@
 """
-🎓 ACTIVE AGENT: Educational LangGraph Agent for Learning Biomedical Knowledge Graphs
+🎓 ACTIVE AGENT: LangGraph Agent for Learning Biomedical Knowledge Graphs
 
 ✅ This is the primary agent used in the web application!
 
-This simplified agent is designed specifically for undergraduate students to learn:
+This simplified agent is designed specifically for users to learn:
 1. LangGraph workflow concepts
 2. Knowledge graph querying patterns
 3. AI integration with graph databases
@@ -24,15 +24,15 @@ from langgraph.graph import END, StateGraph
 from .graph_interface import GraphInterface
 
 
-class LearningState(TypedDict):
+class WorkflowState(TypedDict):
     """
-    State that flows through our learning workflow.
+    State that flows through our simplified workflow.
 
     Think of this as a shared notebook that each step can read and write to.
     Each field gets filled in as we progress through the workflow.
     """
 
-    user_question: str  # Original question from student
+    user_question: str  # Original question from user
     question_type: Optional[str]  # What kind of biomedical question is this?
     entities: Optional[List[str]]  # Important terms we found (genes, diseases, etc.)
     cypher_query: Optional[str]  # The database query we generated
@@ -41,9 +41,9 @@ class LearningState(TypedDict):
     error: Optional[str]  # If something went wrong
 
 
-class EducationalAgent:
+class WorkflowAgent:
     """
-    A simplified LangGraph agent for learning biomedical knowledge graphs.
+    A simplified LangGraph agent for biomedical knowledge graphs.
 
     This agent demonstrates the core LangGraph pattern:
     Input → Process → Generate → Execute → Format → Output
@@ -62,9 +62,9 @@ class EducationalAgent:
         self.schema = self.graph_db.get_schema_info()
 
         # Build our workflow - this is the heart of LangGraph!
-        self.workflow = self._create_learning_workflow()
+        self.workflow = self._create_workflow()
 
-    def _create_learning_workflow(self):
+    def _create_workflow(self):
         """
         Create our LangGraph workflow.
 
@@ -72,7 +72,7 @@ class EducationalAgent:
         Think of it as building a flowchart for problem-solving.
         """
         # Step 1: Create the graph structure
-        workflow = StateGraph(LearningState)
+        workflow = StateGraph(WorkflowState)
 
         # Step 2: Add our processing nodes (each node is a function)
         workflow.add_node("classify", self.classify_question)
@@ -94,7 +94,7 @@ class EducationalAgent:
         # Step 5: Compile into executable workflow
         return workflow.compile()
 
-    def classify_question(self, state: LearningState) -> LearningState:
+    def classify_question(self, state: WorkflowState) -> WorkflowState:
         """
         Step 1: Figure out what type of biomedical question this is.
 
@@ -127,7 +127,7 @@ class EducationalAgent:
         print(f"🔍 Question classified as: {question_type}")
         return state
 
-    def extract_entities(self, state: LearningState) -> LearningState:
+    def extract_entities(self, state: WorkflowState) -> WorkflowState:
         """
         Step 2: Find the important biomedical terms in the question.
 
@@ -167,7 +167,7 @@ class EducationalAgent:
 
         return state
 
-    def generate_query(self, state: LearningState) -> LearningState:
+    def generate_query(self, state: WorkflowState) -> WorkflowState:
         """
         Step 3: Create a database query to find the answer.
 
@@ -225,7 +225,7 @@ class EducationalAgent:
         print(f"🔧 Generated query: {cypher_query}")
         return state
 
-    def execute_query(self, state: LearningState) -> LearningState:
+    def execute_query(self, state: WorkflowState) -> WorkflowState:
         """
         Step 4: Run our query against the knowledge graph.
 
@@ -245,11 +245,11 @@ class EducationalAgent:
 
         return state
 
-    def format_answer(self, state: LearningState) -> LearningState:
+    def format_answer(self, state: WorkflowState) -> WorkflowState:
         """
         Step 5: Convert our database results into a human-readable answer.
 
-        This takes the raw data and makes it understandable for students.
+        This takes the raw data and makes it understandable for users.
         """
         # Handle errors first
         if state.get("error"):
@@ -269,13 +269,13 @@ class EducationalAgent:
         # Format the results nicely
         results = state["results"]
         prompt = f"""
-        Convert these database results into a clear, educational answer.
+        Convert these database results into a clear, informative answer.
         Original question: {state['user_question']}
         Database results: {json.dumps(results[:5], indent=2)}
         Total results found: {len(results)}
 
         Make the answer:
-        1. Easy to understand for students
+        1. Easy to understand for users
         2. Informative about the biomedical relationships
         3. Mention how many results were found
 
@@ -296,14 +296,14 @@ class EducationalAgent:
         """
         Main method: Answer a biomedical question using our LangGraph workflow.
 
-        This is what students will call to see the agent in action.
+        This is what users will call to see the agent in action.
         It runs through all our steps and returns the complete result.
         """
         print("\n🎓 Learning Workflow Starting...")
         print(f"Question: {question}\n")
 
         # Create initial state
-        initial_state = LearningState(
+        initial_state = WorkflowState(
             user_question=question,
             question_type=None,
             entities=None,
@@ -318,7 +318,7 @@ class EducationalAgent:
 
         print("\n🎯 Workflow Complete!\n")
 
-        # Return everything for educational inspection
+        # Return everything for detailed inspection
         return {
             "answer": final_state.get("final_answer", "No answer generated"),
             "question_type": final_state.get("question_type"),
@@ -332,10 +332,10 @@ class EducationalAgent:
         }
 
 
-# Educational helper function for students
+# Helper function for users
 def demonstrate_workflow_steps():
     """
-    Show students what each step in the workflow does.
+    Show users what each step in the workflow does.
     This is for learning purposes only.
     """
     steps = [

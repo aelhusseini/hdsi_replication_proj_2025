@@ -2,7 +2,7 @@
 Progressive Learning Exercises for LangGraph and Knowledge Graphs
 
 This module contains structured exercises that build from basic concepts
-to advanced implementations, designed for undergraduate computer science students.
+to advanced implementations, designed for beginner to advanced users.
 """
 
 # ============================================================================
@@ -192,7 +192,7 @@ LEVEL_3_EXERCISES = {
             """,
             "tasks": [
                 {
-                    "question": "Trace through our educational agent's workflow",
+                    "question": "Trace through our learning agent's workflow",
                     "hint": "Follow the state from initial question to final answer",
                     "code_example": """
 # Example state progression:
@@ -330,9 +330,7 @@ LEVEL_4_EXERCISES = {
                         "Create a workflow that suggests treatments based on "
                         "patient genetics"
                     ),
-                    "hint": (
-                        "Combine genetic variants with drug effectiveness data"
-                    ),
+                    "hint": ("Combine genetic variants with drug effectiveness data"),
                     "approach": [
                         "1. Input: Patient genetic profile and disease",
                         "2. Find genes associated with the disease",
@@ -392,18 +390,10 @@ ASSESSMENT_CRITERIA = {
         "expert": "Can design complete workflows with conditional logic",
     },
     "biomedical_application": {
-        "novice": (
-            "Understands basic biological relationships (gene→protein→disease)"
-        ),
-        "competent": (
-            "Can formulate biomedical questions as graph queries"
-        ),
-        "proficient": (
-            "Can build agents for specific biomedical use cases"
-        ),
-        "expert": (
-            "Can design novel applications and evaluate their impact"
-        ),
+        "novice": ("Understands basic biological relationships (gene→protein→disease)"),
+        "competent": ("Can formulate biomedical questions as graph queries"),
+        "proficient": ("Can build agents for specific biomedical use cases"),
+        "expert": ("Can design novel applications and evaluate their impact"),
     },
 }
 
@@ -439,15 +429,12 @@ LEARNING_RESOURCES = {
         },
         {
             "name": "Social Network Analysis",
-            "description": (
-                "Analyze friendship networks and information propagation"
-            ),
+            "description": ("Analyze friendship networks and information propagation"),
         },
         {
             "name": "Supply Chain Optimization",
             "description": (
-                "Model supply chains as graphs for optimization and "
-                "risk analysis"
+                "Model supply chains as graphs for optimization and " "risk analysis"
             ),
         },
     ],
@@ -458,9 +445,7 @@ LEARNING_RESOURCES = {
                 "Build a knowledge graph of research papers and their citations"
             ),
             "difficulty": "Intermediate",
-            "skills": [
-                "Graph modeling", "Data ingestion", "Network analysis"
-            ],
+            "skills": ["Graph modeling", "Data ingestion", "Network analysis"],
         },
         {
             "title": "Recipe Recommendation Engine",
@@ -468,20 +453,15 @@ LEARNING_RESOURCES = {
                 "Create a graph of ingredients, recipes, and dietary preferences"
             ),
             "difficulty": "Intermediate",
-            "skills": [
-                "Recommendation algorithms", "User modeling", "Graph queries"
-            ],
+            "skills": ["Recommendation algorithms", "User modeling", "Graph queries"],
         },
         {
             "title": "Financial Risk Assessment System",
             "description": (
-                "Model financial entities and their relationships for "
-                "risk analysis"
+                "Model financial entities and their relationships for " "risk analysis"
             ),
             "difficulty": "Advanced",
-            "skills": [
-                "Complex graph traversal", "Real-time updates", "Risk modeling"
-            ],
+            "skills": ["Complex graph traversal", "Real-time updates", "Risk modeling"],
         },
     ],
 }
@@ -499,7 +479,7 @@ def get_exercises_for_level(level: str) -> dict:
 
 
 def check_prerequisites(completed_exercises: list, target_level: str) -> bool:
-    """Check if student has completed prerequisites for target level."""
+    """Check if user has completed prerequisites for target level."""
     if target_level not in EXERCISE_PROGRESSION:
         return False
 

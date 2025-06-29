@@ -1,6 +1,6 @@
 """
 Life Sciences Knowledge Graph Agent - Source Code Package.
 
-This package contains the core implementation of the educational platform
-for learning LangGraph and knowledge graphs through biomedical AI applications.
+This package contains the core implementation of the learning platform
+for developing LangGraph and knowledge graphs through biomedical AI applications.
 """

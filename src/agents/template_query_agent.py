@@ -1,8 +1,8 @@
 """
-📚 EDUCATIONAL EXAMPLE: Simple Template-Based Agent for Common Life Sciences Queries
+📚 REFERENCE EXAMPLE: Simple Template-Based Agent for Common Life Sciences Queries
 
-⚠️ NOTE: This agent is NOT used in the web application. It serves as an educational
-reference to demonstrate template-based query approaches for students.
+⚠️ NOTE: This agent is NOT used in the web application. It serves as a reference
+to demonstrate template-based query approaches for users.
 
 This module provides a straightforward, high-performance alternative to the AI-powered
 LangGraph agent. Instead of using natural language processing, it offers pre-built
@@ -13,7 +13,7 @@ Key Benefits:
 - Predictable results (deterministic queries)
 - Simple API (method names match question types)
 - Reliable performance (no dependency on external AI services)
-- Educational value (shows direct Cypher query patterns)
+- Learning value (shows direct Cypher query patterns)
 
 When to Use:
 - Applications requiring sub-second response times
@@ -36,7 +36,7 @@ from typing import Any, Dict, List
 from .graph_interface import GraphInterface
 
 
-class SimpleAgent:
+class TemplateQueryAgent:
     """
     A template-based agent for executing common biomedical queries.
 
@@ -46,7 +46,7 @@ class SimpleAgent:
 
     The agent is designed for:
     - High-throughput applications requiring consistent performance
-    - Educational purposes to understand graph query patterns
+    - Learning purposes to understand graph query patterns
     - Baseline comparison against AI-generated queries
     - Production systems where deterministic behavior is required
 
@@ -56,7 +56,7 @@ class SimpleAgent:
         and result limiting for practical use.
 
     Example Usage:
-        >>> agent = SimpleAgent(graph_interface)
+        >>> agent = TemplateQueryAgent(graph_interface)
         >>> genes = agent.get_genes_for_disease("diabetes")
         >>> drugs = agent.get_drugs_for_disease("hypertension")
         >>> pathways = agent.get_pathway_for_disease("cancer")
@@ -151,7 +151,7 @@ class SimpleAgent:
             Limited to 20 results for performance. Empty list if no associations found.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> results = agent.get_genes_for_disease("diabetes")
             >>> for result in results:
             ...     print(f"Gene {result['gene']} is linked to {result['disease']}")
@@ -189,7 +189,7 @@ class SimpleAgent:
             Limited to 20 results for performance.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> treatments = agent.get_drugs_for_disease("hypertension")
             >>> for treatment in treatments:
             ...     print(f"{treatment['drug']} treats {treatment['disease']} "
@@ -227,7 +227,7 @@ class SimpleAgent:
             Empty list if gene not found or doesn't encode any proteins.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> proteins = agent.get_protein_for_gene("GENE_ALPHA")
             >>> for protein in proteins:
             ...     print(f"Gene {protein['gene']} encodes protein {protein['protein']}")
@@ -267,7 +267,7 @@ class SimpleAgent:
             Limited to 20 results for performance.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> associations = agent.get_diseases_for_protein("PROT_ALPHA")
             >>> for assoc in associations:
             ...     print(f"Protein {assoc['protein']} is associated with {assoc['disease']}")
@@ -310,7 +310,7 @@ class SimpleAgent:
             Empty list if drug not found or has no known protein targets.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> targets = agent.get_drug_targets("AlphaCure")
             >>> for target in targets:
             ...     print(f"Drug {target['drug']} targets protein {target['protein']}")
@@ -355,7 +355,7 @@ class SimpleAgent:
             Limited to 20 results for performance.
 
         Example:
-            >>> agent = SimpleAgent(graph_interface)
+            >>> agent = TemplateQueryAgent(graph_interface)
             >>> pathways = agent.get_pathway_for_disease("diabetes")
             >>> for pathway in pathways:
             ...     print(f"Pathway: {pathway['gene']} → {pathway['protein']} → ")

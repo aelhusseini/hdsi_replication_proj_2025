@@ -1,8 +1,8 @@
 """
-📚 EDUCATIONAL EXAMPLE: LangGraph-Powered AI Agent for Life Sciences Knowledge Graph Queries
+📚 REFERENCE EXAMPLE: LangGraph-Powered AI Agent for Life Sciences Knowledge Graph Queries
 
-⚠️ NOTE: This agent is NOT used in the web application. It serves as an educational
-reference to demonstrate advanced LangGraph features for students.
+⚠️ NOTE: This agent is NOT used in the web application. It serves as a reference
+to demonstrate advanced LangGraph features for users.
 
 This module implements an intelligent agent that can understand natural language
 questions about biomedical relationships and convert them into precise graph database
@@ -72,7 +72,7 @@ class AgentState(TypedDict):
     error: Optional[str]
 
 
-class LifeScienceAgent:
+class AdvancedAIAgent:
     """
     An intelligent agent for querying life sciences knowledge graphs using natural language.
 
@@ -91,7 +91,7 @@ class LifeScienceAgent:
         → Database Execution → Response Formatting → Natural Language Answer
 
     Example Usage:
-        >>> agent = LifeScienceAgent(graph_interface, api_key)
+        >>> agent = AdvancedAIAgent(graph_interface, api_key)
         >>> result = agent.answer_question("What genes are linked to Alzheimer's disease?")
         >>> print(result['final_answer'])
 
@@ -473,7 +473,7 @@ class LifeScienceAgent:
             - error: Error message if something went wrong (None if successful)
 
         Example Usage:
-            >>> agent = LifeScienceAgent(graph_interface, api_key)
+            >>> agent = AdvancedAIAgent(graph_interface, api_key)
             >>> result = agent.answer_question("What genes are associated with diabetes?")
             >>> print(result['answer'])
             "Based on the knowledge graph, several genes are associated with diabetes..."

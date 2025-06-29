@@ -9,7 +9,7 @@ connectivity testing, and demonstrates core functionality through sample queries
 The script validates:
 - Environment variable configuration
 - Neo4j database connection and data availability
-- Basic query execution through the SimpleAgent
+- Basic query execution through the TemplateQueryAgent
 - System readiness for interactive use
 
 Usage:
@@ -39,7 +39,7 @@ sys.path.append(str(project_root))
 from dotenv import load_dotenv  # noqa: E402
 
 from src.agents.graph_interface import GraphInterface  # noqa: E402
-from src.agents.simple_agent import SimpleAgent  # noqa: E402
+from src.agents.template_query_agent import TemplateQueryAgent  # noqa: E402
 
 # Load environment variables
 load_dotenv()
@@ -182,7 +182,7 @@ def run_sample_queries() -> bool:
         password = os.getenv("NEO4J_PASSWORD")
 
         graph = GraphInterface(uri, user, password)
-        agent = SimpleAgent(graph)
+        agent = TemplateQueryAgent(graph)
 
         logger.info("\n📊 Running sample queries...\n")
 

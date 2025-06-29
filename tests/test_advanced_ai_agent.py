@@ -1,15 +1,15 @@
 """
-Tests for the LangGraph agent module.
+Tests for the advanced AI agent module.
 """
 
 from unittest.mock import Mock, patch
 
-from src.agents.langgraph_agent import AgentState, LifeScienceAgent
+from src.agents.advanced_ai_agent import AdvancedAIAgent, AgentState
 
 
-class TestLifeScienceAgent:
+class TestAdvancedAIAgent:
 
-    @patch("src.agents.langgraph_agent.Anthropic")
+    @patch("src.agents.advanced_ai_agent.Anthropic")
     def setup_method(self, method, mock_anthropic):
         """Setup test fixtures."""
         self.mock_graph_interface = Mock()
@@ -25,7 +25,7 @@ class TestLifeScienceAgent:
         self.mock_anthropic_client = Mock()
         mock_anthropic.return_value = self.mock_anthropic_client
 
-        self.agent = LifeScienceAgent(self.mock_graph_interface, "test_api_key")
+        self.agent = AdvancedAIAgent(self.mock_graph_interface, "test_api_key")
 
     def test_classify_question(self):
         """Test question classification."""

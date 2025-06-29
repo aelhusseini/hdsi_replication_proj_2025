@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 src_dir = Path(__file__).parent.parent
 sys.path.append(str(src_dir))
 
-from agents.educational_agent import EducationalAgent  # noqa: E402
 from agents.graph_interface import GraphInterface  # noqa: E402
+from agents.workflow_agent import WorkflowAgent  # noqa: E402
 
 # Load environment variables
 load_dotenv()
@@ -53,7 +53,7 @@ st.markdown(
 
 @st.cache_resource
 def initialize_agent():
-    """Initialize the educational agent and database connection."""
+    """Initialize the workflow agent and database connection."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USER", "neo4j")
     password = os.getenv("NEO4J_PASSWORD")
@@ -64,9 +64,9 @@ def initialize_agent():
         st.stop()
 
     graph_interface = GraphInterface(uri, user, password)
-    educational_agent = EducationalAgent(graph_interface, anthropic_key)
+    workflow_agent = WorkflowAgent(graph_interface, anthropic_key)
 
-    return educational_agent, graph_interface
+    return workflow_agent, graph_interface
 
 
 def display_results_table(results):
@@ -208,7 +208,7 @@ def display_knowledge_graph_concepts():
     )
 
 
-def main_interface(educational_agent, graph_interface):
+def main_interface(workflow_agent, graph_interface):
     """Main interface with interactive learning exercises."""
     st.header("🧬 Life Sciences Knowledge Graph Agent")
 
@@ -296,13 +296,13 @@ def main_interface(educational_agent, graph_interface):
             )
 
     with tab2:
-        st.subheader("🧪 Try the Educational Agent")
+        st.subheader("🧪 Try the Workflow Agent")
         st.markdown(
             "Ask questions and see how our LangGraph workflow processes them "
             "step by step!"
         )
 
-        # Example questions for students
+        # Example questions for users
         example_questions = [
             "What genes are associated with diabetes?",
             "What drugs treat hypertension?",
@@ -320,10 +320,10 @@ def main_interface(educational_agent, graph_interface):
             placeholder="Ask about genes, proteins, diseases, or drugs...",
         )
 
-        if st.button("🚀 Run Educational Agent", type="primary"):
+        if st.button("🚀 Run Workflow Agent", type="primary"):
             if question_input:
                 with st.spinner("Running agent workflow..."):
-                    result = educational_agent.answer_question(question_input)
+                    result = workflow_agent.answer_question(question_input)
 
                 st.success("✅ Workflow Complete!")
 
@@ -517,7 +517,7 @@ def main_interface(educational_agent, graph_interface):
 
 def main():
     # Initialize agents
-    educational_agent, graph_interface = initialize_agent()
+    workflow_agent, graph_interface = initialize_agent()
 
     # Header
     st.title("🧬 Life Sciences Knowledge Graph Agent")
@@ -549,7 +549,7 @@ def main():
             st.write(schema["relationship_types"])
 
     # Main content area - Interactive learning interface
-    main_interface(educational_agent, graph_interface)
+    main_interface(workflow_agent, graph_interface)
 
     # Application Footer and Technology Attribution
     st.divider()

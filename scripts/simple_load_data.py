@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simplified Data Loader for Educational Purposes
+Simplified Data Loader for Learning Purposes
 
 This is a streamlined version of the data loader focused on learning.
 It demonstrates the core concepts without production complexity.
@@ -27,7 +27,7 @@ load_dotenv()
 
 class SimpleBiomedicalLoader:
     """
-    Educational data loader for biomedical knowledge graphs.
+    Learning data loader for biomedical knowledge graphs.
 
     This simplified version focuses on core concepts:
     1. Connect to Neo4j
@@ -312,7 +312,7 @@ def main():
     This shows the complete flow from CSV files to graph database!
     """
     print("🚀 Starting Simple Biomedical Knowledge Graph Loader")
-    print("This educational version focuses on core concepts!")
+    print("This learning version focuses on core concepts!")
     print()
 
     # Initialize the loader

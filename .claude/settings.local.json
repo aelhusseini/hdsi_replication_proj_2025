@@ -1,20 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)",
-      "Bash(rm:*)",
-      "Bash(pdm run:*)",
-      "Bash(pdm install:*)",
-      "Bash(sed:*)",
-      "Bash(black:*)",
       "Bash(find:*)",
-      "Bash(ls:*)",
-      "Bash(pdm list:*)",
-      "Bash(pdm remove:*)",
-      "Bash(grep:*)",
       "Bash(python:*)",
       "Bash(rg:*)",
-      "Bash(mv:*)"
+      "Bash(ls:*)"
     ],
     "deny": []
   }
