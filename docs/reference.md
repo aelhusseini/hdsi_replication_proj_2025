@@ -116,21 +116,21 @@ LIMIT 5
 ## 🎓 Sample Questions for the Platform
 
 ### Beginner Questions
-- "What genes are associated with diabetes?"
-- "What drugs treat hypertension?"
-- "What protein does GENE_ALPHA encode?"
-- "What diseases is PROT_BETA associated with?"
+- "What genes are associated with Hypertension?"
+- "What drugs treat Coronary_Artery_Disease?"
+- "What protein does TP53 encode?"
+- "What diseases is BRCA1 associated with?"
 
 ### Intermediate Questions
-- "Show me the pathway from GENE_GAMMA to diseases"
-- "What are the targets of AlphaCure?"
-- "Find proteins linked to metabolic diseases"
-- "Which drugs target proteins associated with cancer?"
+- "Show me the pathway from BRCA2 to diseases"
+- "What are the targets of Lisinopril?"
+- "Find proteins linked to cardiovascular diseases"
+- "Which drugs target proteins associated with Heart_Failure?"
 
 ### Advanced Questions
-- "Find complete pathways from genes to treatments for diabetes"
-- "Show drugs that target proteins encoded by GENE_ALPHA"
-- "What is the shortest path between GENE_BETA and BetaTherapy?"
+- "Find complete pathways from genes to treatments for Type2_Diabetes"
+- "Show drugs that target proteins encoded by TP53"
+- "What is the shortest path between BRCA1 and Atorvastatin?"
 - "Find genes that encode proteins targeted by multiple drugs"
 
 ## 🎯 Demo Script (12-15 minutes)
@@ -159,7 +159,7 @@ Show: Clean interface, four learning tabs, real-time connectivity
 
 #### 3. Try the Agent (3 minutes)
 **Live Demo**:
-- Ask: *"What drugs treat diabetes?"*
+- Ask: *"What drugs treat Hypertension?"*
 - Show step-by-step workflow:
   - Question classification
   - Entity extraction
@@ -172,7 +172,7 @@ Show: Clean interface, four learning tabs, real-time connectivity
 **Interactive Demonstration**:
 - Run pre-built query: Gene → Protein relationships
 - Show network visualization
-- Try custom query: *"Find drugs targeting PROT_ALPHA"*
+- Try custom query: *"Find drugs targeting TP53"*
 - Explain Cypher syntax patterns
 
 ### Technical Deep Dive (3 minutes)

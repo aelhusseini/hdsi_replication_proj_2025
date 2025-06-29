@@ -20,8 +20,8 @@ The platform uses a modular architecture combining Neo4j graph database, LangGra
 ┌─────────────────────────────▼───────────────────────────────────────────┐
 │                         Agent Layer                                     │
 │ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────────────────┐ │
-│ │ Simple Agent    │ │Learning Agent   │ │ LangGraph Agent            │ │
-│ │ (Template)      │ │ (Learning)      │ │ (Advanced)                 │ │
+│ │ WorkflowAgent   │ │AdvancedAIAgent  │ │ TemplateQueryAgent         │ │
+│ │ (Production)    │ │ (Learning)      │ │ (Templates)                │ │
 │ └─────────────────┘ └─────────────────┘ └─────────────────────────────┘ │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
@@ -54,7 +54,7 @@ The platform uses a modular architecture combining Neo4j graph database, LangGra
 
 #### 2. Agent Types (`src/agents/`)
 
-**AdvancedAIAgent** - Full LangGraph implementation:
+**AdvancedAIAgent** - Educational LangGraph implementation (learning reference):
 ```python
 class AdvancedAIAgent:
     def __init__(self, graph_interface, anthropic_key):
@@ -74,12 +74,12 @@ class AdvancedAIAgent:
         return workflow.compile()
 ```
 
-**WorkflowAgent** - Simplified LangGraph for learning:
+**WorkflowAgent** - Production LangGraph implementation (used in web app):
 ```python
 class WorkflowAgent:
-    # Learning version with print statements
-    # Shows state transitions clearly
-    # Designed for learning LangGraph concepts
+    # Full-featured LangGraph implementation
+    # Used in the main Streamlit web application
+    # Production-ready with proper error handling
 ```
 
 **TemplateQueryAgent** - Template-based for beginners:

@@ -390,7 +390,7 @@ def main():
         print("\n🎓 Ready for learning! Try these commands:")
         print("   pdm run app  # Start the interactive app")
         print(
-            "   jupyter notebook tutorial_langgraph_knowledge_graphs.ipynb  # "
+            "   jupyter notebook docs/tutorials/langgraph-tutorial.ipynb  # "
             "Open tutorial"
         )
 

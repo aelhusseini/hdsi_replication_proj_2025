@@ -6,7 +6,9 @@
       "Bash(rg:*)",
       "Bash(ls:*)",
       "Bash(sed:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(grep:*)",
+      "Bash(pdm run test:*)"
     ],
     "deny": []
   }

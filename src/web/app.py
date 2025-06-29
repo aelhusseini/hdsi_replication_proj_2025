@@ -757,7 +757,7 @@ def main():
                     📚 <strong>Tutorial Notebook</strong>
                 </p>
                 <p style="margin: 0; font-size: 0.9rem; color: #6b7280;">
-                    Check out <code>tutorial_langgraph_knowledge_graphs.ipynb</code>
+                    Check out <code>docs/tutorials/langgraph-tutorial.ipynb</code>
                 </p>
             </div>
             

@@ -3,6 +3,20 @@ Progressive Learning Exercises for LangGraph and Knowledge Graphs
 
 This module contains structured exercises that build from basic concepts
 to advanced implementations, designed for beginner to advanced users.
+
+To use these exercises:
+1. Set up your environment with: pdm install
+2. Load data with: pdm run load-data
+3. Start with Level 1 exercises and progress through each level
+4. Use the actual entity names from the database (TP53, BRCA1, Hypertension, Lisinopril, etc.)
+
+Required imports for practical use:
+```python
+from src.agents.graph_interface import GraphInterface
+from src.agents.workflow_agent import WorkflowAgent, WorkflowState
+from src.agents.advanced_ai_agent import AdvancedAIAgent, AgentState
+from src.agents.template_query_agent import TemplateQueryAgent
+```
 """
 
 from typing import Any, Dict, List, cast
@@ -239,7 +253,7 @@ state = {
                         "before execution"
                     ),
                     "code_template": """
-def validate_query(state: LearningState) -> LearningState:
+def validate_query(state: AgentState) -> AgentState:
     \"\"\"Validate the generated Cypher query before execution.\"\"\"
     query = state.get('cypher_query')
     if query:
@@ -498,3 +512,39 @@ def get_next_recommended_exercise(completed_exercises: list[str]) -> str:
                 if exercise_id not in completed_exercises:
                     return exercise_id
     return "4.2"  # Default to final exercise
+
+
+# ============================================================================
+# PRACTICAL EXAMPLES WITH REAL DATA
+# ============================================================================
+
+REAL_DATA_EXAMPLES = {
+    "sample_entities": {
+        "genes": ["TP53", "BRCA1", "BRCA2", "KRAS", "EGFR"],
+        "diseases": ["Hypertension", "Coronary_Artery_Disease", "Heart_Failure", "Type2_Diabetes", "Breast_Cancer"],
+        "drugs": ["Lisinopril", "Enalapril", "Atorvastatin", "Metformin", "Aspirin"],
+        "proteins": ["TP53", "BRCA1", "BRCA2_iso1", "KRAS", "EGFR"]
+    },
+    "working_queries": {
+        "basic": [
+            "MATCH (g:Gene) WHERE g.gene_name = 'TP53' RETURN g",
+            "MATCH (d:Disease) WHERE d.category = 'cardiovascular' RETURN d.disease_name LIMIT 5",
+            "MATCH (dr:Drug) WHERE dr.drug_name = 'Lisinopril' RETURN dr"
+        ],
+        "relationships": [
+            "MATCH (g:Gene {gene_name: 'TP53'})-[:ENCODES]->(p:Protein) RETURN p.protein_name",
+            "MATCH (dr:Drug {drug_name: 'Lisinopril'})-[:TREATS]->(d:Disease) RETURN d.disease_name",
+            "MATCH (dr:Drug)-[:TARGETS]->(p:Protein) WHERE dr.drug_name = 'Enalapril' RETURN p.protein_name"
+        ],
+        "complex": [
+            "MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease) WHERE g.gene_name = 'BRCA1' RETURN d.disease_name",
+            "MATCH (dr:Drug)-[:TARGETS]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease) WHERE d.category = 'cardiovascular' RETURN dr.drug_name, d.disease_name LIMIT 5"
+        ]
+    },
+    "common_patterns": {
+        "find_treatments": "MATCH (dr:Drug)-[:TREATS]->(d:Disease) WHERE toLower(d.disease_name) CONTAINS $disease_name RETURN dr.drug_name",
+        "gene_to_disease": "MATCH (g:Gene)-[:LINKED_TO]->(d:Disease) WHERE g.gene_name = $gene_name RETURN d.disease_name",
+        "drug_targets": "MATCH (dr:Drug)-[:TARGETS]->(p:Protein) WHERE dr.drug_name = $drug_name RETURN p.protein_name",
+        "pathway_analysis": "MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease)<-[:TREATS]-(dr:Drug) RETURN g.gene_name, dr.drug_name, d.disease_name"
+    }
+}

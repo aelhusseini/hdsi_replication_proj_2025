@@ -2,7 +2,7 @@
 
 ## 🎓 Learning Project: LangGraph and Knowledge Graphs
 
-An interactive learning project designed for beginner to advanced users to learn **LangGraph workflows** and **knowledge graph concepts** through practical biomedical AI applications.
+An interactive educational platform for learning **LangGraph workflows** and **knowledge graph concepts** through hands-on biomedical AI applications. Progress from beginner to advanced with real-world examples.
 
 **New to AI, knowledge graphs, or biomedical concepts?** Start with our comprehensive [Foundations and Background Guide](docs/foundations-and-background.md) - designed for users with zero prior knowledge to understand and appreciate every aspect of this project.
 
@@ -22,13 +22,13 @@ An interactive learning project designed for beginner to advanced users to learn
 4. **Follow the Tutorial**: Open `docs/tutorials/langgraph-tutorial.ipynb`
 5. **Practice with Exercises**: Work through progressive challenges in `docs/exercises/practice-exercises.py`
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-- **Frontend**: Streamlit
-- **Agent Framework**: LangGraph
-- **LLM**: Anthropic Claude
-- **Database**: Neo4j
-- **Package Manager**: PDM
+- **Frontend**: Streamlit (interactive web interface)
+- **AI Framework**: LangGraph (workflow orchestration)
+- **Language Model**: Anthropic Claude (natural language processing)
+- **Database**: Neo4j (graph database)
+- **Package Manager**: PDM (modern Python dependency management)
 
 ## Setup Instructions
 
@@ -74,7 +74,7 @@ An interactive learning project designed for beginner to advanced users to learn
 
 3. **Install dependencies**:
    ```bash
-   pdm install
+   pip install -e .
    ```
 
 4. **Set up environment variables**:
