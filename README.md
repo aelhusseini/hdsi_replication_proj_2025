@@ -4,6 +4,8 @@
 
 An interactive learning project designed for beginner to advanced users to learn **LangGraph workflows** and **knowledge graph concepts** through practical biomedical AI applications.
 
+**New to AI, knowledge graphs, or biomedical concepts?** Start with our comprehensive [Foundations and Background Guide](docs/foundations-and-background.md) - designed for users with zero prior knowledge to understand and appreciate every aspect of this project.
+
 ## 📚 What You'll Learn
 
 - **Knowledge Graphs**: How to represent domain knowledge as nodes and relationships
@@ -14,10 +16,11 @@ An interactive learning project designed for beginner to advanced users to learn
 
 ## 🚀 Quick Start for Users
 
-1. **Start with Setup**: Follow `docs/getting-started.md` for complete setup instructions
-2. **Try the Application**: Run the Streamlit app for interactive learning
-3. **Follow the Tutorial**: Open `docs/tutorials/langgraph-tutorial.ipynb`
-4. **Practice with Exercises**: Work through progressive challenges in `docs/exercises/practice-exercises.py`
+1. **Complete Beginner?** Read the [Foundations and Background Guide](docs/foundations-and-background.md) first
+2. **Start with Setup**: Follow `docs/getting-started.md` for complete setup instructions
+3. **Try the Application**: Run the Streamlit app for interactive learning
+4. **Follow the Tutorial**: Open `docs/tutorials/langgraph-tutorial.ipynb`
+5. **Practice with Exercises**: Work through progressive challenges in `docs/exercises/practice-exercises.py`
 
 ## Technology Stack
 
@@ -91,13 +94,14 @@ An interactive learning project designed for beginner to advanced users to learn
 hdsi_replication_proj_2025/
 ├── src/                      # Source code
 │   ├── agents/                  # AI agent implementations
-│   │   ├── advanced_ai_agent.py     # 🎓 ACTIVE: Simplified LangGraph agent (used in web app)
-│   │   ├── workflow_agent.py        # 📚 EXAMPLE: Full-featured LangGraph agent (learning reference)
-│   │   ├── simple_agent.py          # 📚 EXAMPLE: Template-based agent (learning reference)
+│   │   ├── workflow_agent.py        # 🎓 ACTIVE: Full-featured LangGraph agent (used in web app)
+│   │   ├── advanced_ai_agent.py     # 📚 EXAMPLE: Simplified LangGraph agent (learning reference)
+│   │   ├── template_query_agent.py  # 📚 EXAMPLE: Template-based agent (learning reference)
 │   │   └── graph_interface.py       # Neo4j database interface
 │   └── web/                     # Streamlit web interface
 │       └── app.py                   # Main learning interface
 ├── docs/                     # Documentation and learning materials
+│   ├── foundations-and-background.md # Complete beginner's guide (start here!)
 │   ├── getting-started.md          # Complete setup guide
 │   ├── reference.md               # Commands and demo script
 │   ├── technical-guide.md         # Architecture and development
@@ -167,6 +171,7 @@ This project teaches you to:
 
 ## 📖 Learning Resources
 
+- **📖 Foundations Guide**: Complete background for beginners ([foundations-and-background.md](docs/foundations-and-background.md))
 - **📔 Tutorial Notebook**: Step-by-step interactive learning
 - **🎓 Learning Mode**: Streamlit interface with exercises
 - **📚 Learning Guide**: Structured 6-week curriculum

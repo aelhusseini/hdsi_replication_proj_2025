@@ -2,6 +2,8 @@
 
 Complete technical documentation for developers working with the Life Sciences Knowledge Graph Agent platform.
 
+**📖 Prerequisites**: This guide assumes familiarity with the concepts covered in [foundations-and-background.md](foundations-and-background.md). If you're new to AI, knowledge graphs, or the biomedical domain, please read that guide first for essential background knowledge.
+
 ## 🏗️ System Architecture
 
 ### Overview

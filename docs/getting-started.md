@@ -2,6 +2,8 @@
 
 Complete guide to setting up and using the Life Sciences Knowledge Graph Agent platform.
 
+**🆕 New to AI, knowledge graphs, or biomedical concepts?** Start with our [Foundations and Background Guide](foundations-and-background.md) - a comprehensive resource designed for complete beginners to understand the technologies and concepts used in this project.
+
 ## 🎯 What You'll Learn
 
 Build real AI systems that combine:
@@ -132,10 +134,11 @@ Drug --[TARGETS]--> Protein
 ## 🎯 Learning Path
 
 ### Week 1-2: Fundamentals
-1. Complete setup and data loading
-2. Explore **Concepts** tab thoroughly
-3. Try example questions in **Try the Agent**
-4. Practice basic queries in **Explore Queries**
+1. **Read background materials**: Review [foundations-and-background.md](foundations-and-background.md) if new to these concepts
+2. Complete setup and data loading
+3. Explore **Concepts** tab thoroughly
+4. Try example questions in **Try the Agent**
+5. Practice basic queries in **Explore Queries**
 
 ### Week 3-4: Building Skills
 1. Work through **Exercises** Level 1-2
@@ -193,10 +196,10 @@ Once you have the platform running:
 1. **Explore freely** - Click around and experiment
 2. **Ask questions** - Try your own biomedical queries
 3. **Study patterns** - Look at the generated Cypher queries
-4. **Build projects** - Use the platform as foundation for your own ideas
+4. **Master the platform** - Understand all features and capabilities thoroughly
 
 The platform is designed for hands-on learning - the best way to understand knowledge graphs and LangGraph is to use them!
 
 ---
 
-*Need help? Check [reference.md](reference.md) for quick syntax help or [technical-guide.md](technical-guide.md) for implementation details.*
+*Need help? Check [foundations-and-background.md](foundations-and-background.md) for complete background, [reference.md](reference.md) for quick syntax help, or [technical-guide.md](technical-guide.md) for implementation details.*

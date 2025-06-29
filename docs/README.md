@@ -5,9 +5,10 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 ## 🚀 Quick Start
 
 **New to the platform?**
-1. **[Getting Started](getting-started.md)** - Complete setup and usage guide
-2. **[LangGraph Tutorial](tutorials/langgraph-tutorial.ipynb)** - Interactive hands-on tutorial
-3. **[Practice Exercises](exercises/practice-exercises.py)** - Progressive coding challenges
+1. **[Foundations and Background](foundations-and-background.md)** - Complete beginner's guide to all concepts
+2. **[Getting Started](getting-started.md)** - Setup and usage guide  
+3. **[LangGraph Tutorial](tutorials/langgraph-tutorial.ipynb)** - Interactive hands-on tutorial
+4. **[Practice Exercises](exercises/practice-exercises.py)** - Progressive coding challenges
 
 **Need quick help?**
 - **[Reference Guide](reference.md)** - Commands, queries, and demo script
@@ -18,6 +19,7 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 ## 📁 Documentation Structure
 
 ### 📖 Main Guides
+- **[foundations-and-background.md](foundations-and-background.md)** - Complete background for beginners to understand all concepts
 - **[getting-started.md](getting-started.md)** - Setup, installation, and how to use the platform
 - **[reference.md](reference.md)** - Quick reference for commands, queries, and demo script
 - **[technical-guide.md](technical-guide.md)** - Architecture, implementation, and development patterns
@@ -29,10 +31,11 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 ## 🎯 Learning Path
 
 ### Beginner (Week 1-2)
-1. Complete **[getting-started.md](getting-started.md)** setup
-2. Try basic queries in the web interface
-3. Start with Level 1 exercises in **[practice-exercises.py](exercises/practice-exercises.py)**
-4. Use **[reference.md](reference.md)** for quick syntax help
+1. Read **[foundations-and-background.md](foundations-and-background.md)** for complete background
+2. Complete **[getting-started.md](getting-started.md)** setup
+3. Try basic queries in the web interface
+4. Start with Level 1 exercises in **[practice-exercises.py](exercises/practice-exercises.py)**
+5. Use **[reference.md](reference.md)** for quick syntax help
 
 ### Intermediate (Week 3-4) 
 1. Work through **[langgraph-tutorial.ipynb](tutorials/langgraph-tutorial.ipynb)**
@@ -43,8 +46,8 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 ### Advanced (Week 5-6)
 1. Master Level 4 exercises
 2. Review **[technical-guide.md](technical-guide.md)** development patterns
-3. Build custom extensions using the patterns
-4. Contribute improvements to the platform
+3. Study advanced techniques and implementations
+4. Work with comprehensive datasets and complex scenarios
 
 ## 🧬 What You'll Learn
 
@@ -63,6 +66,7 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 
 ## 🆘 Getting Help
 
+- **Complete Background**: Start with [foundations-and-background.md](foundations-and-background.md) for comprehensive understanding
 - **Installation Issues**: See troubleshooting in [getting-started.md](getting-started.md)
 - **Usage Questions**: Check [getting-started.md](getting-started.md) and [reference.md](reference.md)
 - **Technical Details**: Review [technical-guide.md](technical-guide.md)
@@ -71,8 +75,8 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 ## 🎯 Documentation Philosophy
 
 This documentation is designed to be:
-- **Comprehensive but concise** - Everything you need in 3 main files
-- **Progressive** - From beginner setup to advanced development
+- **Comprehensive but concise** - Everything you need in 4 main files
+- **Progressive** - From complete beginner background to advanced development
 - **Practical** - Real examples and working code
 - **Learning-focused** - Learn by doing with biomedical AI applications
 

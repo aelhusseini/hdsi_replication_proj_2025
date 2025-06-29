@@ -29,21 +29,169 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS
+# Custom CSS for crisp, modern UI
 st.markdown(
     """
 <style>
+    /* Global styling */
     .main {
-        padding-top: 2rem;
+        padding-top: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
     }
+    
+    /* Typography improvements */
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1rem;
+    }
+    
+    .stMarkdown h1 {
+        font-size: 2.5rem;
+        border-bottom: 3px solid #3b82f6;
+        padding-bottom: 0.5rem;
+    }
+    
+    .stMarkdown h2 {
+        font-size: 1.75rem;
+        color: #374151;
+    }
+    
+    .stMarkdown h3 {
+        font-size: 1.25rem;
+        color: #4b5563;
+    }
+    
+    /* Button styling */
     .stButton > button {
         width: 100%;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
     }
-    .query-result {
-        background-color: #f0f2f6;
+    
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        border-bottom: 2px solid #e5e7eb;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: #f9fafb;
+        border-radius: 8px 8px 0 0;
+        border: 1px solid #e5e7eb;
+        border-bottom: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        color: #6b7280;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: white;
+        color: #3b82f6;
+        border-color: #3b82f6;
+    }
+    
+    /* Card-like containers */
+    .query-result, .stExpander {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+    
+    /* Text input styling */
+    .stTextInput > div > div {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+    
+    .stTextArea > div > div {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+    
+    /* Info/Success/Warning boxes */
+    .stInfo {
+        background-color: #eff6ff;
+        border: 1px solid #3b82f6;
+        border-radius: 8px;
         padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 0.5rem 0;
+    }
+    
+    .stSuccess {
+        background-color: #f0fdf4;
+        border: 1px solid #22c55e;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    .stWarning {
+        background-color: #fffbeb;
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    .stError {
+        background-color: #fef2f2;
+        border: 1px solid #ef4444;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background-color: #f8fafc;
+        border-right: 1px solid #e2e8f0;
+    }
+    
+    /* Code blocks */
+    .stCodeBlock {
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    /* Dataframe styling */
+    .stDataFrame {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+    }
+    
+    /* Hide default streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .main {
+            padding: 0.5rem;
+        }
+        
+        .stColumns > div {
+            padding: 0 0.25rem;
+        }
     }
 </style>
 """,
@@ -210,21 +358,36 @@ def display_knowledge_graph_concepts():
 
 def main_interface(workflow_agent, graph_interface):
     """Main interface with interactive learning exercises."""
-    st.header("🧬 Life Sciences Knowledge Graph Agent")
-
-    # Tabs for different learning activities
+    
+    # Tabs for different learning activities with improved spacing
+    st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
+    
     tab1, tab2, tab3, tab4 = st.tabs(
         ["📚 Concepts", "🧪 Try the Agent", "🔍 Explore Queries", "🏋️ Exercises"]
     )
 
     with tab1:
-        st.subheader("Learn the Fundamentals")
+        st.markdown(
+            """
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
+                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
+                        border: 1px solid #93c5fd;">
+                <h2 style="margin: 0 0 0.5rem 0; color: #1e40af; text-align: center;">
+                    📚 Learn the Fundamentals
+                </h2>
+                <p style="margin: 0; text-align: center; color: #3730a3;">
+                    Master the core concepts behind knowledge graphs and AI workflows
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         concept_choice = st.selectbox(
-            "Choose a concept to learn:",
+            "🎯 Choose a concept to explore:",
             [
                 "Knowledge Graphs",
-                "LangGraph Workflows",
+                "LangGraph Workflows", 
                 "Cypher Queries",
                 "Biomedical Applications",
             ],
@@ -296,10 +459,20 @@ def main_interface(workflow_agent, graph_interface):
             )
 
     with tab2:
-        st.subheader("🧪 Try the Workflow Agent")
         st.markdown(
-            "Ask questions and see how our LangGraph workflow processes them "
-            "step by step!"
+            """
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); 
+                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
+                        border: 1px solid #86efac;">
+                <h2 style="margin: 0 0 0.5rem 0; color: #15803d; text-align: center;">
+                    🧪 Try the Workflow Agent
+                </h2>
+                <p style="margin: 0; text-align: center; color: #166534;">
+                    Ask questions and see how our LangGraph workflow processes them step by step
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
         # Example questions for users
@@ -352,8 +525,21 @@ def main_interface(workflow_agent, graph_interface):
                 st.warning("Please enter a question!")
 
     with tab3:
-        st.subheader("🔍 Explore Database Queries")
-        st.markdown("Try writing your own Cypher queries!")
+        st.markdown(
+            """
+            <div style="background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%); 
+                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
+                        border: 1px solid #fcd34d;">
+                <h2 style="margin: 0 0 0.5rem 0; color: #d97706; text-align: center;">
+                    🔍 Explore Database Queries
+                </h2>
+                <p style="margin: 0; text-align: center; color: #92400e;">
+                    Try writing your own Cypher queries and see the results instantly
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         # Pre-built queries for learning
         query_examples = {
@@ -410,7 +596,21 @@ def main_interface(workflow_agent, graph_interface):
                 st.warning("Please enter a query!")
 
     with tab4:
-        st.subheader("🏋️ Learning Exercises")
+        st.markdown(
+            """
+            <div style="background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); 
+                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
+                        border: 1px solid #f9a8d4;">
+                <h2 style="margin: 0 0 0.5rem 0; color: #be185d; text-align: center;">
+                    🏋️ Learning Exercises
+                </h2>
+                <p style="margin: 0; text-align: center; color: #9d174d;">
+                    Practice your skills with progressively challenging exercises
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         exercise_choice = st.selectbox(
             "Choose an exercise:",
@@ -519,46 +719,98 @@ def main():
     # Initialize agents
     workflow_agent, graph_interface = initialize_agent()
 
-    # Header
-    st.title("🧬 Life Sciences Knowledge Graph Agent")
+    # Header with improved spacing
     st.markdown(
-        "Learn LangGraph and Knowledge Graphs through biomedical AI applications!"
+        """
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #1f2937;">
+                🧬 Life Sciences Knowledge Graph Agent
+            </h1>
+            <p style="font-size: 1.2rem; color: #6b7280; margin-top: 0;">
+                Learn LangGraph and Knowledge Graphs through biomedical AI applications
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    # Sidebar
+    # Sidebar with improved styling
     with st.sidebar:
-        st.subheader("Learning Resources")
         st.markdown(
             """
-        📚 **Tutorial Notebook**: Check out `tutorial_langgraph_knowledge_graphs.ipynb`
-
-        🎯 **Learning Goals**:
-        - Understand knowledge graphs
-        - Learn LangGraph workflows
-        - Practice Cypher queries
-        - Build AI applications
-        """
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                        padding: 1.5rem; margin: -1rem -1rem 1.5rem -1rem; 
+                        border-radius: 0 0 12px 12px;">
+                <h3 style="color: white; margin: 0; text-align: center;">
+                    📚 Learning Resources
+                </h3>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        st.markdown(
+            """
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; 
+                        border: 1px solid #e5e7eb; margin-bottom: 1rem;">
+                <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
+                    📚 <strong>Tutorial Notebook</strong>
+                </p>
+                <p style="margin: 0; font-size: 0.9rem; color: #6b7280;">
+                    Check out <code>tutorial_langgraph_knowledge_graphs.ipynb</code>
+                </p>
+            </div>
+            
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; 
+                        border: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
+                    🎯 <strong>Learning Goals</strong>
+                </p>
+                <ul style="margin: 0; padding-left: 1.2rem; color: #6b7280; font-size: 0.9rem;">
+                    <li>Understand knowledge graphs</li>
+                    <li>Learn LangGraph workflows</li>
+                    <li>Practice Cypher queries</li>
+                    <li>Build AI applications</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
-        # Display schema info
-        if st.checkbox("Show Database Schema"):
+        # Display schema info with improved styling
+        if st.checkbox("🔍 Show Database Schema"):
             schema = graph_interface.get_schema_info()
-            st.subheader("Node Types")
-            st.write(schema["node_labels"])
-            st.subheader("Relationship Types")
-            st.write(schema["relationship_types"])
+            
+            st.markdown(
+                """
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; 
+                            border: 1px solid #e5e7eb; margin-top: 1rem;">
+                """,
+                unsafe_allow_html=True,
+            )
+            
+            st.markdown("**🏷️ Node Types**")
+            st.json(schema["node_labels"])
+            
+            st.markdown("**🔗 Relationship Types**")
+            st.json(schema["relationship_types"])
+            
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # Main content area - Interactive learning interface
     main_interface(workflow_agent, graph_interface)
 
-    # Application Footer and Technology Attribution
-    st.divider()
+    # Application Footer with improved styling
     st.markdown(
         """
-    <div style="text-align: center; color: #888;">
-        Built with Streamlit, LangGraph, Neo4j, and Anthropic Claude
-    </div>
-    """,
+        <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
+                    border-radius: 12px; text-align: center; border: 1px solid #e5e7eb;">
+            <p style="margin: 0; color: #64748b; font-size: 0.9rem; font-weight: 500;">
+                🚀 Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, 
+                <strong>Neo4j</strong>, and <strong>Anthropic Claude</strong>
+            </p>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
