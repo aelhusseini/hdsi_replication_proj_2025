@@ -19,9 +19,9 @@ graphs without requiring deep knowledge of Neo4j internals.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
-from neo4j import GraphDatabase
+from neo4j import GraphDatabase, Query
 
 # Configure logging for database operations
 logger = logging.getLogger(__name__)
@@ -118,7 +118,7 @@ class GraphInterface:
         """
         try:
             with self.driver.session() as session:
-                result = session.run(cypher_query, parameters or {})
+                result = session.run(cast(Query, cypher_query), parameters or {})
                 return [record.data() for record in result]
         except Exception as e:
             logger.error(f"Query execution error: {e}")
@@ -165,11 +165,11 @@ class GraphInterface:
 
         with self.driver.session() as session:
             # Get all node labels (types) in the database
-            labels_result = session.run(node_labels_query).single()
+            labels_result = session.run(cast(Query, node_labels_query)).single()
             labels = labels_result["labels"] if labels_result else []
 
             # Get all relationship types in the database
-            rel_types_result = session.run(rel_types_query).single()
+            rel_types_result = session.run(cast(Query, rel_types_query)).single()
             rel_types = rel_types_result["types"] if rel_types_result else []
 
             # For each node type, discover what properties it has by sampling one node
@@ -177,7 +177,7 @@ class GraphInterface:
             for label in labels:
                 # Query to get property names from a sample node of this type
                 query = f"MATCH (n:{label}) RETURN keys(n) as props LIMIT 1"
-                result = session.run(query).single()
+                result = session.run(cast(Query, query)).single()
                 if result:
                     node_properties[label] = result["props"]
 
@@ -215,7 +215,7 @@ class GraphInterface:
         try:
             with self.driver.session() as session:
                 # Use EXPLAIN to validate without executing
-                session.run(f"EXPLAIN {cypher_query}")
+                session.run(cast(Query, f"EXPLAIN {cypher_query}"))
                 return True
         except Exception:
             return False

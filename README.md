@@ -14,10 +14,10 @@ An interactive learning project designed for beginner to advanced users to learn
 
 ## 🚀 Quick Start for Users
 
-1. **Start with the Tutorial**: Open `tutorial_langgraph_knowledge_graphs.ipynb`
+1. **Start with Setup**: Follow `docs/getting-started.md` for complete setup instructions
 2. **Try the Application**: Run the Streamlit app for interactive learning
-3. **Follow the Learning Guide**: See `LEARNING_GUIDE.md` for structured curriculum
-4. **Practice with Exercises**: Work through progressive challenges in `learning_exercises.py`
+3. **Follow the Tutorial**: Open `docs/tutorials/langgraph-tutorial.ipynb`
+4. **Practice with Exercises**: Work through progressive challenges in `docs/exercises/practice-exercises.py`
 
 ## Technology Stack
 
@@ -46,7 +46,8 @@ An interactive learning project designed for beginner to advanced users to learn
 
 2. **Clone the repository**:
    ```bash
-   cd biomedical_kg_project
+   git clone <repository-url>
+   cd hdsi_replication_proj_2025
    ```
 
 3. **Install dependencies**:
@@ -58,7 +59,8 @@ An interactive learning project designed for beginner to advanced users to learn
 
 1. **Clone the repository**:
    ```bash
-   cd biomedical_kg_project
+   git clone <repository-url>
+   cd hdsi_replication_proj_2025
    ```
 
 2. **Create a virtual environment**:
@@ -86,39 +88,32 @@ An interactive learning project designed for beginner to advanced users to learn
 ## Project Structure
 
 ```
-biomedical_kg_project/
+hdsi_replication_proj_2025/
 ├── src/                      # Source code
 │   ├── agents/                  # AI agent implementations
-│   │   ├── advanced_ai_agent.py     # 🎓 ACTIVE: Learning-focused LangGraph agent (used in web app)
+│   │   ├── advanced_ai_agent.py     # 🎓 ACTIVE: Simplified LangGraph agent (used in web app)
 │   │   ├── workflow_agent.py        # 📚 EXAMPLE: Full-featured LangGraph agent (learning reference)
-│   │   ├── template_query_agent.py  # 📚 EXAMPLE: Template-based agent (learning reference)
-│   │   └── graph_interface.py     # Neo4j database interface
+│   │   ├── simple_agent.py          # 📚 EXAMPLE: Template-based agent (learning reference)
+│   │   └── graph_interface.py       # Neo4j database interface
 │   └── web/                     # Streamlit web interface
-│       └── app.py                 # Main learning interface
+│       └── app.py                   # Main learning interface
 ├── docs/                     # Documentation and learning materials
-│   ├── exercises/               # Learning exercises
-│   │   └── learning_exercises.py  # Progressive challenges
-│   ├── tutorials/               # Interactive tutorials
-│   │   └── tutorial_langgraph_knowledge_graphs.ipynb
-│   └── guides/                  # Learning guides
-│       └── LEARNING_GUIDE.md      # 6-week curriculum
+│   ├── getting-started.md          # Complete setup guide
+│   ├── reference.md               # Commands and demo script
+│   ├── technical-guide.md         # Architecture and development
+│   ├── exercises/                 # Learning exercises
+│   │   └── practice-exercises.py    # Progressive challenges
+│   └── tutorials/                 # Interactive tutorials
+│       └── langgraph-tutorial.ipynb # Hands-on LangGraph tutorial
 ├── data/                     # Biomedical CSV datasets
-├── docs/                     # Technical documentation
-│   ├── ARCHITECTURE.md           # System architecture overview
-│   ├── USER_GUIDE.md             # User learning guide
-│   ├── DEMO_SCRIPT.md            # Demonstration script
-│   ├── SETUP_GUIDE.md            # Setup instructions
-│   └── PROJECT_SUMMARY.md        # Project overview
 ├── scripts/                  # Utility scripts
 │   ├── load_data.py              # Full data loader
 │   ├── simple_load_data.py       # Simplified data loader
 │   └── quickstart.py             # Setup verification
-├── tests/                    # Test suite (17 tests)
-├── config/                   # Configuration files
-│   └── CLAUDE.md                 # Claude Code configuration
+├── tests/                    # Test suite (27 tests)
+├── CLAUDE.md                 # Claude Code configuration
 ├── pyproject.toml            # PDM configuration and dependencies
-├── pdm.lock                  # PDM lock file
-└── pytest.ini               # Test configuration
+└── .env.example              # Environment variables template
 ```
 
 ## 🏃‍♂️ Running the Application

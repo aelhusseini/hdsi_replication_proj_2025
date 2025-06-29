@@ -16,7 +16,7 @@ Key Learning Objectives:
 """
 
 import json
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Dict, List, Optional, TypedDict
 
 from anthropic import Anthropic
 from langgraph.graph import END, StateGraph
@@ -122,9 +122,10 @@ class WorkflowAgent:
 
         # Extract the response and update our state
         content = response.content[0]
-        question_type = (
-            content.text.strip() if hasattr(content, 'text') else str(content)
-        )
+        if hasattr(content, "text"):
+            question_type = content.text.strip()
+        else:
+            question_type = str(content)
         state["question_type"] = question_type
 
         print(f"🔍 Question classified as: {question_type}")
@@ -160,9 +161,10 @@ class WorkflowAgent:
         try:
             # Try to parse the list from Claude's response
             content = response.content[0]
-            response_text = (
-                content.text.strip() if hasattr(content, 'text') else str(content)
-            )
+            if hasattr(content, "text"):
+                response_text = content.text.strip()
+            else:
+                response_text = str(content)
             entities = json.loads(response_text)
             state["entities"] = entities
             print(f"🧬 Found entities: {entities}")
@@ -219,9 +221,10 @@ class WorkflowAgent:
 
         # Clean up the query (remove code block formatting if present)
         content = response.content[0]
-        cypher_query = (
-            content.text.strip() if hasattr(content, 'text') else str(content)
-        )
+        if hasattr(content, "text"):
+            cypher_query = content.text.strip()
+        else:
+            cypher_query = str(content)
         if cypher_query.startswith("```"):
             lines = cypher_query.split("\n")
             cypher_query = "\n".join(
@@ -303,13 +306,14 @@ class WorkflowAgent:
         )
 
         content = response.content[0]
-        state["final_answer"] = (
-            content.text.strip() if hasattr(content, 'text') else str(content)
-        )
+        if hasattr(content, "text"):
+            state["final_answer"] = content.text.strip()
+        else:
+            state["final_answer"] = str(content)
         print("✅ Generated final answer")
         return state
 
-    def answer_question(self, question: str) -> Dict[str, Any]:
+    def answer_question(self, question: str) -> Dict[str, object]:
         """
         Main method: Answer a biomedical question using our LangGraph workflow.
 

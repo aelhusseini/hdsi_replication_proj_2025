@@ -25,7 +25,7 @@ Build real AI systems that combine:
 ### 1. Clone and Setup
 ```bash
 git clone <repository-url>
-cd biomedical_kg_project
+cd hdsi_replication_proj_2025
 
 # Install dependencies
 pdm install
@@ -63,9 +63,12 @@ docker run \
     neo4j:latest
 ```
 
-### 4. Load Sample Data
+### 4. Generate and Load Sample Data
 ```bash
-# Load sample biomedical dataset
+# Generate expanded biomedical dataset (500 genes, 191 diseases, 350 drugs)
+pdm run generate-data
+
+# Load biomedical dataset into Neo4j
 pdm run load-data
 
 # Verify setup
@@ -110,11 +113,12 @@ pdm run app
 
 ## 🧬 Sample Data Overview
 
-Our sample dataset includes:
-- **Genes**: GENE_ALPHA, GENE_BETA, GENE_GAMMA...
-- **Proteins**: PROT_ALPHA, PROT_BETA, PROT_GAMMA...
-- **Diseases**: diabetes, hypertension, cancer...
-- **Drugs**: AlphaCure, BetaTherapy, GammaRx...
+Our comprehensive synthetic dataset includes:
+- **500 Genes**: Real gene families (TP53, BRCA1/2, KRAS, PIK3, EGFR, etc.) + synthetic genes
+- **661 Proteins**: Encoded proteins with realistic molecular weights and structures  
+- **191 Diseases**: Across 15 medical categories (cardiovascular, oncology, neurological, psychiatric, metabolic, autoimmune, respiratory, infectious, genetic, pediatric, geriatric, etc.)
+- **350 Drugs**: Multiple drug classes (small molecules, biologics, gene therapies) with real drug names
+- **3,200+ Relationships**: Complex biomedical networks and pathways
 
 **Relationships**:
 ```
@@ -169,9 +173,9 @@ pdm run quickstart
 3. Try: `pdm run quickstart` for diagnostics
 
 ### "No Results Found"
-1. Ensure data is loaded: `pdm run load-data`
-2. Use sample entity names: `GENE_ALPHA`, `diabetes`, `AlphaCure`
-3. Start with simpler queries
+1. Ensure data is loaded: `pdm run generate-data && pdm run load-data`
+2. Use entity names from expanded dataset: `TP53`, `BRCA1`, `Type2_Diabetes`, `Atorvastatin`
+3. Start with simpler queries in the Explore Queries tab
 
 ### "API Key Not Working"
 1. Check `.env` has correct `ANTHROPIC_API_KEY`

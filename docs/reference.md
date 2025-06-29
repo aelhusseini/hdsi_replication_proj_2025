@@ -8,7 +8,8 @@ Essential commands, queries, and demo script for the Life Sciences Knowledge Gra
 ```bash
 # Project setup
 pdm install                 # Install dependencies
-pdm run load-data          # Load sample biomedical data
+pdm run generate-data      # Generate expanded biomedical dataset (500 genes, 191 diseases, 350 drugs)
+pdm run load-data          # Load biomedical data into Neo4j
 pdm run quickstart         # Verify system setup
 
 # Launch platform
@@ -20,8 +21,9 @@ pdm run format             # Format code with Black + isort
 pdm run lint               # Check code quality with Flake8 + MyPy
 
 # Data management
-python scripts/simple_load_data.py    # Quick data reload
-python scripts/load_data.py           # Full dataset (advanced)
+pdm run generate-data                  # Generate expanded dataset
+python scripts/simple_load_data.py    # Quick data reload (smaller dataset)
+python scripts/load_data.py           # Full dataset loader
 ```
 
 ### Neo4j Database
@@ -256,7 +258,7 @@ pdm install --no-cache
 python --version  # Should be 3.10+
 
 # Verify working directory
-pwd  # Should end with biomedical_kg_project
+pwd  # Should end with hdsi_replication_proj_2025
 ```
 
 ## 🔗 Useful Links
