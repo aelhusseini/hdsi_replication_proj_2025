@@ -52,7 +52,8 @@ logger = logging.getLogger(__name__)
 
 class Neo4jDataLoader:
     """
-    A comprehensive data loader for populating Neo4j with biomedical knowledge graph data.
+    A comprehensive data loader for populating Neo4j with biomedical knowledge
+    graph data.
 
     This class manages the complete process of loading structured biomedical data
     into a Neo4j graph database. It handles entity creation, relationship establishment,
@@ -364,15 +365,18 @@ class Neo4jDataLoader:
         """
         Load drug-disease treatment relationships.
 
-        Creates TREATS relationships between drugs and diseases, representing
-        therapeutic interventions with clinical efficacy data and development stage information.
+        Creates TREATS relationships between drugs and diseases,
+        representing
+        therapeutic interventions with clinical efficacy data and development
+        stage information.
 
         Args:
             df: DataFrame containing treatment data with columns:
                 - drug_id: Reference to existing drug
                 - disease_id: Reference to existing disease
                 - efficacy: Treatment efficacy level (e.g., "high", "medium", "low")
-                - stage: Development stage (e.g., "approved", "phase_III", "experimental")
+                - stage: Development stage (e.g., "approved", "phase_III",
+                  "experimental")
 
         Relationship Properties:
             - efficacy: Clinical effectiveness of the treatment
@@ -495,7 +499,8 @@ def main():
     Data Loading Order:
         The loading follows dependency order to ensure referential integrity:
         1. Entities: Genes → Proteins → Diseases → Drugs
-        2. Direct relationships: Gene-Protein, Protein-Disease, Drug-Disease, Drug-Protein
+        2. Direct relationships: Gene-Protein, Protein-Disease, Drug-Disease,
+                                Drug-Protein
         3. Derived relationships: Gene-Disease links
 
     Raises:

@@ -101,7 +101,8 @@ class GraphInterface:
             from the query result. Keys are the column names from the RETURN clause.
 
         Raises:
-            Exception: If the query fails due to syntax errors, missing nodes/relationships,
+            Exception: If the query fails due to syntax errors, missing
+                      nodes/relationships,
                       or database connectivity issues
 
         Examples:

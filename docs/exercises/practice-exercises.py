@@ -5,6 +5,8 @@ This module contains structured exercises that build from basic concepts
 to advanced implementations, designed for beginner to advanced users.
 """
 
+from typing import Any, Dict, List, cast
+
 # ============================================================================
 # LEVEL 1: Knowledge Graph Fundamentals
 # ============================================================================
@@ -349,7 +351,7 @@ LEVEL_4_EXERCISES = {
 # Exercise Progression System
 # ============================================================================
 
-EXERCISE_PROGRESSION = {
+EXERCISE_PROGRESSION: Dict[str, Dict[str, Any]] = {
     "beginner": {
         "requirements": [],
         "exercises": ["1.1", "1.2"],
@@ -478,7 +480,7 @@ def get_exercises_for_level(level: str) -> dict:
     return level_mapping.get(level, LEVEL_1_EXERCISES)
 
 
-def check_prerequisites(completed_exercises: list, target_level: str) -> bool:
+def check_prerequisites(completed_exercises: list[str], target_level: str) -> bool:
     """Check if user has completed prerequisites for target level."""
     if target_level not in EXERCISE_PROGRESSION:
         return False
@@ -487,11 +489,12 @@ def check_prerequisites(completed_exercises: list, target_level: str) -> bool:
     return all(ex in completed_exercises for ex in required)
 
 
-def get_next_recommended_exercise(completed_exercises: list) -> str:
+def get_next_recommended_exercise(completed_exercises: list[str]) -> str:
     """Recommend the next exercise based on completed work."""
     for level, info in EXERCISE_PROGRESSION.items():
         if check_prerequisites(completed_exercises, level):
-            for exercise_id in info["exercises"]:
+            exercises = cast(List[str], info.get("exercises", []))
+            for exercise_id in exercises:
                 if exercise_id not in completed_exercises:
                     return exercise_id
     return "4.2"  # Default to final exercise

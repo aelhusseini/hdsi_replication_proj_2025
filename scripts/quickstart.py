@@ -121,7 +121,10 @@ def test_neo4j_connection() -> bool:
     try:
         uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
         user = os.getenv("NEO4J_USER", "neo4j")
-        password = os.getenv("NEO4J_PASSWORD")
+        password = os.getenv("NEO4J_PASSWORD", "")
+
+        if not password:
+            raise ValueError("NEO4J_PASSWORD environment variable is required")
 
         graph = GraphInterface(uri, user, password)
 
@@ -179,7 +182,10 @@ def run_sample_queries() -> bool:
     try:
         uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
         user = os.getenv("NEO4J_USER", "neo4j")
-        password = os.getenv("NEO4J_PASSWORD")
+        password = os.getenv("NEO4J_PASSWORD", "")
+
+        if not password:
+            raise ValueError("NEO4J_PASSWORD environment variable is required")
 
         graph = GraphInterface(uri, user, password)
         agent = TemplateQueryAgent(graph)

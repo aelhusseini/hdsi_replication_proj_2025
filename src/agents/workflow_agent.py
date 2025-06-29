@@ -121,7 +121,10 @@ class WorkflowAgent:
         )
 
         # Extract the response and update our state
-        question_type = response.content[0].text.strip()
+        content = response.content[0]
+        question_type = (
+            content.text.strip() if hasattr(content, 'text') else str(content)
+        )
         state["question_type"] = question_type
 
         print(f"🔍 Question classified as: {question_type}")
@@ -156,7 +159,10 @@ class WorkflowAgent:
 
         try:
             # Try to parse the list from Claude's response
-            response_text = response.content[0].text.strip()
+            content = response.content[0]
+            response_text = (
+                content.text.strip() if hasattr(content, 'text') else str(content)
+            )
             entities = json.loads(response_text)
             state["entities"] = entities
             print(f"🧬 Found entities: {entities}")
@@ -212,7 +218,10 @@ class WorkflowAgent:
         )
 
         # Clean up the query (remove code block formatting if present)
-        cypher_query = response.content[0].text.strip()
+        content = response.content[0]
+        cypher_query = (
+            content.text.strip() if hasattr(content, 'text') else str(content)
+        )
         if cypher_query.startswith("```"):
             lines = cypher_query.split("\n")
             cypher_query = "\n".join(
@@ -233,7 +242,11 @@ class WorkflowAgent:
         """
         try:
             # Execute the query we generated
-            results = self.graph_db.execute_query(state["cypher_query"])
+            query = state.get("cypher_query")
+            if query:
+                results = self.graph_db.execute_query(query)
+            else:
+                results = []
             state["results"] = results
             print(f"📊 Found {len(results)} results")
 
@@ -259,7 +272,8 @@ class WorkflowAgent:
             return state
 
         # Handle empty results
-        if not state.get("results") or len(state["results"]) == 0:
+        results = state.get("results")
+        if not results or len(results) == 0:
             state["final_answer"] = (
                 "I didn't find any information for that question. "
                 "Try asking about genes, diseases, or drugs in our database."
@@ -267,7 +281,7 @@ class WorkflowAgent:
             return state
 
         # Format the results nicely
-        results = state["results"]
+        # results already defined above
         prompt = f"""
         Convert these database results into a clear, informative answer.
         Original question: {state['user_question']}
@@ -288,7 +302,10 @@ class WorkflowAgent:
             messages=[{"role": "user", "content": prompt}],
         )
 
-        state["final_answer"] = response.content[0].text.strip()
+        content = response.content[0]
+        state["final_answer"] = (
+            content.text.strip() if hasattr(content, 'text') else str(content)
+        )
         print("✅ Generated final answer")
         return state
 

@@ -1,5 +1,6 @@
 """
-📚 REFERENCE EXAMPLE: LangGraph-Powered AI Agent for Life Sciences Knowledge Graph Queries
+📚 REFERENCE EXAMPLE: LangGraph-Powered AI Agent for Life Sciences
+Knowledge Graph Queries
 
 ⚠️ NOTE: This agent is NOT used in the web application. It serves as a reference
 to demonstrate advanced LangGraph features for users.
@@ -54,7 +55,8 @@ class AgentState(TypedDict):
 
     Fields:
         user_question: The original natural language question from the user
-        question_type: Classified category (e.g., 'gene_disease', 'drug_target', 'pathway')
+        question_type: Classified category
+                      (e.g., 'gene_disease', 'drug_target', 'pathway')
         entities: List of extracted biomedical entities with their types
                  (e.g., [{'type': 'gene', 'name': 'GENE_ALPHA'}, ...])
         cypher_query: The generated Neo4j Cypher query string
@@ -74,10 +76,13 @@ class AgentState(TypedDict):
 
 class AdvancedAIAgent:
     """
-    An intelligent agent for querying life sciences knowledge graphs using natural language.
+    An intelligent agent for querying life sciences knowledge graphs using
+    natural language.
 
-    This agent combines the power of large language models (Claude) with graph database
-    queries to answer complex questions about biomedical relationships. It uses LangGraph
+    This agent combines the power of large language models (Claude) with graph
+    database
+    queries to answer complex questions about biomedical relationships. It uses
+    LangGraph
     to orchestrate a multi-step workflow that ensures reliable, accurate responses.
 
     The agent is designed to be:
@@ -92,7 +97,9 @@ class AdvancedAIAgent:
 
     Example Usage:
         >>> agent = AdvancedAIAgent(graph_interface, api_key)
-        >>> result = agent.answer_question("What genes are linked to Alzheimer's disease?")
+        >>> result = agent.answer_question(
+        ...     "What genes are linked to Alzheimer's disease?"
+        ... )
         >>> print(result['final_answer'])
 
     Supported Question Categories:
@@ -154,7 +161,8 @@ class AdvancedAIAgent:
 
         Workflow Steps:
             1. classify_question: Determine the type of biomedical question
-            2. extract_entities: Find specific genes, proteins, diseases, drugs mentioned
+            2. extract_entities: Find specific genes, proteins, diseases, drugs
+                                mentioned
             3. generate_cypher: Convert question + entities into a Neo4j query
             4. execute_query: Run the query against the database
             5. format_response: Convert results into natural language
@@ -204,7 +212,8 @@ class AdvancedAIAgent:
         Classify the user's question into a biomedical category.
 
         This is the first step in the agent workflow. Understanding the question type
-        helps the agent choose appropriate query patterns and entity extraction strategies.
+        helps the agent choose appropriate query patterns and entity extraction
+        strategies.
         The classification guides how the query will be constructed in later steps.
 
         Args:
@@ -250,8 +259,10 @@ class AdvancedAIAgent:
         """
         Extract specific biomedical entities mentioned in the user's question.
 
-        This step identifies the concrete entities (gene names, protein names, diseases, drugs)
-        that the user is asking about. These entities will be used to construct precise
+        This step identifies the concrete entities (gene names, protein names,
+        diseases, drugs)
+        that the user is asking about. These entities will be used to construct
+        precise
         database queries that target specific nodes in the knowledge graph.
 
         Args:
@@ -455,28 +466,34 @@ class AdvancedAIAgent:
 
     def answer_question(self, question: str) -> Dict[str, Any]:
         """
-        Main entry point for processing natural language questions about biomedical data.
+        Main entry point for processing natural language questions about
+        biomedical data.
 
         This is the public interface that external code uses to interact with the agent.
         It orchestrates the entire workflow from question to answer, handling all the
         complexity of AI reasoning, query generation, and database interaction.
 
         Args:
-            question: Natural language question about genes, proteins, diseases, or drugs
+            question: Natural language question about genes, proteins, diseases,
+                     or drugs
 
         Returns:
             Dictionary containing:
             - answer: Natural language response to the question
-            - cypher_query: The generated Neo4j query (for transparency/debugging)
+            - cypher_query: The generated Neo4j query
+                           (for transparency/debugging)
             - entities: List of biomedical entities extracted from the question
             - results_count: Number of database records found
             - error: Error message if something went wrong (None if successful)
 
         Example Usage:
             >>> agent = AdvancedAIAgent(graph_interface, api_key)
-            >>> result = agent.answer_question("What genes are associated with diabetes?")
+            >>> result = agent.answer_question(
+            ...     "What genes are associated with diabetes?"
+            ... )
             >>> print(result['answer'])
-            "Based on the knowledge graph, several genes are associated with diabetes..."
+            "Based on the knowledge graph, several genes are associated with "
+            "diabetes..."
             >>> print(f"Found {result['results_count']} results")
             >>> print(f"Query used: {result['cypher_query']}")
 

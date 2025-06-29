@@ -13,7 +13,8 @@ import plotly.graph_objects as go
 src_dir = Path(__file__).parent.parent / "src"
 sys.path.append(str(src_dir))
 
-from web.app import create_network_visualization
+# Import after path modification
+from web.app import create_network_visualization  # noqa: E402
 
 
 class TestWebApp(unittest.TestCase):

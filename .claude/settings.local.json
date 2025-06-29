@@ -4,7 +4,9 @@
       "Bash(find:*)",
       "Bash(python:*)",
       "Bash(rg:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)"
     ],
     "deny": []
   }

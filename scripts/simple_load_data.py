@@ -69,15 +69,32 @@ class SimpleBiomedicalLoader:
         This ensures no duplicate IDs and improves query performance.
         """
         constraints = [
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (g:Gene) REQUIRE g.gene_id IS UNIQUE",
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (p:Protein) REQUIRE p.protein_id IS UNIQUE",
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (d:Disease) REQUIRE d.disease_id IS UNIQUE",
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (dr:Drug) REQUIRE dr.drug_id IS UNIQUE",
+            (
+                "CREATE CONSTRAINT IF NOT EXISTS FOR (g:Gene) "
+                "REQUIRE g.gene_id IS UNIQUE"
+            ),
+            (
+                "CREATE CONSTRAINT IF NOT EXISTS FOR (p:Protein) "
+                "REQUIRE p.protein_id IS UNIQUE"
+            ),
+            (
+                "CREATE CONSTRAINT IF NOT EXISTS FOR (d:Disease) "
+                "REQUIRE d.disease_id IS UNIQUE"
+            ),
+            (
+                "CREATE CONSTRAINT IF NOT EXISTS FOR (dr:Drug) "
+                "REQUIRE dr.drug_id IS UNIQUE"
+            ),
         ]
 
         with self.driver.session() as session:
             for constraint in constraints:
-                session.run(constraint)
+                if isinstance(constraint, tuple):
+                    # Join the tuple parts into a single string
+                    constraint_str = "".join(constraint)
+                    session.run(constraint_str)
+                else:
+                    session.run(constraint)
         print("🔧 Created database constraints")
 
     def load_genes(self, genes_df):
@@ -373,7 +390,8 @@ def main():
         print("\n🎓 Ready for learning! Try these commands:")
         print("   pdm run app  # Start the interactive app")
         print(
-            "   jupyter notebook tutorial_langgraph_knowledge_graphs.ipynb  # Open tutorial"
+            "   jupyter notebook tutorial_langgraph_knowledge_graphs.ipynb  # "
+            "Open tutorial"
         )
 
     except Exception as e:

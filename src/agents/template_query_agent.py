@@ -140,7 +140,8 @@ class TemplateQueryAgent:
         matching to find diseases whose names contain the search term.
 
         Args:
-            disease: Disease name or partial name to search for (e.g., "diabetes", "cancer")
+            disease: Disease name or partial name to search for
+                    (e.g., "diabetes", "cancer")
                     Case-insensitive matching allows flexible searches
 
         Returns:
@@ -159,8 +160,10 @@ class TemplateQueryAgent:
             Gene GENE_BETA is linked to Type 1 Diabetes
 
         Note:
-            Uses the biomedical knowledge graph's Gene-Disease association data.
-            Results reflect known scientific literature at the time of database creation.
+            Uses the biomedical knowledge graph's Gene-Disease association
+            data.
+            Results reflect known scientific literature at the time of database
+            creation.
         """
         return self.graph_db.execute_query(
             self.query_templates["genes_for_disease"], {"disease": disease}
@@ -230,7 +233,8 @@ class TemplateQueryAgent:
             >>> agent = TemplateQueryAgent(graph_interface)
             >>> proteins = agent.get_protein_for_gene("GENE_ALPHA")
             >>> for protein in proteins:
-            ...     print(f"Gene {protein['gene']} encodes protein {protein['protein']}")
+            ...     print(f"Gene {protein['gene']} encodes protein "
+            ...               f"{protein['protein']}")
             ...     if protein['molecular_weight']:
             ...         print(f"  Molecular weight: {protein['molecular_weight']} kDa")
             Gene GENE_ALPHA encodes protein PROT_ALPHA
@@ -260,8 +264,10 @@ class TemplateQueryAgent:
             List of dictionaries, each containing:
             - 'protein': Protein name from database
             - 'disease': Disease name associated with the protein
-            - 'association_type': Type of association (e.g., "causal", "biomarker", "therapeutic_target")
-            - 'confidence': Confidence level of association ("high", "medium", "low")
+            - 'association_type': Type of association
+                                 (e.g., "causal", "biomarker", "therapeutic_target")
+            - 'confidence': Confidence level of association
+                           ("high", "medium", "low")
 
             Results ordered by confidence (most reliable associations first).
             Limited to 20 results for performance.
@@ -270,8 +276,14 @@ class TemplateQueryAgent:
             >>> agent = TemplateQueryAgent(graph_interface)
             >>> associations = agent.get_diseases_for_protein("PROT_ALPHA")
             >>> for assoc in associations:
-            ...     print(f"Protein {assoc['protein']} is associated with {assoc['disease']}")
-            ...     print(f"  Type: {assoc['association_type']}, Confidence: {assoc['confidence']}")
+            ...     print(
+            ...         f"Protein {assoc['protein']} is associated with "
+            ...         f"{assoc['disease']}"
+            ...     )
+            ...     print(
+            ...         f"  Type: {assoc['association_type']}, "
+            ...         f"Confidence: {assoc['confidence']}"
+            ...     )
             Protein PROT_ALPHA is associated with Alzheimer's Disease
               Type: causal, Confidence: high
             Protein PROT_ALPHA is associated with Diabetes
@@ -303,7 +315,8 @@ class TemplateQueryAgent:
             List of dictionaries, each containing:
             - 'drug': Drug name from database
             - 'protein': Protein name targeted by the drug
-            - 'interaction_type': Type of drug-protein interaction (e.g., "inhibitor", "agonist", "antagonist")
+            - 'interaction_type': Type of drug-protein interaction
+                                 (e.g., "inhibitor", "agonist", "antagonist")
             - 'affinity': Binding affinity strength (e.g., "high", "medium", "low")
 
             Limited to 20 results for performance.
@@ -314,7 +327,10 @@ class TemplateQueryAgent:
             >>> targets = agent.get_drug_targets("AlphaCure")
             >>> for target in targets:
             ...     print(f"Drug {target['drug']} targets protein {target['protein']}")
-            ...     print(f"  Interaction: {target['interaction_type']}, Affinity: {target['affinity']}")
+            ...     print(
+            ...         f"  Interaction: {target['interaction_type']}, "
+            ...         f"Affinity: {target['affinity']}"
+            ...     )
             Drug AlphaCure targets protein PROT_BETA
               Interaction: inhibitor, Affinity: high
             Drug AlphaCure targets protein PROT_GAMMA
