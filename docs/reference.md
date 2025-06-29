@@ -1,6 +1,6 @@
 # 📖 Quick Reference
 
-Essential commands, queries, and demo script for the Life Sciences Knowledge Graph Agent platform.
+Essential commands, queries, and demo script for the Life Sciences Knowledge Graph Agent project.
 
 ## 🚀 Common Commands
 
@@ -12,7 +12,7 @@ pdm run generate-data      # Generate expanded biomedical dataset (500 genes, 19
 pdm run load-data          # Load biomedical data into Neo4j
 pdm run quickstart         # Verify system setup
 
-# Launch platform
+# Launch application
 pdm run app                 # Start Streamlit interface (localhost:8501)
 
 # Development
@@ -113,7 +113,7 @@ ORDER BY p.molecular_weight DESC
 LIMIT 5
 ```
 
-## 🎓 Sample Questions for the Platform
+## 🎓 Sample Questions for the Application
 
 ### Beginner Questions
 - "What genes are associated with Hypertension?"
@@ -136,14 +136,14 @@ LIMIT 5
 ## 🎯 Demo Script (12-15 minutes)
 
 ### Opening (2 minutes)
-*"Today I'll demonstrate how **knowledge graphs** and **AI agents** solve complex biomedical questions. This platform shows how graph databases and LangGraph workflows analyze relationships between genes, proteins, diseases, and drugs."*
+*"Today I'll demonstrate how **knowledge graphs** and **AI agents** solve complex biomedical questions. This project shows how graph databases and LangGraph workflows analyze relationships between genes, proteins, diseases, and drugs."*
 
 **Key Points:**
 - **Problem**: Biomedical data is interconnected but stored in silos
 - **Solution**: Graph databases + AI workflows for intelligent exploration
 - **Value**: Fast, accurate answers to complex research questions
 
-### Platform Walkthrough (8 minutes)
+### Application Walkthrough (8 minutes)
 
 #### 1. Overview (1 minute)
 Navigate to `http://localhost:8501`
@@ -208,7 +208,7 @@ NetworkX → Graph Visualizations
 ### Closing & Q&A (2 minutes)
 
 **Summary Points**:
-- Platform demonstrates **real-world AI applications**
+- Project demonstrates **real-world AI applications**
 - **Progressive learning** from basic to advanced concepts
 - **Industry-standard tools** and practices
 - **Biomedical focus** with practical applications
@@ -264,7 +264,7 @@ pwd  # Should end with hdsi_replication_proj_2025
 ## 🔗 Useful Links
 
 - **Neo4j Browser**: http://localhost:7474
-- **Platform Interface**: http://localhost:8501
+- **Web Interface**: http://localhost:8501
 - **Anthropic Console**: https://console.anthropic.com/
 - **Neo4j Desktop**: https://neo4j.com/download/
 - **LangGraph Docs**: https://python.langchain.com/docs/langgraph

@@ -2,7 +2,7 @@
 
 ## 🎓 Learning Project: LangGraph and Knowledge Graphs
 
-An interactive educational platform for learning **LangGraph workflows** and **knowledge graph concepts** through hands-on biomedical AI applications. Progress from beginner to advanced with real-world examples.
+An interactive educational project for learning **LangGraph workflows** and **knowledge graph concepts** through hands-on biomedical AI applications. Progress from beginner to advanced with real-world examples.
 
 **New to AI, knowledge graphs, or biomedical concepts?** Start with our comprehensive [Foundations and Background Guide](docs/foundations-and-background.md) - designed for users with zero prior knowledge to understand and appreciate every aspect of this project.
 
@@ -198,6 +198,3 @@ Start your exploration with these questions:
 - How might this approach help drug discovery?
 - What are the ethical considerations for biomedical AI?
 
-## License
-
-MIT License

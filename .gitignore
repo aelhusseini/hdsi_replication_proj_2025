@@ -41,7 +41,7 @@ neo4j/
 .streamlit/cache/
 .streamlit/secrets.toml
 
-# Claude Code artifacts
+# Claude Code artifacts (user-specific)
 .claude/
 CLAUDE.md
 

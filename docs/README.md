@@ -1,10 +1,10 @@
 # 📚 Documentation
 
-Complete documentation for the Life Sciences Knowledge Graph Agent platform - learn LangGraph and knowledge graphs through biomedical AI applications.
+Complete documentation for the Life Sciences Knowledge Graph Agent project - learn LangGraph and knowledge graphs through biomedical AI applications.
 
 ## 🚀 Quick Start
 
-**New to the platform?**
+**New to the project?**
 1. **[Foundations and Background](foundations-and-background.md)** - Complete beginner's guide to all concepts
 2. **[Getting Started](getting-started.md)** - Setup and usage guide  
 3. **[LangGraph Tutorial](tutorials/langgraph-tutorial.ipynb)** - Interactive hands-on tutorial
@@ -20,7 +20,7 @@ Complete documentation for the Life Sciences Knowledge Graph Agent platform - le
 
 ### 📖 Main Guides
 - **[foundations-and-background.md](foundations-and-background.md)** - Complete background for beginners to understand all concepts
-- **[getting-started.md](getting-started.md)** - Setup, installation, and how to use the platform
+- **[getting-started.md](getting-started.md)** - Setup, installation, and how to use the project
 - **[reference.md](reference.md)** - Quick reference for commands, queries, and demo script
 - **[technical-guide.md](technical-guide.md)** - Architecture, implementation, and development patterns
 

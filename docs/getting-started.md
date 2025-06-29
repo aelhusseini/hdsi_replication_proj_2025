@@ -1,6 +1,6 @@
 # 🚀 Getting Started
 
-Complete guide to setting up and using the Life Sciences Knowledge Graph Agent platform.
+Complete guide to setting up and using the Life Sciences Knowledge Graph Agent project.
 
 **🆕 New to AI, knowledge graphs, or biomedical concepts?** Start with our [Foundations and Background Guide](foundations-and-background.md) - a comprehensive resource designed for complete beginners to understand the technologies and concepts used in this project.
 
@@ -77,7 +77,7 @@ pdm run load-data
 pdm run quickstart
 ```
 
-### 5. Launch Platform
+### 5. Launch Application
 ```bash
 # Start web interface
 pdm run app
@@ -85,7 +85,7 @@ pdm run app
 # Open browser to http://localhost:8501
 ```
 
-## 🎓 Platform Interface
+## 🎓 Web Interface
 
 ### Main Learning Tabs
 
@@ -192,13 +192,13 @@ pdm run quickstart
 
 ## 🎉 What's Next?
 
-Once you have the platform running:
+Once you have the application running:
 1. **Explore freely** - Click around and experiment
 2. **Ask questions** - Try your own biomedical queries
 3. **Study patterns** - Look at the generated Cypher queries
-4. **Master the platform** - Understand all features and capabilities thoroughly
+4. **Master the application** - Understand all features and capabilities thoroughly
 
-The platform is designed for hands-on learning - the best way to understand knowledge graphs and LangGraph is to use them!
+The project is designed for hands-on learning - the best way to understand knowledge graphs and LangGraph is to use them!
 
 ---
 

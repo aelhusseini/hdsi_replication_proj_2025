@@ -1,13 +1,13 @@
 # 🔧 Technical Guide
 
-Complete technical documentation for developers working with the Life Sciences Knowledge Graph Agent platform.
+Complete technical documentation for developers working with the Life Sciences Knowledge Graph Agent project.
 
 **📖 Prerequisites**: This guide assumes familiarity with the concepts covered in [foundations-and-background.md](foundations-and-background.md). If you're new to AI, knowledge graphs, or the biomedical domain, please read that guide first for essential background knowledge.
 
 ## 🏗️ System Architecture
 
 ### Overview
-The platform uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, and Streamlit interface for interactive learning.
+The project uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, and Streamlit interface for interactive learning.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -405,4 +405,4 @@ class SocialAgent(AdvancedAIAgent):
         }
 ```
 
-This technical guide provides the foundation for understanding, extending, and deploying the platform in various contexts while maintaining the learning focus that makes knowledge graphs and LangGraph accessible to users.
+This technical guide provides the foundation for understanding, extending, and deploying the project in various contexts while maintaining the learning focus that makes knowledge graphs and LangGraph accessible to users.
