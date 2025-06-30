@@ -39,7 +39,7 @@ load_dotenv()
 
 # Page configuration
 st.set_page_config(
-    page_title="Life Sciences Knowledge Graph Agent",
+    page_title="Helix Navigator",
     page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -740,7 +740,7 @@ def main():
         """
         <div style="text-align: center; margin-bottom: 2rem;">
             <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #1f2937;">
-                🧬 Life Sciences Knowledge Graph Agent
+                🧬 Helix Navigator
             </h1>
             <p style="font-size: 1.2rem; color: #6b7280; margin-top: 0;">
                 Learn LangGraph and Knowledge Graphs through biomedical AI applications

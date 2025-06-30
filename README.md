@@ -1,8 +1,8 @@
-# Life Sciences Knowledge Graph Agent
+# 🧬 Helix Navigator
 
 ## 🎓 Learning Project: LangGraph and Knowledge Graphs
 
-An interactive educational project for learning **LangGraph workflows** and **knowledge graph concepts** through hands-on biomedical AI applications. Progress from beginner to advanced with real-world examples.
+An interactive educational project for learning **LangGraph workflows** and **knowledge graph concepts** through hands-on biomedical AI applications. Navigate the complex world of life sciences data with AI-powered discovery. Progress from beginner to advanced with real-world examples.
 
 **New to AI, knowledge graphs, or biomedical concepts?** Start with our comprehensive [Foundations and Background Guide](docs/foundations-and-background.md) - designed for users with zero prior knowledge to understand and appreciate every aspect of this project.
 
@@ -182,7 +182,7 @@ The project provides **three different agent implementations** to demonstrate va
 - **📖 Foundations Guide**: Complete background for beginners ([foundations-and-background.md](docs/foundations-and-background.md))
 - **📔 Tutorial Notebook**: Step-by-step interactive learning
 - **🎓 Learning Mode**: Streamlit interface with exercises
-- **📚 Learning Guide**: Structured 6-week curriculum
+- **📚 Learning Guide**: Progressive skill development
 - **🏋️ Progressive Exercises**: From beginner to expert level
 - **🔧 Example Code**: Three different agent implementations
 

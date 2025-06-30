@@ -1,6 +1,6 @@
 # 📖 Quick Reference
 
-Essential commands, queries, and demo script for the Life Sciences Knowledge Graph Agent project.
+Essential commands, queries, and demo script for Helix Navigator.
 
 ## 🚀 Common Commands
 
@@ -201,9 +201,9 @@ NetworkX → Graph Visualizations
 - **Biomedical AI**: Apply AI to healthcare and research
 
 **Progression**:
-- **Week 1-2**: Basic concepts and simple queries
-- **Week 3-4**: LangGraph workflows and complex patterns
-- **Week 5-6**: Advanced applications and custom development
+- **Foundation**: Basic concepts and simple queries
+- **Intermediate**: LangGraph workflows and complex patterns
+- **Advanced**: Advanced applications and custom development
 
 ### Closing & Q&A (2 minutes)
 

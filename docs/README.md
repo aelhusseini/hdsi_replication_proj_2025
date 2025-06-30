@@ -1,6 +1,6 @@
 # 📚 Documentation
 
-Complete documentation for the Life Sciences Knowledge Graph Agent project - learn LangGraph and knowledge graphs through biomedical AI applications.
+Complete documentation for Helix Navigator - learn LangGraph and knowledge graphs through biomedical AI applications.
 
 ## 🚀 Quick Start
 
@@ -30,20 +30,20 @@ Complete documentation for the Life Sciences Knowledge Graph Agent project - lea
 
 ## 🎯 Learning Path
 
-### Beginner (Week 1-2)
+### Foundation Level
 1. Read **[foundations-and-background.md](foundations-and-background.md)** for complete background
 2. Complete **[getting-started.md](getting-started.md)** setup
 3. Try basic queries in the web interface
 4. Start with Level 1 exercises in **[practice-exercises.py](exercises/practice-exercises.py)**
 5. Use **[reference.md](reference.md)** for quick syntax help
 
-### Intermediate (Week 3-4) 
+### Intermediate Level
 1. Work through **[langgraph-tutorial.ipynb](tutorials/langgraph-tutorial.ipynb)**
 2. Complete Level 2-3 exercises
 3. Study **[technical-guide.md](technical-guide.md)** architecture section
 4. Try demo presentation with **[reference.md](reference.md)** script
 
-### Advanced (Week 5-6)
+### Advanced Level
 1. Master Level 4 exercises
 2. Review **[technical-guide.md](technical-guide.md)** development patterns
 3. Study advanced techniques and implementations

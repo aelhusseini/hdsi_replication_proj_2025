@@ -1,5 +1,5 @@
 """
-Neo4j Graph Database Interface for Life Sciences Knowledge Graph Agent
+Neo4j Graph Database Interface for Helix Navigator
 
 This module provides a clean, safe interface for interacting with a Neo4j graph database
 that contains biomedical entities (genes, proteins, diseases, drugs) and their

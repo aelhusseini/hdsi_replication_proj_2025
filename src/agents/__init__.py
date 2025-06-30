@@ -1,1 +1,1 @@
-# Agent module for life sciences knowledge graph
+# Agent module for Helix Navigator

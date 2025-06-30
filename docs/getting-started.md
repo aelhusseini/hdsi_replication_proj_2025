@@ -1,6 +1,6 @@
 # 🚀 Getting Started
 
-Complete guide to setting up and using the Life Sciences Knowledge Graph Agent project.
+Complete guide to setting up and using Helix Navigator.
 
 **🆕 New to AI, knowledge graphs, or biomedical concepts?** Start with our [Foundations and Background Guide](foundations-and-background.md) - a comprehensive resource designed for complete beginners to understand the technologies and concepts used in this project.
 
@@ -133,20 +133,20 @@ Drug --[TARGETS]--> Protein
 
 ## 🎯 Learning Path
 
-### Week 1-2: Fundamentals
+### Foundation Level
 1. **Read background materials**: Review [foundations-and-background.md](foundations-and-background.md) if new to these concepts
 2. Complete setup and data loading
 3. Explore **Concepts** tab thoroughly
 4. Try example questions in **Try the Agent**
 5. Practice basic queries in **Explore Queries**
 
-### Week 3-4: Building Skills
+### Intermediate Level
 1. Work through **Exercises** Level 1-2
 2. Study the generated Cypher queries
 3. Open [langgraph-tutorial.ipynb](tutorials/langgraph-tutorial.ipynb)
 4. Practice with [practice-exercises.py](exercises/practice-exercises.py)
 
-### Week 5-6: Advanced Applications
+### Advanced Level
 1. Complete **Exercises** Level 3-4
 2. Study [technical-guide.md](technical-guide.md)
 3. Build custom agents using the patterns

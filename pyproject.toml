@@ -1,7 +1,7 @@
 [project]
-name = "biomedical-lifesciences-kg"
+name = "helix-navigator"
 version = "0.1.0"
-description = "Life Sciences Knowledge Graph Agent with Streamlit, LangGraph, and Anthropic"
+description = "Helix Navigator - Interactive biomedical AI discovery platform with Streamlit, LangGraph, and Anthropic"
 authors = [
     {name = "Development Team", email = "team@example.com"},
 ]

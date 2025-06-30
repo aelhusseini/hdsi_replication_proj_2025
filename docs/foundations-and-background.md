@@ -554,7 +554,7 @@ User Interface (Streamlit)
 
 ## Getting Started: Your Learning Journey
 
-### Phase 1: Understanding the Basics (Week 1-2)
+### Phase 1: Understanding the Basics
 
 #### Goals:
 - Understand what knowledge graphs are
@@ -572,7 +572,7 @@ User Interface (Streamlit)
 - Can write simple Cypher queries
 - Understands nodes, relationships, and properties
 
-### Phase 2: AI Agent Development (Week 3-4)
+### Phase 2: AI Agent Development
 
 #### Goals:
 - Understand how AI agents work
@@ -590,7 +590,7 @@ User Interface (Streamlit)
 - Can modify agent behavior
 - Understands workflow state management
 
-### Phase 3: Advanced Applications (Week 5-6)
+### Phase 3: Advanced Applications
 
 #### Goals:
 - Master advanced techniques

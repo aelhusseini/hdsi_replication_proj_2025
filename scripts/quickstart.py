@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Life Sciences Knowledge Graph - Quick Start Verification Script
+Helix Navigator - Quick Start Verification Script
 
 This script verifies that the biomedical knowledge graph system is properly
 configured and functional. It performs comprehensive setup checks, database
@@ -299,7 +299,7 @@ def main():
         Sample query failures are treated as warnings rather than fatal errors,
         as the system may still be functional for basic operations.
     """
-    logger.info("🚀 Life Sciences Knowledge Graph - Quick Start")
+    logger.info("🚀 Helix Navigator - Quick Start")
     logger.info("=" * 50)
 
     # Phase 1: Environment verification
