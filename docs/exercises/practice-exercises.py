@@ -14,7 +14,7 @@ Required imports for practical use:
 ```python
 from src.agents.graph_interface import GraphInterface
 from src.agents.workflow_agent import WorkflowAgent, WorkflowState
-from src.agents.advanced_ai_agent import AdvancedAIAgent, AgentState
+from src.agents.advanced_workflow_agent import AdvancedWorkflowAgent, AgentState
 from src.agents.template_query_agent import TemplateQueryAgent
 ```
 """

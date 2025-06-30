@@ -1,5 +1,21 @@
 """
-Streamlit web application for Life Sciences Knowledge Graph Agent.
+Interactive Learning Web Application for LangGraph and Knowledge Graphs
+
+This Streamlit application provides an educational interface for learning:
+- LangGraph workflow concepts through biomedical AI applications  
+- Knowledge graph fundamentals with real biomedical data
+- Cypher query construction and optimization
+- AI integration patterns with graph databases
+
+Educational Features:
+- Interactive workflow agent demonstration
+- Progressive learning exercises from beginner to advanced
+- Real-time query testing and visualization
+- Step-by-step workflow transparency
+- Hands-on practice with biomedical knowledge graphs
+
+The application uses only the WorkflowAgent for educational clarity,
+demonstrating core LangGraph concepts without production complexity.
 """
 
 import os

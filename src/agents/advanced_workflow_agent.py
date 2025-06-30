@@ -1,28 +1,29 @@
 """
-📚 REFERENCE EXAMPLE: LangGraph-Powered AI Agent for Life Sciences
+📚 REFERENCE EXAMPLE: Production-Ready LangGraph Workflow Agent for Life Sciences
 Knowledge Graph Queries
 
 ⚠️ NOTE: This agent is NOT used in the web application. It serves as a reference
-to demonstrate advanced LangGraph features for users.
+to demonstrate advanced LangGraph workflow patterns for production systems.
 
-This module implements an intelligent agent that can understand natural language
-questions about biomedical relationships and convert them into precise graph database
-queries. The agent uses LangGraph for workflow orchestration and Anthropic's Claude
-for natural language understanding.
+This module implements a production-ready workflow agent that demonstrates advanced
+LangGraph patterns for biomedical knowledge graphs. It follows the same core workflow
+as WorkflowAgent but includes production-grade enhancements like error handling,
+query validation, and comprehensive logging.
 
-The agent follows a multi-step pipeline:
+The agent follows the same multi-step pipeline as WorkflowAgent:
 1. Question Classification - Determines the type of biomedical question
 2. Entity Extraction - Identifies specific genes, proteins, diseases, drugs mentioned
 3. Cypher Generation - Converts the question into a Neo4j Cypher query
 4. Query Execution - Runs the query safely against the graph database
 5. Response Formatting - Converts results back to natural language
 
-Key Features:
-- Handles complex biomedical terminology and relationships
-- Generates safe, parameterized database queries
-- Provides structured error handling and recovery
-- Maintains conversation state throughout the workflow
-- Supports various question types (gene-disease, drug-target, pathway analysis, etc.)
+Key Production Features:
+- Advanced error handling with conditional workflow routing
+- Query validation before execution
+- Robust entity extraction with multiple parsing strategies
+- Comprehensive logging and monitoring
+- Structured error recovery and user feedback
+- Enhanced prompt engineering with schema context
 
 Example Question Types Supported:
 - "What genes are associated with diabetes?"
@@ -74,55 +75,57 @@ class AgentState(TypedDict):
     error: Optional[str]
 
 
-class AdvancedAIAgent:
+class AdvancedWorkflowAgent:
     """
-    An intelligent agent for querying life sciences knowledge graphs using
-    natural language.
+    A production-ready workflow agent demonstrating advanced LangGraph patterns
+    for biomedical knowledge graphs.
 
-    This agent combines the power of large language models (Claude) with graph
-    database
-    queries to answer complex questions about biomedical relationships. It uses
-    LangGraph
-    to orchestrate a multi-step workflow that ensures reliable, accurate responses.
+    This agent implements the same core workflow as WorkflowAgent but includes
+    production-grade enhancements for reliability, monitoring, and error handling.
+    It serves as a reference for evolving educational prototypes into
+    production systems.
 
-    The agent is designed to be:
-    - Robust: Handles errors gracefully and provides meaningful feedback
-    - Safe: Uses parameterized queries to prevent injection attacks
-    - Intelligent: Understands biomedical context and terminology
-    - Extensible: Easy to add new question types and response formats
+    Production Enhancements over WorkflowAgent:
+    - Conditional error handling with dedicated error routing
+    - Query validation before database execution
+    - Robust entity extraction with multiple parsing strategies
+    - Enhanced logging and monitoring capabilities
+    - Structured error recovery and user feedback
+    - Rich metadata in response objects for observability
 
-    Workflow Overview:
+    Workflow Overview (Same as WorkflowAgent):
         User Question → Classification → Entity Extraction → Query Generation
         → Database Execution → Response Formatting → Natural Language Answer
 
     Example Usage:
-        >>> agent = AdvancedAIAgent(graph_interface, api_key)
+        >>> agent = AdvancedWorkflowAgent(graph_interface, api_key)
         >>> result = agent.answer_question(
         ...     "What genes are linked to Alzheimer's disease?"
         ... )
-        >>> print(result['final_answer'])
+        >>> print(result['answer'])
+        >>> print(f"Query used: {result['cypher_query']}")
+        >>> print(f"Entities found: {result['entities']}")
 
-    Supported Question Categories:
-        - gene_disease: Questions about genes associated with diseases
-        - protein_disease: Questions about proteins linked to diseases
-        - drug_treatment: Questions about drugs that treat diseases
-        - drug_target: Questions about molecular targets of drugs
-        - gene_protein: Questions about genes encoding proteins
-        - pathway: Complex multi-hop relationship queries
+    Key Learning Points:
+        - Same LangGraph workflow as WorkflowAgent
+        - Production patterns: validation, logging, error handling
+        - How to evolve prototypes into production systems
+        - Advanced LangGraph features like conditional routing
     """
 
     def __init__(self, graph_interface: GraphInterface, anthropic_api_key: str):
         """
-        Initialize the Life Science Agent with database connection and AI capabilities.
+        Initialize the Production Workflow Agent with database connection
+        and AI capabilities.
 
         Args:
             graph_interface: An initialized GraphInterface for database operations
             anthropic_api_key: API key for Anthropic Claude services
 
         Note:
-            The agent immediately retrieves schema information from the database
-            and builds its workflow graph. This ensures it understands the available
-            data structure before processing any queries.
+            Like WorkflowAgent, this agent retrieves schema information and builds
+            its LangGraph workflow. The difference is in the enhanced error handling,
+            validation, and production monitoring capabilities.
         """
         self.graph_db = graph_interface
         self.anthropic = Anthropic(api_key=anthropic_api_key)
@@ -487,7 +490,7 @@ class AdvancedAIAgent:
             - error: Error message if something went wrong (None if successful)
 
         Example Usage:
-            >>> agent = AdvancedAIAgent(graph_interface, api_key)
+            >>> agent = AdvancedWorkflowAgent(graph_interface, api_key)
             >>> result = agent.answer_question(
             ...     "What genes are associated with diabetes?"
             ... )

@@ -95,7 +95,7 @@ hdsi_replication_proj_2025/
 ├── src/                      # Source code
 │   ├── agents/                  # AI agent implementations
 │   │   ├── workflow_agent.py        # 🎓 ACTIVE: Full-featured LangGraph agent (used in web app)
-│   │   ├── advanced_ai_agent.py     # 📚 EXAMPLE: Simplified LangGraph agent (learning reference)
+│   │   ├── advanced_workflow_agent.py # 📚 EXAMPLE: Production LangGraph patterns (learning reference)
 │   │   ├── template_query_agent.py  # 📚 EXAMPLE: Template-based agent (learning reference)
 │   │   └── graph_interface.py       # Neo4j database interface
 │   └── web/                     # Streamlit web interface
@@ -149,25 +149,33 @@ hdsi_replication_proj_2025/
 - Run linting: `pdm run lint`
 - Run tests: `pdm run test`
 
-## 🎯 Learning Objectives
+## 🎯 Progressive Learning Architecture
 
-This project teaches you to:
+The project provides **three different agent implementations** to demonstrate various approaches:
 
-1. **Design Knowledge Graphs**
-   - Model domain relationships as nodes and edges
-   - Understand graph vs. relational database trade-offs
+### 🎓 **WorkflowAgent** (Primary - Used in Web App)
+- **Educational LangGraph implementation** optimized for learning
+- **5-step workflow**: Classify → Extract → Generate → Execute → Format
+- **Transparent processing** with detailed comments and print statements
+- **Perfect for understanding** core LangGraph concepts and biomedical AI
 
-2. **Master Cypher Queries**
-   - Write simple to complex graph traversal queries
-   - Optimize for performance and readability
+### 📚 **AdvancedWorkflowAgent** (Reference - Production Patterns)
+- **Production-ready LangGraph** with advanced error handling and monitoring
+- **Same core workflow** as WorkflowAgent but with enterprise features
+- **Demonstrates evolution** from educational prototype to production system
+- **Learn advanced patterns**: conditional routing, query validation, comprehensive logging
 
-3. **Build LangGraph Workflows**
-   - Create multi-step AI reasoning processes
-   - Manage state flow between processing nodes
+### 📚 **TemplateQueryAgent** (Reference - High Performance)
+- **Template-based approach** using pre-written Cypher queries
+- **Lightning fast**: ~200ms vs ~3-5 seconds for AI agents
+- **100% deterministic** results with no AI inference overhead
+- **Perfect for learning** direct graph database query construction
 
-4. **Apply to Biomedical AI**
-   - Understand real-world applications in drug discovery
-   - Build domain-specific AI assistants
+### 🎯 **Learning Progression**
+1. **Start with WorkflowAgent** to understand LangGraph fundamentals
+2. **Study AdvancedWorkflowAgent** to see production engineering patterns  
+3. **Compare with TemplateQueryAgent** to understand performance trade-offs
+4. **Build your own** agents combining the best of all approaches
 
 ## 📖 Learning Resources
 

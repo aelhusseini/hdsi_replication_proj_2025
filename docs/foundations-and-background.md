@@ -622,7 +622,7 @@ User Interface (Streamlit)
 
 #### 🔧 **Code Examples**
 - `workflow_agent.py` - Full-featured LangGraph implementation (used in web app)
-- `advanced_ai_agent.py` - Simplified LangGraph approach (learning reference)
+- `advanced_workflow_agent.py` - Production LangGraph patterns (learning reference)
 - `template_query_agent.py` - Template-based approach (beginner reference)
 
 #### ✅ **Validation**

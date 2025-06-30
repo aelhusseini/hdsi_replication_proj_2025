@@ -20,8 +20,8 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
 ┌─────────────────────────────▼───────────────────────────────────────────┐
 │                         Agent Layer                                     │
 │ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────────────────┐ │
-│ │ WorkflowAgent   │ │AdvancedAIAgent  │ │ TemplateQueryAgent         │ │
-│ │ (Production)    │ │ (Learning)      │ │ (Templates)                │ │
+│ │ WorkflowAgent   │ │AdvancedWorkflow │ │ TemplateQueryAgent         │ │
+│ │ (Educational)   │ │ (Production)    │ │ (Templates)                │ │
 │ └─────────────────┘ └─────────────────┘ └─────────────────────────────┘ │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
@@ -54,9 +54,9 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
 
 #### 2. Agent Types (`src/agents/`)
 
-**AdvancedAIAgent** - Educational LangGraph implementation (learning reference):
+**AdvancedWorkflowAgent** - Production LangGraph implementation (learning reference):
 ```python
-class AdvancedAIAgent:
+class AdvancedWorkflowAgent:
     def __init__(self, graph_interface, anthropic_key):
         self.graph = graph_interface
         self.client = Anthropic(api_key=anthropic_key)
@@ -74,12 +74,13 @@ class AdvancedAIAgent:
         return workflow.compile()
 ```
 
-**WorkflowAgent** - Production LangGraph implementation (used in web app):
+**WorkflowAgent** - Educational LangGraph implementation (used in web app):
 ```python
 class WorkflowAgent:
-    # Full-featured LangGraph implementation
+    # Educational LangGraph implementation
     # Used in the main Streamlit web application
-    # Production-ready with proper error handling
+    # Simplified for learning core concepts
+    # Demonstrates basic workflow patterns
 ```
 
 **TemplateQueryAgent** - Template-based for beginners:
@@ -244,7 +245,7 @@ def generate_cypher_query(state: AgentState) -> AgentState:
 ### Test Coverage
 ```bash
 tests/
-├── test_advanced_ai_agent.py      # 7 tests - Full LangGraph workflow
+├── test_advanced_workflow_agent.py # 7 tests - Production LangGraph workflow
 ├── test_app.py                    # 7 tests - Web interface & NetworkX
 ├── test_graph_interface.py        # 4 tests - Database operations
 ├── test_template_query_agent.py   # 6 tests - Template queries
@@ -389,7 +390,7 @@ def create_custom_visualization(results, viz_type):
 ### Domain-Specific Extensions
 ```python
 # Finance knowledge graphs
-class FinanceAgent(AdvancedAIAgent):
+class FinanceAgent(AdvancedWorkflowAgent):
     def get_finance_schema(self):
         return {
             "nodes": ["Company", "Person", "Transaction"],
@@ -397,7 +398,7 @@ class FinanceAgent(AdvancedAIAgent):
         }
 
 # Social network analysis  
-class SocialAgent(AdvancedAIAgent):
+class SocialAgent(AdvancedWorkflowAgent):
     def get_social_schema(self):
         return {
             "nodes": ["Person", "Group", "Event"],

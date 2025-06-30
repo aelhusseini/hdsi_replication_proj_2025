@@ -1,18 +1,23 @@
 """
-🎓 ACTIVE AGENT: LangGraph Agent for Learning Biomedical Knowledge Graphs
+🎓 ACTIVE AGENT: Educational LangGraph Workflow for Biomedical Knowledge Graphs
 
 ✅ This is the primary agent used in the web application!
 
-This simplified agent is designed specifically for users to learn:
-1. LangGraph workflow concepts
-2. Knowledge graph querying patterns
-3. AI integration with graph databases
+This educational agent demonstrates core LangGraph workflow concepts through
+biomedical AI applications. Users learn by building real AI systems that answer
+biomedical questions using natural language processing and graph databases.
 
-Key Learning Objectives:
-- Understand state flow in LangGraph
-- Learn biomedical relationship patterns
-- See how natural language converts to graph queries
-- Experience multi-step AI reasoning
+Learning Focus:
+1. LangGraph workflow orchestration and state management
+2. Knowledge graph querying with natural language interfaces
+3. Multi-step AI reasoning for complex domain questions
+4. Integration of language models with structured knowledge
+
+Educational Design:
+- Simple, transparent 5-step workflow for clarity
+- Extensive comments and print statements for learning
+- Real biomedical examples with genes, proteins, diseases, drugs
+- Progressive complexity from basic to advanced concepts
 """
 
 import json
@@ -43,15 +48,27 @@ class WorkflowState(TypedDict):
 
 class WorkflowAgent:
     """
-    A simplified LangGraph agent for biomedical knowledge graphs.
+    An educational LangGraph workflow agent for biomedical knowledge graphs.
 
-    This agent demonstrates the core LangGraph pattern:
-    Input → Process → Generate → Execute → Format → Output
+    This agent demonstrates the fundamental LangGraph workflow pattern:
+    Input → Classify → Extract → Generate → Execute → Format → Output
 
-    Perfect for understanding:
-    - How LangGraph manages workflow state
-    - How AI agents break down complex tasks
-    - How knowledge graphs answer domain questions
+    Educational Value:
+    - Learn LangGraph state management through clear examples
+    - Understand multi-step AI reasoning with biomedical applications
+    - See how natural language converts to structured graph queries
+    - Experience real-world AI agent architecture patterns
+
+    Workflow Steps:
+    1. Classify: Determine the type of biomedical question
+    2. Extract: Find specific entities (genes, diseases, drugs)
+    3. Generate: Create appropriate Cypher database queries
+    4. Execute: Run queries against the Neo4j knowledge graph
+    5. Format: Convert results into human-readable responses
+
+    Comparison to Other Agents:
+    - vs AdvancedWorkflowAgent: Same workflow, simpler implementation
+    - vs TemplateQueryAgent: Uses AI vs pre-written templates
     """
 
     def __init__(self, graph_interface: GraphInterface, anthropic_api_key: str):
@@ -66,10 +83,15 @@ class WorkflowAgent:
 
     def _create_workflow(self):
         """
-        Create our LangGraph workflow.
+        Create our LangGraph workflow - the heart of the educational agent.
 
-        This is where we define the steps and how they connect.
-        Think of it as building a flowchart for problem-solving.
+        This method demonstrates core LangGraph concepts:
+        - Building a state graph with connected processing nodes
+        - Defining workflow steps and their relationships
+        - Creating a linear pipeline for educational clarity
+
+        Think of this as building a flowchart where each step processes
+        the shared state and passes it to the next step.
         """
         # Step 1: Create the graph structure
         workflow = StateGraph(WorkflowState)
