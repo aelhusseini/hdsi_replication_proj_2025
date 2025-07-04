@@ -1,0 +1,23 @@
+{
+  "dependencies": [
+    "streamlit>=1.29.0",
+    "langgraph>=0.0.20",
+    "anthropic>=0.18.1",
+    "neo4j>=5.15.0",
+    "pandas>=2.1.4",
+    "numpy>=1.26.2",
+    "plotly>=5.18.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "pydantic>=2.5.3",
+    "networkx>=3.0"
+  ],
+  "graphs": {
+    "workflow_agent": "./langgraph_studio.py:graph"
+  },
+  "env": ".env",
+  "dockerfile_lines": [
+    "RUN apt-get update && apt-get install -y curl build-essential",
+    "RUN pip install --upgrade pip"
+  ]
+}

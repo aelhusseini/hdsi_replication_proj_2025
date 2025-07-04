@@ -26,6 +26,7 @@ An interactive educational project for learning **LangGraph workflows** and **kn
 
 - **Frontend**: Streamlit (interactive web interface)
 - **AI Framework**: LangGraph (workflow orchestration)
+- **Development Tools**: LangGraph Studio (visual debugging and workflow visualization)
 - **Language Model**: Anthropic Claude (natural language processing)
 - **Database**: Neo4j (graph database)
 - **Package Manager**: PDM (modern Python dependency management)
@@ -115,6 +116,8 @@ hdsi_replication_proj_2025/
 │   ├── simple_load_data.py       # Simplified data loader
 │   └── quickstart.py             # Setup verification
 ├── tests/                    # Test suite (27 tests)
+├── langgraph_studio.py       # 🎨 LangGraph Studio integration (visual debugging)
+├── langgraph.json            # 🎨 LangGraph Studio configuration
 ├── CLAUDE.md                 # Claude Code configuration
 ├── pyproject.toml            # PDM configuration and dependencies
 └── .env.example              # Environment variables template
@@ -144,10 +147,34 @@ hdsi_replication_proj_2025/
    pdm run quickstart
    ```
 
+### 🎨 Visual Debugging with LangGraph Studio
+
+**NEW**: Debug and visualize your workflow with LangGraph Studio!
+
+1. **Start LangGraph Studio server**:
+   ```bash
+   pdm run langgraph dev
+   ```
+
+2. **Open Studio interface**:
+   - Automatically opens at: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+   - Or manually navigate to the URL above
+
+3. **Explore visual debugging**:
+   - See your 5-step workflow as a flowchart
+   - Watch data flow through each step in real-time
+   - Test questions interactively: "What diseases are linked to GENE_ALPHA?"
+   - Inspect state changes at each workflow step
+
+**Requirements for Studio**:
+- LangSmith API key (add `LANGSMITH_API_KEY` to your `.env` file)
+- Docker Desktop (for Studio's containerized environment)
+
 ### For Developers
-- Format code: `pdm run format`
-- Run linting: `pdm run lint`
-- Run tests: `pdm run test`
+- **Format code**: `pdm run format`
+- **Run linting**: `pdm run lint`
+- **Run tests**: `pdm run test`
+- **Visual debugging**: `pdm run langgraph dev` (starts Studio server)
 
 ## 🎯 Progressive Learning Architecture
 

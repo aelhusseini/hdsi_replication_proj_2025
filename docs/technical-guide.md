@@ -7,14 +7,18 @@ Complete technical documentation for developers working with Helix Navigator.
 ## 🏗️ System Architecture
 
 ### Overview
-The project uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, and Streamlit interface for interactive learning.
+The project uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, Streamlit interface for interactive learning, and LangGraph Studio for visual debugging.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                      Streamlit Web Interface                            │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────┐  ┌─────────────┐  │
-│  │ Concepts    │  │ Try Agent    │  │ Queries     │  │ Exercises   │  │
-│  └─────────────┘  └──────────────┘  └─────────────┘  └─────────────┘  │
+│                      User Interfaces                                   │
+│                                                                         │
+│ ┌─────────────────────────────────┐ ┌─────────────────────────────────┐ │
+│ │     Streamlit Web Interface     │ │     LangGraph Studio            │ │
+│ │ ┌─────────┐ ┌─────────┐         │ │ ┌─────────┐ ┌─────────┐         │ │
+│ │ │Concepts │ │Try Agent│ ...     │ │ │Visual   │ │Debug    │ ...     │ │
+│ │ └─────────┘ └─────────┘         │ │ │Workflow │ │State    │         │ │
+│ └─────────────────────────────────┘ └─────────────────────────────────┘ │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
 ┌─────────────────────────────▼───────────────────────────────────────────┐
@@ -52,7 +56,34 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
 - **Real-time query execution** and results display
 - **Learning feedback** and step-by-step explanations
 
-#### 2. Agent Types (`src/agents/`)
+#### 2. LangGraph Studio Integration (`langgraph_studio.py`)
+- **Visual workflow debugging** with real-time graph visualization
+- **Factory function** for Studio compatibility: `create_graph()`
+- **Configuration** via `langgraph.json` for dependencies and graph paths
+- **Studio Features**:
+  - 🎨 **Interactive Graph Visualization**: See your 5-step workflow as nodes and edges
+  - 🔍 **Real-time State Inspection**: Monitor state transformations at each step
+  - 📊 **Step-by-step Execution**: Debug complex AI reasoning workflows
+  - 💬 **Direct Testing**: Send biomedical questions directly to the graph
+  - 🧪 **Performance Monitoring**: Track execution times and resource usage
+
+**Studio Architecture Pattern**:
+```python
+def create_graph():
+    # Environment setup with dotenv
+    load_dotenv()
+    
+    # Create database interface
+    graph_interface = GraphInterface(...)
+    
+    # Create educational workflow agent
+    agent = WorkflowAgent(graph_interface, api_key)
+    
+    # Return compiled LangGraph for Studio
+    return agent.workflow
+```
+
+#### 3. Agent Types (`src/agents/`)
 
 **AdvancedWorkflowAgent** - Production LangGraph implementation (learning reference):
 ```python

@@ -45,6 +45,13 @@ neo4j/
 .claude/
 CLAUDE.md
 
+# LangGraph Studio artifacts
+.langraph/
+.langraph_api/
+.langsmith/
+langgraph-*.log
+*.langgraph_cache/
+
 # Project specific
 *.csv.bak
 *.log

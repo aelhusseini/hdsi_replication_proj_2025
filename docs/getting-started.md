@@ -21,6 +21,7 @@ Build real AI systems that combine:
 
 ### Required Accounts
 - **Anthropic API Key** ([Get free credits](https://console.anthropic.com/))
+- **LangSmith API Key** ([Sign up](https://smith.langchain.com/)) - for LangGraph Studio visual debugging
 
 ## ⚙️ Installation
 
@@ -46,6 +47,9 @@ ANTHROPIC_API_KEY=sk-ant-your_api_key_here
 NEO4J_URI=bolt://localhost:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=your_password_here
+
+# LangSmith (for LangGraph Studio visual debugging)
+LANGSMITH_API_KEY=lsv2_pt_your_langsmith_key_here
 ```
 
 ### 3. Start Neo4j Database
@@ -78,12 +82,30 @@ pdm run quickstart
 ```
 
 ### 5. Launch Application
+
+#### Option A: Web Interface (Recommended for Learning)
 ```bash
-# Start web interface
+# Start Streamlit web interface
 pdm run app
 
 # Open browser to http://localhost:8501
 ```
+
+#### Option B: LangGraph Studio (Recommended for Debugging)
+```bash
+# Start LangGraph Studio for visual debugging
+pdm run langgraph dev
+
+# Studio opens automatically at:
+# https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+```
+
+**LangGraph Studio Features:**
+- 🎨 **Visual Workflow**: See your 5-step biomedical workflow as a flowchart
+- 🔍 **Real-time Debugging**: Watch data flow through each step
+- 📊 **State Inspection**: Monitor how information transforms
+- 💬 **Interactive Testing**: Send questions directly to the graph
+- 🧪 **Step-by-step Execution**: Debug complex AI reasoning
 
 ## 🎓 Web Interface
 

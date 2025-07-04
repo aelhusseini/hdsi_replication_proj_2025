@@ -61,7 +61,8 @@ Complete documentation for Helix Navigator - learn LangGraph and knowledge graph
 
 - **Progressive Learning**: From basic concepts to advanced implementations
 - **Real Data**: Work with actual biomedical relationships (genes, proteins, diseases, drugs)
-- **Interactive Experience**: Web interface + Jupyter notebooks + Python exercises
+- **Interactive Experience**: Web interface + Jupyter notebooks + Python exercises + LangGraph Studio visual debugging
+- **Visual Debugging**: LangGraph Studio integration for real-time workflow visualization
 - **Production Patterns**: Learn industry-standard tools and practices
 
 ## 🆘 Getting Help
@@ -82,4 +83,4 @@ This documentation is designed to be:
 
 ---
 
-*Built with Streamlit, LangGraph, Neo4j, and Anthropic Claude*
+*Built with Streamlit, LangGraph, LangGraph Studio, Neo4j, and Anthropic Claude*

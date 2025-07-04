@@ -12,8 +12,9 @@ pdm run generate-data      # Generate expanded biomedical dataset (500 genes, 19
 pdm run load-data          # Load biomedical data into Neo4j
 pdm run quickstart         # Verify system setup
 
-# Launch application
+# Launch applications
 pdm run app                 # Start Streamlit interface (localhost:8501)
+pdm run langgraph dev       # Start LangGraph Studio (visual debugging)
 
 # Development
 pdm run test               # Run all tests (should see 27 passed)
@@ -35,6 +36,32 @@ docker run -p 7474:7474 -p 7687:7687 \
 
 # Access Neo4j Browser: http://localhost:7474
 # Connection: bolt://localhost:7687
+```
+
+### LangGraph Studio
+```bash
+# Start LangGraph Studio server
+pdm run langgraph dev
+
+# Studio Interface URLs
+# - Main Studio: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+# - API Docs: http://127.0.0.1:2024/docs
+# - Health Check: http://127.0.0.1:2024/health
+
+# Studio Features
+# ✅ Visual workflow graph with 5 steps: classify → extract → generate → execute → format
+# ✅ Real-time state inspection and debugging
+# ✅ Interactive testing with biomedical questions
+# ✅ Step-by-step execution tracing
+# ✅ Performance monitoring and logging
+```
+
+**Studio Test Questions:**
+```
+"What diseases are linked to GENE_ALPHA?"
+"What drugs treat diabetes?"
+"How do proteins interact with diseases?"
+"Find genes that encode proteins associated with cancer"
 ```
 
 ## 🧬 Sample Cypher Queries
