@@ -373,6 +373,7 @@ class AdvancedWorkflowAgent:
         5. Limit results to 20 for performance"""
 
         response = self.anthropic.messages.create(
+            #  please use  model="claude-4-sonnet-20250514" in case the old model doesn't work.
             model="claude-3-sonnet-20240229",
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],

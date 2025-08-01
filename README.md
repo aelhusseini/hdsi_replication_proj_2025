@@ -176,6 +176,44 @@ hdsi_replication_proj_2025/
 - **Run tests**: `pdm run test`
 - **Visual debugging**: `pdm run langgraph dev` (starts Studio server)
 
+
+## Accessing the Database with Neo4j Desktop
+
+Once you have completed the setup instructions above, you can explore and query the knowledge graph directly using Neo4j Desktop.
+
+### Opening Neo4j Desktop and Connecting to Your Database
+- 1.  Open Neo4j Desktop application
+
+- 2. Connect to your database:
+
+   - You should see hdsi_replication_proj in your project list
+   - Click the "Connect" button next to your database
+   - The database state will change to "Running"
+
+- 3. Access the database tools:
+
+   - On the left sidebar, you'll see "Tools"
+   - Under Tools, you'll find two options:
+   - Query - for writing and executing Cypher queries
+   - Explore - for visual graph exploration
+
+### Using the Query Tool
+   - Click on "Query" under Tools
+   - Write your Cypher query in the query editor
+   - Click "Run" to execute the query
+   - Results will appear below the query editor
+
+### Using the Explore Tool
+   - Click on "Explore" under Tools
+   - Visual graph exploration interface will open
+You can:
+   - Browse nodes by clicking on them
+   - See relationships visually
+   - Filter by node types and properties
+   - Expand connected nodes by double-clicking
+
+The Explore tool provides an intuitive way to navigate your biomedical knowledge graph without writing queries, perfect for understanding the data structure and discovering relationships between genes, proteins, diseases, and drugs.
+
 ## 🎯 Progressive Learning Architecture
 
 The project provides **three different agent implementations** to demonstrate various approaches:
