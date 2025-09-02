@@ -137,7 +137,7 @@ class WorkflowAgent:
 
         # Ask Claude to classify the question
         response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",  # Please use  model="claude-4-sonnet-20250514" in case the old model does not work.
+            model="claude-sonnet-4-20250514",
             max_tokens=20,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -175,8 +175,7 @@ class WorkflowAgent:
         """
 
         response = self.anthropic.messages.create(
-            # Please use  model="claude-4-sonnet-20250514" in case the old model does not work.
-            model="claude-3-haiku-20240307", 
+            model="claude-sonnet-4-20250514",
             max_tokens=100,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -237,7 +236,7 @@ class WorkflowAgent:
         """
 
         response = self.anthropic.messages.create(
-            model="claude-3-sonnet-20240229",  # Please use  model="claude-4-sonnet-20250514" in case the old model does not work.
+            model="claude-sonnet-4-20250514",
             max_tokens=200,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -323,8 +322,7 @@ class WorkflowAgent:
         """
 
         response = self.anthropic.messages.create(
-            # Please use  model="claude-4-sonnet-20250514" in case the old model does not work.
-            model="claude-3-haiku-20240307",
+            model="claude-sonnet-4-20250514",
             max_tokens=300,
             messages=[{"role": "user", "content": prompt}],
         )

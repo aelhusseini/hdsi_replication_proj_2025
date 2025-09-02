@@ -2,7 +2,7 @@
 
 *A comprehensive guide for users with zero prior knowledge to understand and appreciate this biomedical AI knowledge graph project*
 
-## 📖 Table of Contents
+## Table of Contents
 
 1. [What This Document Covers](#what-this-document-covers)
 2. [The Big Picture: Why This Project Matters](#the-big-picture-why-this-project-matters)
@@ -38,10 +38,10 @@ Imagine you're a researcher trying to understand a rare disease. You need to kno
 - What side effects those drugs might have
 
 This information is scattered across:
-- 📚 **Thousands of research papers**
-- 🗄️ **Dozens of different databases**
-- 🧬 **Multiple biological knowledge systems**
-- 💊 **Various drug databases**
+- Thousands of research papers
+- Dozens of different databases  
+- Multiple biological knowledge systems
+- Various drug databases
 
 ### The Solution: Intelligent Knowledge Integration
 

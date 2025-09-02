@@ -1,227 +1,141 @@
-# 🚀 Getting Started
+# Getting Started
 
-Complete guide to setting up and using Helix Navigator.
+Complete setup guide for Helix Navigator.
 
-**🆕 New to AI, knowledge graphs, or biomedical concepts?** Start with our [Foundations and Background Guide](foundations-and-background.md) - a comprehensive resource designed for complete beginners to understand the technologies and concepts used in this project.
+**New to these concepts?** Start with the [Foundations Guide](foundations-and-background.md) for essential background.
 
-## 🎯 What You'll Learn
+## What You'll Build
 
-Build real AI systems that combine:
-- **Knowledge Graphs** with biomedical data (genes, proteins, diseases, drugs)
-- **LangGraph Workflows** for AI agent state management
-- **Cypher Queries** for graph database interactions
-- **Biomedical AI Applications** for healthcare and research
+AI systems that combine:
+- Knowledge graphs with biomedical data
+- LangGraph workflows for AI agent state management
+- Cypher queries for graph database interactions
+- Biomedical AI applications for healthcare research
 
-## 📋 Prerequisites
+## Prerequisites
 
-### Required Software
-- **Python 3.10+** ([Download](https://python.org))
-- **Neo4j Desktop** ([Download](https://neo4j.com/download/)) OR Docker
-- **Git** for cloning the repository
+**Software**:
+- Python 3.10+
+- Neo4j Desktop or Docker
+- Git
 
-### Required Accounts
-- **Anthropic API Key** ([Get free credits](https://console.anthropic.com/))
-- **LangSmith API Key** ([Sign up](https://smith.langchain.com/)) - for LangGraph Studio visual debugging
+**API Keys**:
+- Anthropic API key (get free credits at console.anthropic.com)
+- LangSmith API key (optional, for LangGraph Studio debugging)
 
-## ⚙️ Installation
+## Installation
 
-### 1. Clone and Setup
+### 1. Setup Project
 ```bash
 git clone <repository-url>
 cd hdsi_replication_proj_2025
-
-# Install dependencies
 pdm install
-
-# Copy environment template
 cp .env.example .env
 ```
 
 ### 2. Configure Environment
-Edit `.env` file:
+Edit `.env` with your API keys:
 ```bash
-# Anthropic API (get free credits at console.anthropic.com)
-ANTHROPIC_API_KEY=sk-ant-your_api_key_here
-
-# Neo4j Database (local)
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=your_password_here
-
-# LangSmith (for LangGraph Studio visual debugging)
-LANGSMITH_API_KEY=lsv2_pt_your_langsmith_key_here
+ANTHROPIC_API_KEY=sk-ant-your_key_here
+NEO4J_PASSWORD=your_password
+LANGSMITH_API_KEY=lsv2_pt_your_key_here  # Optional
 ```
 
-### 3. Start Neo4j Database
+### 3. Start Database
 
-**Option A: Neo4j Desktop (Recommended)**
+**Neo4j Desktop** (recommended):
 1. Install Neo4j Desktop
-2. Create new project → Add local DBMS
-3. Set password (use same as `.env` file)
-4. Start the database
+2. Create project → Add local DBMS  
+3. Set password (same as .env)
+4. Start database
 
-**Option B: Docker**
+**Docker alternative**:
 ```bash
-docker run \
-    --name neo4j-learning \
-    -p 7474:7474 -p 7687:7687 \
-    -e NEO4J_AUTH=neo4j/your_password \
-    neo4j:latest
+docker run --name neo4j-learning -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/your_password neo4j:latest
 ```
 
-### 4. Generate and Load Sample Data
+### 4. Load Data
 ```bash
-# Generate expanded biomedical dataset (500 genes, 191 diseases, 350 drugs)
-pdm run generate-data
-
-# Load biomedical dataset into Neo4j
-pdm run load-data
-
-# Verify setup
-pdm run quickstart
+pdm run generate-data    # Generate biomedical dataset
+pdm run load-data        # Load into Neo4j
+pdm run quickstart       # Verify setup
 ```
 
-### 5. Launch Application
+### 5. Start Application
 
-#### Option A: Web Interface (Recommended for Learning)
+**Web Interface** (learning):
 ```bash
-# Start Streamlit web interface
-pdm run app
-
-# Open browser to http://localhost:8501
+pdm run app              # http://localhost:8501
 ```
 
-#### Option B: LangGraph Studio (Recommended for Debugging)
+**LangGraph Studio** (debugging):
 ```bash
-# Start LangGraph Studio for visual debugging
-pdm run langgraph dev
-
-# Studio opens automatically at:
-# https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+pdm run langgraph dev    # Visual workflow debugging
 ```
 
-**LangGraph Studio Features:**
-- 🎨 **Visual Workflow**: See your 5-step biomedical workflow as a flowchart
-- 🔍 **Real-time Debugging**: Watch data flow through each step
-- 📊 **State Inspection**: Monitor how information transforms
-- 💬 **Interactive Testing**: Send questions directly to the graph
-- 🧪 **Step-by-step Execution**: Debug complex AI reasoning
+## Web Interface
 
-## 🎓 Web Interface
+Four learning tabs:
 
-### Main Learning Tabs
+**Concepts** - Knowledge graph and LangGraph fundamentals  
+**Try the Agent** - Interactive AI demos with step-by-step processing  
+**Explore Queries** - Practice Cypher with examples and visualizations  
+**Exercises** - Progressive challenges from basic to advanced  
 
-**📚 Concepts** - Learn fundamentals:
-- Knowledge graph basics
-- LangGraph workflow steps
-- Cypher query syntax
-- Biomedical applications
+## Sample Data
 
-**🧪 Try the Agent** - Interactive demos:
-- Ask questions and see step-by-step processing
-- View generated Cypher queries
-- Understand LangGraph state management
-- See real biomedical AI in action
+Synthetic biomedical dataset:
+- **500 genes** (TP53, BRCA1, KRAS, etc.)
+- **661 proteins** with molecular properties
+- **191 diseases** across 15 medical categories  
+- **350 drugs** (small molecules, biologics)
+- **3,200+ relationships**
 
-**🔍 Explore Queries** - Practice Cypher:
-- Pre-built query examples
-- Write custom queries
-- Immediate results and feedback
-- Network visualizations
+**Key relationships**: Gene→Protein, Protein→Disease, Drug→Disease, Drug→Protein
 
-**🏋️ Exercises** - Progressive challenges:
-- Level 1: Basic node and relationship queries
-- Level 2: Pattern matching and filtering
-- Level 3: Complex multi-hop relationships
-- Level 4: Advanced pathway analysis
+## Learning Path
 
-## 🧬 Sample Data Overview
+**Foundation**: Read concepts → Complete setup → Try web interface → Basic exercises  
+**Intermediate**: Work through tutorial notebook → Complete exercises Level 2-3 → Study architecture  
+**Advanced**: Master Level 4 exercises → Review technical guide → Build custom applications
 
-Our comprehensive synthetic dataset includes:
-- **500 Genes**: Real gene families (TP53, BRCA1/2, KRAS, PIK3, EGFR, etc.) + synthetic genes
-- **661 Proteins**: Encoded proteins with realistic molecular weights and structures  
-- **191 Diseases**: Across 15 medical categories (cardiovascular, oncology, neurological, psychiatric, metabolic, autoimmune, respiratory, infectious, genetic, pediatric, geriatric, etc.)
-- **350 Drugs**: Multiple drug classes (small molecules, biologics, gene therapies) with real drug names
-- **3,200+ Relationships**: Complex biomedical networks and pathways
-
-**Relationships**:
-```
-Gene --[ENCODES]--> Protein
-Gene --[LINKED_TO]--> Disease
-Protein --[ASSOCIATED_WITH]--> Disease
-Drug --[TREATS]--> Disease
-Drug --[TARGETS]--> Protein
-```
-
-## 🎯 Learning Path
-
-### Foundation Level
-1. **Read background materials**: Review [foundations-and-background.md](foundations-and-background.md) if new to these concepts
-2. Complete setup and data loading
-3. Explore **Concepts** tab thoroughly
-4. Try example questions in **Try the Agent**
-5. Practice basic queries in **Explore Queries**
-
-### Intermediate Level
-1. Work through **Exercises** Level 1-2
-2. Study the generated Cypher queries
-3. Open [langgraph-tutorial.ipynb](tutorials/langgraph-tutorial.ipynb)
-4. Practice with [practice-exercises.py](exercises/practice-exercises.py)
-
-### Advanced Level
-1. Complete **Exercises** Level 3-4
-2. Study [technical-guide.md](technical-guide.md)
-3. Build custom agents using the patterns
-4. Present using the demo script in [reference.md](reference.md)
-
-## 🔧 Development Commands
+## Development Commands
 
 ```bash
-# Run all tests (should see 27 passed)
-pdm run test
-
-# Code formatting and linting
-pdm run format && pdm run lint
-
-# Load larger dataset (advanced)
-python scripts/load_data.py
-
-# Quick system check
-pdm run quickstart
+pdm run test            # Run all tests (27 tests)
+pdm run format          # Format code
+pdm run lint            # Check code quality
+pdm run quickstart      # System diagnostics
 ```
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
-### "Neo4j Connection Failed"
-1. Verify Neo4j is running (check Neo4j Desktop)
-2. Check password in `.env` matches database
-3. Try: `pdm run quickstart` for diagnostics
+**Neo4j Connection Failed**:
+- Verify Neo4j is running
+- Check password in .env matches database  
+- Run `pdm run quickstart` for diagnostics
 
-### "No Results Found"
-1. Ensure data is loaded: `pdm run generate-data && pdm run load-data`
-2. Use entity names from expanded dataset: `TP53`, `BRCA1`, `Type2_Diabetes`, `Atorvastatin`
-3. Start with simpler queries in the Explore Queries tab
+**No Results Found**:
+- Ensure data loaded: `pdm run load-data`
+- Use real entity names: TP53, BRCA1, Hypertension, Lisinopril
+- Start with simpler queries
 
-### "API Key Not Working"
-1. Check `.env` has correct `ANTHROPIC_API_KEY`
-2. Ensure key starts with `sk-ant-`
-3. Visit [console.anthropic.com](https://console.anthropic.com/) for credits
+**API Key Issues**:
+- Check ANTHROPIC_API_KEY in .env starts with sk-ant-
+- Get free credits at console.anthropic.com
 
-### "Import Errors"
-1. Run from project root directory
-2. Reinstall: `pdm install`
-3. Check Python version: `python --version` (needs 3.10+)
+**Import Errors**:
+- Run from project root
+- Reinstall: `pdm install`  
+- Check Python version (needs 3.10+)
 
-## 🎉 What's Next?
+## Next Steps
 
-Once you have the application running:
-1. **Explore freely** - Click around and experiment
-2. **Ask questions** - Try your own biomedical queries
-3. **Study patterns** - Look at the generated Cypher queries
-4. **Master the application** - Understand all features and capabilities thoroughly
+Once running: Explore the web interface → Ask questions → Study generated queries → Master all features
 
-The project is designed for hands-on learning - the best way to understand knowledge graphs and LangGraph is to use them!
+*The best way to learn is by doing - experiment with the interactive tools!*
 
 ---
 
-*Need help? Check [foundations-and-background.md](foundations-and-background.md) for complete background, [reference.md](reference.md) for quick syntax help, or [technical-guide.md](technical-guide.md) for implementation details.*
+*For help: [Foundations Guide](foundations-and-background.md) | [Reference](reference.md) | [Technical Guide](technical-guide.md)*

@@ -249,7 +249,7 @@ class AdvancedWorkflowAgent:
         Respond with just the category name."""
 
         response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",
+            model="claude-sonnet-4-20250514",
             max_tokens=50,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -306,7 +306,7 @@ class AdvancedWorkflowAgent:
         If no entities found, return: []"""
 
         response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",
+            model="claude-sonnet-4-20250514",
             max_tokens=200,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -373,8 +373,7 @@ class AdvancedWorkflowAgent:
         5. Limit results to 20 for performance"""
 
         response = self.anthropic.messages.create(
-            #  please use  model="claude-4-sonnet-20250514" in case the old model doesn't work.
-            model="claude-3-sonnet-20240229",
+            model="claude-sonnet-4-20250514",
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -435,7 +434,7 @@ class AdvancedWorkflowAgent:
         If there are many results, summarize the key findings."""
 
         response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",
+            model="claude-sonnet-4-20250514",
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )

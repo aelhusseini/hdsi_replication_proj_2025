@@ -1,10 +1,10 @@
-# 🔧 Technical Guide
+# Technical Guide
 
 Complete technical documentation for developers working with Helix Navigator.
 
-**📖 Prerequisites**: This guide assumes familiarity with the concepts covered in [foundations-and-background.md](foundations-and-background.md). If you're new to AI, knowledge graphs, or the biomedical domain, please read that guide first for essential background knowledge.
+**Prerequisites**: This guide assumes familiarity with concepts covered in [foundations-and-background.md](foundations-and-background.md).
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Overview
 The project uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, Streamlit interface for interactive learning, and LangGraph Studio for visual debugging.
@@ -57,15 +57,10 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
 - **Learning feedback** and step-by-step explanations
 
 #### 2. LangGraph Studio Integration (`langgraph_studio.py`)
-- **Visual workflow debugging** with real-time graph visualization
-- **Factory function** for Studio compatibility: `create_graph()`
-- **Configuration** via `langgraph.json` for dependencies and graph paths
-- **Studio Features**:
-  - 🎨 **Interactive Graph Visualization**: See your 5-step workflow as nodes and edges
-  - 🔍 **Real-time State Inspection**: Monitor state transformations at each step
-  - 📊 **Step-by-step Execution**: Debug complex AI reasoning workflows
-  - 💬 **Direct Testing**: Send biomedical questions directly to the graph
-  - 🧪 **Performance Monitoring**: Track execution times and resource usage
+- Visual workflow debugging with real-time graph visualization
+- Factory function for Studio compatibility: `create_graph()`
+- Configuration via `langgraph.json` for dependencies and graph paths
+- **Features**: Interactive visualization, state inspection, step-by-step execution, direct testing, performance monitoring
 
 **Studio Architecture Pattern**:
 ```python
@@ -221,7 +216,7 @@ def classify_question(state: AgentState) -> AgentState:
     """
     
     response = self.client.messages.create(
-        model="claude-3-haiku-20240307",
+        model="claude-sonnet-4-20250514",
         messages=[{"role": "user", "content": prompt}]
     )
     

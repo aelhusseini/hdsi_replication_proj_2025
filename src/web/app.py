@@ -40,7 +40,7 @@ load_dotenv()
 # Page configuration
 st.set_page_config(
     page_title="Helix Navigator",
-    page_icon="🧬",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -315,7 +315,7 @@ def display_learning_workflow_steps():
     """Display information about the LangGraph workflow steps."""
     st.markdown(
         """
-    ### 🎓 Understanding the LangGraph Workflow
+    ### Understanding the LangGraph Workflow
 
     Our agent follows these steps to answer your questions:
     """
@@ -323,24 +323,24 @@ def display_learning_workflow_steps():
 
     steps = [
         (
-            "1️⃣ **Classify**",
+            "**1. Classify**",
             "Determine what type of biomedical question this is "
             "(gene-disease, drug-treatment, etc.)",
         ),
         (
-            "2️⃣ **Extract**",
+            "**2. Extract**",
             "Find important biomedical terms like gene names, diseases, and drugs",
         ),
-        ("3️⃣ **Generate**", "Create a Cypher database query to find the answer"),
-        ("4️⃣ **Execute**", "Run the query against our knowledge graph"),
-        ("5️⃣ **Format**", "Convert results into a human-readable answer"),
+        ("**3. Generate**", "Create a Cypher database query to find the answer"),
+        ("**4. Execute**", "Run the query against our knowledge graph"),
+        ("**5. Format**", "Convert results into a human-readable answer"),
     ]
 
     for step_name, description in steps:
         st.markdown(f"{step_name}: {description}")
 
     st.info(
-        "💡 **Key Learning Point**: Each step reads the current state, "
+        "**Key Learning Point**: Each step reads the current state, "
         "does its work, and updates the state for the next step. "
         "This is the core concept of LangGraph!"
     )
@@ -350,17 +350,16 @@ def display_knowledge_graph_concepts():
     """Display information about knowledge graphs."""
     st.markdown(
         """
-    ### 🕸️ Knowledge Graph Fundamentals
+    ### Knowledge Graph Fundamentals
 
     **What is a Knowledge Graph?**
-    A knowledge graph represents information as nodes (entities) and relationships
-    (edges).
+    A knowledge graph represents information as nodes (entities) and relationships (edges).
 
     **Our Biomedical Graph:**
-    - 🧬 **Genes**: Genetic sequences (e.g., GENE_ALPHA)
-    - 🧪 **Proteins**: Encoded by genes (e.g., PROT_BETA)
-    - 🏥 **Diseases**: Medical conditions (e.g., diabetes)
-    - 💊 **Drugs**: Medications (e.g., AlphaCure)
+    - **Genes**: Genetic sequences (e.g., TP53, BRCA1)
+    - **Proteins**: Encoded by genes (e.g., TP53_protein)
+    - **Diseases**: Medical conditions (e.g., diabetes, hypertension)
+    - **Drugs**: Medications (e.g., Lisinopril, Metformin)
 
     **Relationships:**
     - Gene `--[ENCODES]-->` Protein
@@ -379,7 +378,7 @@ def main_interface(workflow_agent, graph_interface):
     st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
     
     tab1, tab2, tab3, tab4 = st.tabs(
-        ["📚 Concepts", "🧪 Try the Agent", "🔍 Explore Queries", "🏋️ Exercises"]
+        ["Concepts", "Try the Agent", "Explore Queries", "Exercises"]
     )
 
     with tab1:
@@ -389,7 +388,7 @@ def main_interface(workflow_agent, graph_interface):
                         padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
                         border: 1px solid #93c5fd;">
                 <h2 style="margin: 0 0 0.5rem 0; color: #1e40af; text-align: center;">
-                    📚 Learn the Fundamentals
+                    Learn the Fundamentals
                 </h2>
                 <p style="margin: 0; text-align: center; color: #3730a3;">
                     Master the core concepts behind knowledge graphs and AI workflows
@@ -400,7 +399,7 @@ def main_interface(workflow_agent, graph_interface):
         )
 
         concept_choice = st.selectbox(
-            "🎯 Choose a concept to explore:",
+            "Choose a concept to explore:",
             [
                 "Knowledge Graphs",
                 "LangGraph Workflows", 
@@ -423,10 +422,9 @@ def main_interface(workflow_agent, graph_interface):
         elif concept_choice == "Cypher Queries":
             st.markdown(
                 """
-            ### 🔧 Cypher Query Language
+            ### Cypher Query Language
 
-            Cypher is Neo4j's query language for graphs. Think of it like SQL for
-            graphs!
+            Cypher is Neo4j's query language for graphs. Think of it like SQL for graphs!
 
             **Basic Pattern:**
             ```cypher
@@ -455,7 +453,7 @@ def main_interface(workflow_agent, graph_interface):
         elif concept_choice == "Biomedical Applications":
             st.markdown(
                 """
-            ### 🧬 Real-World Applications
+            ### Real-World Applications
 
             **Drug Discovery:**
             - Find new drug targets
@@ -481,7 +479,7 @@ def main_interface(workflow_agent, graph_interface):
                         padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
                         border: 1px solid #86efac;">
                 <h2 style="margin: 0 0 0.5rem 0; color: #15803d; text-align: center;">
-                    🧪 Try the Workflow Agent
+                    Try the Workflow Agent
                 </h2>
                 <p style="margin: 0; text-align: center; color: #166534;">
                     Ask questions and see how our LangGraph workflow processes them step by step
@@ -509,33 +507,33 @@ def main_interface(workflow_agent, graph_interface):
             placeholder="Ask about genes, proteins, diseases, or drugs...",
         )
 
-        if st.button("🚀 Run Workflow Agent", type="primary"):
+        if st.button("Run Workflow Agent", type="primary"):
             if question_input:
                 with st.spinner("Running agent workflow..."):
                     result = workflow_agent.answer_question(question_input)
 
-                st.success("✅ Workflow Complete!")
+                st.success("Workflow Complete!")
 
                 # Display detailed results for learning
                 col1, col2 = st.columns(2)
 
                 with col1:
-                    st.subheader("📊 Workflow Results")
+                    st.subheader("Workflow Results")
                     st.write(f"**Question Type:** {result['question_type']}")
                     st.write(f"**Entities Found:** {result['entities']}")
                     st.write(f"**Results Count:** {result['results_count']}")
 
                 with col2:
-                    st.subheader("🔧 Generated Query")
+                    st.subheader("Generated Query")
                     if result["cypher_query"]:
                         st.code(result["cypher_query"], language="cypher")
 
-                st.subheader("💬 Final Answer")
+                st.subheader("Final Answer")
                 st.info(result["answer"])
 
                 # Show some raw results for learning
                 if result.get("raw_results"):
-                    with st.expander("🔍 View Raw Database Results (First 3)"):
+                    with st.expander("View Raw Database Results (First 3)"):
                         st.json(result["raw_results"])
             else:
                 st.warning("Please enter a question!")
@@ -547,7 +545,7 @@ def main_interface(workflow_agent, graph_interface):
                         padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
                         border: 1px solid #fcd34d;">
                 <h2 style="margin: 0 0 0.5rem 0; color: #d97706; text-align: center;">
-                    🔍 Explore Database Queries
+                    Explore Database Queries
                 </h2>
                 <p style="margin: 0; text-align: center; color: #92400e;">
                     Try writing your own Cypher queries and see the results instantly
@@ -583,14 +581,14 @@ def main_interface(workflow_agent, graph_interface):
             help="Write your Cypher query here",
         )
 
-        if st.button("▶️ Execute Query"):
+        if st.button("Execute Query"):
             if query_text.strip():
                 try:
                     with st.spinner("Executing query..."):
                         results = graph_interface.execute_query(query_text)
 
                     st.success(
-                        f"✅ Query executed successfully! Found {len(results)} results."
+                        f"Query executed successfully! Found {len(results)} results."
                     )
 
                     if results:
@@ -606,8 +604,8 @@ def main_interface(workflow_agent, graph_interface):
                         st.info("No results found.")
 
                 except Exception as e:
-                    st.error(f"❌ Query error: {str(e)}")
-                    st.info("💡 Try checking your syntax or using simpler patterns!")
+                    st.error(f"Query error: {str(e)}")
+                    st.info("Try checking your syntax or using simpler patterns!")
             else:
                 st.warning("Please enter a query!")
 
@@ -618,7 +616,7 @@ def main_interface(workflow_agent, graph_interface):
                         padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
                         border: 1px solid #f9a8d4;">
                 <h2 style="margin: 0 0 0.5rem 0; color: #be185d; text-align: center;">
-                    🏋️ Learning Exercises
+                    Learning Exercises
                 </h2>
                 <p style="margin: 0; text-align: center; color: #9d174d;">
                     Practice your skills with progressively challenging exercises
@@ -640,7 +638,7 @@ def main_interface(workflow_agent, graph_interface):
         if exercise_choice == "Exercise 1: Basic Queries":
             st.markdown(
                 """
-            ### 🎯 Exercise 1: Write Basic Queries
+            ### Exercise 1: Write Basic Queries
 
             **Your Task:** Write Cypher queries for these questions:
 
@@ -657,14 +655,14 @@ def main_interface(workflow_agent, graph_interface):
 
             if st.button("Check Answer 1"):
                 if "MATCH (d:Disease) RETURN" in exercise1_query:
-                    st.success("✅ Great! You're using the correct pattern!")
+                    st.success("Great! You're using the correct pattern!")
                 else:
-                    st.info("💡 Hint: Use MATCH (d:Disease) RETURN d.disease_name")
+                    st.info("Hint: Use MATCH (d:Disease) RETURN d.disease_name")
 
         elif exercise_choice == "Exercise 2: Relationship Patterns":
             st.markdown(
                 """
-            ### 🎯 Exercise 2: Understand Relationships
+            ### Exercise 2: Understand Relationships
 
             **Your Task:** Write queries to find:
 
@@ -682,19 +680,19 @@ def main_interface(workflow_agent, graph_interface):
                 if exercise2_query.strip():
                     try:
                         results = graph_interface.execute_query(exercise2_query)
-                        st.success(f"✅ Query works! Found {len(results)} results.")
+                        st.success(f"Query works! Found {len(results)} results.")
                         if results:
                             st.dataframe(pd.DataFrame(results[:5]))
                     except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
+                        st.error(f"Error: {str(e)}")
                         st.info(
-                            "💡 Check your relationship syntax: -[:RELATIONSHIP_NAME]->"
+                            "Check your relationship syntax: -[:RELATIONSHIP_NAME]->"
                         )
 
         elif exercise_choice == "Exercise 3: Complex Pathways":
             st.markdown(
                 """
-            ### 🎯 Exercise 3: Complex Pathway Analysis
+            ### Exercise 3: Complex Pathway Analysis
 
             **Your Task:** Find all complete pathways from genes to treatments:
             `Gene → Protein → Disease ← Drug`
@@ -716,7 +714,7 @@ def main_interface(workflow_agent, graph_interface):
                     try:
                         results = graph_interface.execute_query(exercise3_query)
                         st.success(
-                            f"🎉 Advanced query successful! "
+                            f"Advanced query successful! "
                             f"Found {len(results)} complete pathways."
                         )
                         if results:
@@ -724,9 +722,9 @@ def main_interface(workflow_agent, graph_interface):
                             # Celebration for completing advanced exercise!
                             st.balloons()
                     except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
+                        st.error(f"Error: {str(e)}")
                         st.info(
-                            "💡 Complex queries need careful relationship chaining. "
+                            "Complex queries need careful relationship chaining. "
                             "Check each step!"
                         )
 
@@ -740,7 +738,7 @@ def main():
         """
         <div style="text-align: center; margin-bottom: 2rem;">
             <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #1f2937;">
-                🧬 Helix Navigator
+                Helix Navigator
             </h1>
             <p style="font-size: 1.2rem; color: #6b7280; margin-top: 0;">
                 Learn LangGraph and Knowledge Graphs through biomedical AI applications
@@ -758,7 +756,7 @@ def main():
                         padding: 1.5rem; margin: -1rem -1rem 1.5rem -1rem; 
                         border-radius: 0 0 12px 12px;">
                 <h3 style="color: white; margin: 0; text-align: center;">
-                    📚 Learning Resources
+                    Learning Resources
                 </h3>
             </div>
             """,
@@ -770,7 +768,7 @@ def main():
             <div style="background: white; padding: 1.5rem; border-radius: 12px; 
                         border: 1px solid #e5e7eb; margin-bottom: 1rem;">
                 <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
-                    📚 <strong>Tutorial Notebook</strong>
+                    <strong>Tutorial Notebook</strong>
                 </p>
                 <p style="margin: 0; font-size: 0.9rem; color: #6b7280;">
                     Check out <code>docs/tutorials/langgraph-tutorial.ipynb</code>
@@ -780,7 +778,7 @@ def main():
             <div style="background: white; padding: 1.5rem; border-radius: 12px; 
                         border: 1px solid #e5e7eb;">
                 <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
-                    🎯 <strong>Learning Goals</strong>
+                    <strong>Learning Goals</strong>
                 </p>
                 <ul style="margin: 0; padding-left: 1.2rem; color: #6b7280; font-size: 0.9rem;">
                     <li>Understand knowledge graphs</li>
@@ -794,7 +792,7 @@ def main():
         )
 
         # Display schema info with improved styling
-        if st.checkbox("🔍 Show Database Schema"):
+        if st.checkbox("Show Database Schema"):
             schema = graph_interface.get_schema_info()
             
             st.markdown(
@@ -805,10 +803,10 @@ def main():
                 unsafe_allow_html=True,
             )
             
-            st.markdown("**🏷️ Node Types**")
+            st.markdown("**Node Types**")
             st.json(schema["node_labels"])
             
-            st.markdown("**🔗 Relationship Types**")
+            st.markdown("**Relationship Types**")
             st.json(schema["relationship_types"])
             
             st.markdown("</div>", unsafe_allow_html=True)
@@ -822,7 +820,7 @@ def main():
         <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
                     border-radius: 12px; text-align: center; border: 1px solid #e5e7eb;">
             <p style="margin: 0; color: #64748b; font-size: 0.9rem; font-weight: 500;">
-                🚀 Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, 
+                Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, 
                 <strong>Neo4j</strong>, and <strong>Anthropic Claude</strong>
             </p>
         </div>
