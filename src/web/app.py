@@ -2,7 +2,7 @@
 Interactive Learning Web Application for LangGraph and Knowledge Graphs
 
 This Streamlit application provides an educational interface for learning:
-- LangGraph workflow concepts through biomedical AI applications  
+- LangGraph workflow concepts through biomedical AI applications
 - Knowledge graph fundamentals with real biomedical data
 - Cypher query construction and optimization
 - AI integration patterns with graph databases
@@ -42,173 +42,34 @@ st.set_page_config(
     page_title="Helix Navigator",
     page_icon="🔬",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
-# Custom CSS for crisp, modern UI
 st.markdown(
     """
 <style>
-    /* Global styling */
     .main {
-        padding-top: 1rem;
         max-width: 1200px;
         margin: 0 auto;
     }
     
-    /* Typography improvements */
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-        font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 1rem;
-    }
-    
-    .stMarkdown h1 {
-        font-size: 2.5rem;
-        border-bottom: 3px solid #3b82f6;
-        padding-bottom: 0.5rem;
-    }
-    
-    .stMarkdown h2 {
-        font-size: 1.75rem;
-        color: #374151;
-    }
-    
-    .stMarkdown h3 {
-        font-size: 1.25rem;
-        color: #4b5563;
-    }
-    
-    /* Button styling */
     .stButton > button {
         width: 100%;
         border-radius: 8px;
-        border: none;
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         color: white;
         font-weight: 500;
-        padding: 0.75rem 1.5rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-    }
-    
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        border-bottom: 2px solid #e5e7eb;
+        border: none;
     }
     
     .stTabs [data-baseweb="tab"] {
-        background-color: #f9fafb;
         border-radius: 8px 8px 0 0;
-        border: 1px solid #e5e7eb;
-        border-bottom: none;
-        padding: 0.75rem 1.5rem;
         font-weight: 500;
-        color: #6b7280;
     }
     
-    .stTabs [aria-selected="true"] {
-        background-color: white;
-        color: #3b82f6;
-        border-color: #3b82f6;
-    }
-    
-    /* Card-like containers */
-    .query-result, .stExpander {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Selectbox styling */
-    .stSelectbox > div > div {
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
-    }
-    
-    /* Text input styling */
-    .stTextInput > div > div {
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
-    }
-    
-    .stTextArea > div > div {
-        border-radius: 8px;
-        border: 1px solid #d1d5db;
-    }
-    
-    /* Info/Success/Warning boxes */
-    .stInfo {
-        background-color: #eff6ff;
-        border: 1px solid #3b82f6;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    .stSuccess {
-        background-color: #f0fdf4;
-        border: 1px solid #22c55e;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    .stWarning {
-        background-color: #fffbeb;
-        border: 1px solid #f59e0b;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    .stError {
-        background-color: #fef2f2;
-        border: 1px solid #ef4444;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    /* Sidebar styling */
-    .css-1d391kg {
-        background-color: #f8fafc;
-        border-right: 1px solid #e2e8f0;
-    }
-    
-    /* Code blocks */
-    .stCodeBlock {
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-    }
-    
-    /* Dataframe styling */
-    .stDataFrame {
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-    }
-    
-    /* Hide default streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Responsive improvements */
-    @media (max-width: 768px) {
-        .main {
-            padding: 0.5rem;
-        }
-        
-        .stColumns > div {
-            padding: 0 0.25rem;
-        }
-    }
 </style>
 """,
     unsafe_allow_html=True,
@@ -217,7 +78,6 @@ st.markdown(
 
 @st.cache_resource
 def initialize_agent():
-    """Initialize the workflow agent and database connection."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USER", "neo4j")
     password = os.getenv("NEO4J_PASSWORD")
@@ -233,19 +93,7 @@ def initialize_agent():
     return workflow_agent, graph_interface
 
 
-def display_results_table(results):
-    """Display results in a formatted table."""
-    if results:
-        df = pd.DataFrame(results)
-        st.dataframe(df, use_container_width=True)
-        return df
-    else:
-        st.info("No results found.")
-        return None
-
-
 def create_network_visualization(results, relationship_type):
-    """Create a network visualization of results."""
     if not results or len(results) == 0:
         return None
 
@@ -312,7 +160,6 @@ def create_network_visualization(results, relationship_type):
 
 
 def display_learning_workflow_steps():
-    """Display information about the LangGraph workflow steps."""
     st.markdown(
         """
     ### Understanding the LangGraph Workflow
@@ -347,7 +194,6 @@ def display_learning_workflow_steps():
 
 
 def display_knowledge_graph_concepts():
-    """Display information about knowledge graphs."""
     st.markdown(
         """
     ### Knowledge Graph Fundamentals
@@ -372,14 +218,10 @@ def display_knowledge_graph_concepts():
 
 
 def main_interface(workflow_agent, graph_interface):
-    """Main interface with interactive learning exercises."""
-    
-    # Tabs for different learning activities with improved spacing
+
     st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-    
-    tab1, tab2, tab3, tab4 = st.tabs(
-        ["Concepts", "Try the Agent", "Explore Queries", "Exercises"]
-    )
+
+    tab1, tab2, tab3 = st.tabs(["Concepts", "Try the Agent", "Explore Queries"])
 
     with tab1:
         st.markdown(
@@ -402,7 +244,7 @@ def main_interface(workflow_agent, graph_interface):
             "Choose a concept to explore:",
             [
                 "Knowledge Graphs",
-                "LangGraph Workflows", 
+                "LangGraph Workflows",
                 "Cypher Queries",
                 "Biomedical Applications",
             ],
@@ -411,7 +253,7 @@ def main_interface(workflow_agent, graph_interface):
         if concept_choice == "Knowledge Graphs":
             display_knowledge_graph_concepts()
 
-            # Interactive schema exploration
+            # Schema exploration
             if st.button("Explore Our Database Schema"):
                 schema = graph_interface.get_schema_info()
                 st.json(schema)
@@ -489,13 +331,16 @@ def main_interface(workflow_agent, graph_interface):
             unsafe_allow_html=True,
         )
 
-        # Example questions for users
+        # Example questions
         example_questions = [
-            "What genes are associated with diabetes?",
+            "What protein does TP53 encode?",
+            "What diseases is BRCA1 linked to?",
             "What drugs treat hypertension?",
-            "What protein does GENE_ALPHA encode?",
-            "What diseases is PROT_BETA associated with?",
-            "What are the targets of AlphaCure?",
+            "What drugs treat Alzheimer_Disease?",
+            "What genes are associated with diabetes?",
+            "What genes are linked to both diabetes and hypertension?",
+            "Which genes are linked to neurological disorders?",
+            "What proteins are associated with cancer?",
         ]
 
         st.markdown("**Try these example questions:**")
@@ -531,7 +376,7 @@ def main_interface(workflow_agent, graph_interface):
                 st.subheader("Final Answer")
                 st.info(result["answer"])
 
-                # Show some raw results for learning
+                # Show raw results
                 if result.get("raw_results"):
                     with st.expander("View Raw Database Results (First 3)"):
                         st.json(result["raw_results"])
@@ -555,7 +400,7 @@ def main_interface(workflow_agent, graph_interface):
             unsafe_allow_html=True,
         )
 
-        # Pre-built queries for learning
+        # Example queries
         query_examples = {
             "Simple: All genes": "MATCH (g:Gene) RETURN g.gene_name LIMIT 5",
             "Relationships: Gene encodes protein": (
@@ -595,7 +440,7 @@ def main_interface(workflow_agent, graph_interface):
                         df = pd.DataFrame(results)
                         st.dataframe(df, use_container_width=True)
 
-                        # Simple visualization if applicable
+                        # Network visualization
                         if len(df.columns) >= 2:
                             fig = create_network_visualization(results, "Query Results")
                             if fig:
@@ -609,131 +454,12 @@ def main_interface(workflow_agent, graph_interface):
             else:
                 st.warning("Please enter a query!")
 
-    with tab4:
-        st.markdown(
-            """
-            <div style="background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); 
-                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
-                        border: 1px solid #f9a8d4;">
-                <h2 style="margin: 0 0 0.5rem 0; color: #be185d; text-align: center;">
-                    Learning Exercises
-                </h2>
-                <p style="margin: 0; text-align: center; color: #9d174d;">
-                    Practice your skills with progressively challenging exercises
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        exercise_choice = st.selectbox(
-            "Choose an exercise:",
-            [
-                "Exercise 1: Basic Queries",
-                "Exercise 2: Relationship Patterns",
-                "Exercise 3: Complex Pathways",
-            ],
-        )
-
-        if exercise_choice == "Exercise 1: Basic Queries":
-            st.markdown(
-                """
-            ### Exercise 1: Write Basic Queries
-
-            **Your Task:** Write Cypher queries for these questions:
-
-            1. Find all diseases in our database
-            2. Find all drugs with their types
-            3. Find proteins with molecular weight greater than 50
-            """
-            )
-
-            exercise1_query = st.text_area(
-                "Your answer for question 1:",
-                placeholder="MATCH (d:Disease) RETURN ...",
-            )
-
-            if st.button("Check Answer 1"):
-                if "MATCH (d:Disease) RETURN" in exercise1_query:
-                    st.success("Great! You're using the correct pattern!")
-                else:
-                    st.info("Hint: Use MATCH (d:Disease) RETURN d.disease_name")
-
-        elif exercise_choice == "Exercise 2: Relationship Patterns":
-            st.markdown(
-                """
-            ### Exercise 2: Understand Relationships
-
-            **Your Task:** Write queries to find:
-
-            1. All drugs that treat any disease
-            2. All proteins associated with diabetes
-            3. Complete pathway: Gene → Protein → Disease
-            """
-            )
-
-            exercise2_query = st.text_area(
-                "Your answer:", placeholder="MATCH (dr:Drug)-[:TREATS]->(d:Disease) ..."
-            )
-
-            if st.button("Try Your Query"):
-                if exercise2_query.strip():
-                    try:
-                        results = graph_interface.execute_query(exercise2_query)
-                        st.success(f"Query works! Found {len(results)} results.")
-                        if results:
-                            st.dataframe(pd.DataFrame(results[:5]))
-                    except Exception as e:
-                        st.error(f"Error: {str(e)}")
-                        st.info(
-                            "Check your relationship syntax: -[:RELATIONSHIP_NAME]->"
-                        )
-
-        elif exercise_choice == "Exercise 3: Complex Pathways":
-            st.markdown(
-                """
-            ### Exercise 3: Complex Pathway Analysis
-
-            **Your Task:** Find all complete pathways from genes to treatments:
-            `Gene → Protein → Disease ← Drug`
-
-            This requires connecting 4 node types with 3 relationships!
-            """
-            )
-
-            exercise3_query = st.text_area(
-                "Your complex query:",
-                placeholder=(
-                    "MATCH (g:Gene)-[:ENCODES]->(p:Protein)"
-                    "-[:ASSOCIATED_WITH]->(d:Disease)<-[:TREATS]-(dr:Drug) ..."
-                ),
-            )
-
-            if st.button("Test Complex Query"):
-                if exercise3_query.strip():
-                    try:
-                        results = graph_interface.execute_query(exercise3_query)
-                        st.success(
-                            f"Advanced query successful! "
-                            f"Found {len(results)} complete pathways."
-                        )
-                        if results:
-                            st.dataframe(pd.DataFrame(results[:3]))
-                            # Celebration for completing advanced exercise!
-                            st.balloons()
-                    except Exception as e:
-                        st.error(f"Error: {str(e)}")
-                        st.info(
-                            "Complex queries need careful relationship chaining. "
-                            "Check each step!"
-                        )
-
 
 def main():
     # Initialize agents
     workflow_agent, graph_interface = initialize_agent()
 
-    # Header with improved spacing
+    # Header
     st.markdown(
         """
         <div style="text-align: center; margin-bottom: 2rem;">
@@ -748,80 +474,17 @@ def main():
         unsafe_allow_html=True,
     )
 
-    # Sidebar with improved styling
-    with st.sidebar:
-        st.markdown(
-            """
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                        padding: 1.5rem; margin: -1rem -1rem 1.5rem -1rem; 
-                        border-radius: 0 0 12px 12px;">
-                <h3 style="color: white; margin: 0; text-align: center;">
-                    Learning Resources
-                </h3>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        
-        st.markdown(
-            """
-            <div style="background: white; padding: 1.5rem; border-radius: 12px; 
-                        border: 1px solid #e5e7eb; margin-bottom: 1rem;">
-                <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
-                    <strong>Tutorial Notebook</strong>
-                </p>
-                <p style="margin: 0; font-size: 0.9rem; color: #6b7280;">
-                    Check out <code>docs/tutorials/langgraph-tutorial.ipynb</code>
-                </p>
-            </div>
-            
-            <div style="background: white; padding: 1.5rem; border-radius: 12px; 
-                        border: 1px solid #e5e7eb;">
-                <p style="margin: 0 0 1rem 0; font-weight: 500; color: #374151;">
-                    <strong>Learning Goals</strong>
-                </p>
-                <ul style="margin: 0; padding-left: 1.2rem; color: #6b7280; font-size: 0.9rem;">
-                    <li>Understand knowledge graphs</li>
-                    <li>Learn LangGraph workflows</li>
-                    <li>Practice Cypher queries</li>
-                    <li>Build AI applications</li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # Display schema info with improved styling
-        if st.checkbox("Show Database Schema"):
-            schema = graph_interface.get_schema_info()
-            
-            st.markdown(
-                """
-                <div style="background: white; padding: 1.5rem; border-radius: 12px; 
-                            border: 1px solid #e5e7eb; margin-top: 1rem;">
-                """,
-                unsafe_allow_html=True,
-            )
-            
-            st.markdown("**Node Types**")
-            st.json(schema["node_labels"])
-            
-            st.markdown("**Relationship Types**")
-            st.json(schema["relationship_types"])
-            
-            st.markdown("</div>", unsafe_allow_html=True)
-
-    # Main content area - Interactive learning interface
+    # Main interface
     main_interface(workflow_agent, graph_interface)
 
-    # Application Footer with improved styling
+    # Footer
     st.markdown(
         """
         <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
                     border-radius: 12px; text-align: center; border: 1px solid #e5e7eb;">
             <p style="margin: 0; color: #64748b; font-size: 0.9rem; font-weight: 500;">
-                Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, 
-                <strong>Neo4j</strong>, and <strong>Anthropic Claude</strong>
+                Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, and
+                <strong>Neo4j</strong>
             </p>
         </div>
         """,

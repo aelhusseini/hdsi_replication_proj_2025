@@ -85,18 +85,6 @@ pdm run lint            # Check quality
 
 **Full commands**: See [Reference Guide](docs/reference.md)
 
-## Learning Resources
-
-**Start Here**:
-- [Foundations Guide](docs/foundations-and-background.md) - Complete background for beginners
-- [Getting Started](docs/getting-started.md) - Setup and installation
-- [Interactive Tutorial](docs/tutorials/langgraph-tutorial.ipynb) - Hands-on learning
-
-**Reference**:
-- [Commands & Queries](docs/reference.md) - Quick syntax reference
-- [Technical Guide](docs/technical-guide.md) - Architecture and development
-- [Practice Exercises](docs/exercises/practice-exercises.py) - Progressive challenges
-
 ## Three Agent Types
 
 **WorkflowAgent** (main) - LangGraph implementation with transparent processing  
@@ -105,10 +93,12 @@ pdm run lint            # Check quality
 
 ## Example Questions
 
-- "What drugs treat hypertension?"
-- "What protein does gene TP53 encode?"
-
----
-
-**Get started**: Run `pdm run app` and explore the interactive interface!
+- **"What protein does TP53 encode?"** 
+- **"What diseases is BRCA1 linked to?"** 
+- **"What drugs treat hypertension?"** 
+- **"What drugs treat Alzheimer_Disease?"** 
+- **"What genes are associated with diabetes?"** 
+- **"What genes are linked to both diabetes and hypertension?"** 
+- **"Which genes are linked to neurological disorders?"** 
+- **"What proteins are associated with cancer?"** 
 
