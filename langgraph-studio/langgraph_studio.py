@@ -15,6 +15,13 @@ ensuring consistency between the educational interface and debugging tools.
 """
 
 import os
+import sys
+from pathlib import Path
+
+# Add the parent directory to Python path so we can import from src
+parent_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(parent_dir))
+
 from dotenv import load_dotenv
 from src.agents.workflow_agent import WorkflowAgent
 from src.agents.graph_interface import GraphInterface

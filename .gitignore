@@ -38,8 +38,7 @@ dist/
 neo4j/
 
 # Streamlit
-.streamlit/cache/
-.streamlit/secrets.toml
+.streamlit/
 
 # Claude Code artifacts (user-specific)
 .claude/
@@ -47,7 +46,7 @@ CLAUDE.md
 
 # LangGraph Studio artifacts
 .langraph/
-.langraph_api/
+.langgraph_api/
 .langsmith/
 langgraph-*.log
 *.langgraph_cache/

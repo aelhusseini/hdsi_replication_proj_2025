@@ -44,6 +44,7 @@ quickstart = "python scripts/quickstart.py"
 test = "pytest tests/ -v"
 format = {shell = "black . && isort ."}
 lint = {shell = "flake8 . && mypy ."}
+langgraph = {shell = "langgraph dev --config langgraph-studio/langgraph.json"}
 
 [build-system]
 requires = ["pdm-backend"]

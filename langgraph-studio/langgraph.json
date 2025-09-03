@@ -13,7 +13,7 @@
     "networkx>=3.0"
   ],
   "graphs": {
-    "workflow_agent": "./langgraph_studio.py:graph"
+    "workflow_agent": "./langgraph-studio/langgraph_studio.py:graph"
   },
   "env": ".env",
   "dockerfile_lines": [
