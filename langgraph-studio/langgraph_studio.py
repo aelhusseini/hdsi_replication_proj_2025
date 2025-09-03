@@ -23,16 +23,18 @@ parent_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(parent_dir))
 
 from dotenv import load_dotenv
-from src.agents.workflow_agent import WorkflowAgent
+
 from src.agents.graph_interface import GraphInterface
+from src.agents.workflow_agent import WorkflowAgent
 
 # Load environment variables
 load_dotenv()
 
+
 def create_graph():
     """
     Create and return the workflow graph for LangGraph Studio.
-    
+
     This function sets up the biomedical knowledge graph agent
     and returns the compiled LangGraph workflow.
     """
@@ -41,22 +43,20 @@ def create_graph():
     neo4j_user = os.getenv("NEO4J_USER", "neo4j")
     neo4j_password = os.getenv("NEO4J_PASSWORD", "")
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
-    
+
     # Create graph interface
     graph_interface = GraphInterface(
-        uri=neo4j_uri,
-        user=neo4j_user,
-        password=neo4j_password
+        uri=neo4j_uri, user=neo4j_user, password=neo4j_password
     )
-    
+
     # Create workflow agent
     agent = WorkflowAgent(
-        graph_interface=graph_interface,
-        anthropic_api_key=anthropic_api_key
+        graph_interface=graph_interface, anthropic_api_key=anthropic_api_key
     )
-    
+
     # Return the compiled workflow
     return agent.workflow
+
 
 # Create the graph instance
 graph = create_graph()

@@ -8,7 +8,6 @@ Essential commands, queries, and troubleshooting for Helix Navigator.
 ```bash
 # Setup
 pdm install                 # Install dependencies
-pdm run generate-data      # Generate biomedical dataset
 pdm run load-data          # Load data into Neo4j
 pdm run quickstart         # Verify setup
 
@@ -21,9 +20,8 @@ pdm run test               # Run tests (27 tests)
 pdm run format             # Format code
 pdm run lint               # Check quality
 
-# Data
-python scripts/simple_load_data.py    # Quick reload
-python scripts/load_data.py           # Full dataset
+# Data Loading
+python scripts/load_data.py           # Load complete dataset
 ```
 
 ### Database & Studio

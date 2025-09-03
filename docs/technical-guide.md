@@ -23,10 +23,10 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
                               │
 ┌─────────────────────────────▼───────────────────────────────────────────┐
 │                         Agent Layer                                     │
-│ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────────────────┐ │
-│ │ WorkflowAgent   │ │AdvancedWorkflow │ │ TemplateQueryAgent         │ │
-│ │ (Educational)   │ │ (Production)    │ │ (Templates)                │ │
-│ └─────────────────┘ └─────────────────┘ └─────────────────────────────┘ │
+│                     ┌─────────────────┐                               │
+│                     │ WorkflowAgent   │                               │
+│                     │ (Educational)   │                               │
+│                     └─────────────────┘                               │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
 ┌─────────────────────────────▼───────────────────────────────────────────┐
@@ -80,41 +80,25 @@ def create_graph():
 
 #### 3. Agent Types (`src/agents/`)
 
-**AdvancedWorkflowAgent** - Production LangGraph implementation (learning reference):
-```python
-class AdvancedWorkflowAgent:
-    def __init__(self, graph_interface, anthropic_key):
-        self.graph = graph_interface
-        self.client = Anthropic(api_key=anthropic_key)
-        self.workflow = self._build_workflow()
-    
-    def _build_workflow(self):
-        # LangGraph state machine with 5 nodes:
-        # classify → extract → generate → execute → format
-        workflow = StateGraph(AgentState)
-        workflow.add_node("classify", self.classify_question)
-        workflow.add_node("extract", self.extract_entities)
-        workflow.add_node("generate", self.generate_cypher_query)
-        workflow.add_node("execute", self.execute_query)
-        workflow.add_node("format", self.format_response)
-        return workflow.compile()
-```
-
 **WorkflowAgent** - Educational LangGraph implementation (used in web app):
 ```python
 class WorkflowAgent:
-    # Educational LangGraph implementation
-    # Used in the main Streamlit web application
-    # Simplified for learning core concepts
-    # Demonstrates basic workflow patterns
-```
-
-**TemplateQueryAgent** - Template-based for beginners:
-```python
-class TemplateQueryAgent:
-    # Pre-built query templates
-    # Good for understanding Cypher patterns
-    # No AI generation, just parameterized queries
+    def __init__(self, graph_interface, anthropic_key):
+        self.graph_db = graph_interface
+        self.anthropic = Anthropic(api_key=anthropic_key)
+        self.schema = self.graph_db.get_schema_info()
+        self.workflow = self._create_workflow()
+    
+    def _create_workflow(self):
+        # LangGraph state machine with 5 nodes:
+        # classify → extract → generate → execute → format
+        workflow = StateGraph(WorkflowState)
+        workflow.add_node("classify", self.classify_question)
+        workflow.add_node("extract", self.extract_entities)
+        workflow.add_node("generate", self.generate_query)
+        workflow.add_node("execute", self.execute_query)
+        workflow.add_node("format", self.format_answer)
+        return workflow.compile()
 ```
 
 #### 3. Graph Interface (`src/agents/graph_interface.py`)
@@ -416,7 +400,7 @@ def create_custom_visualization(results, viz_type):
 ### Domain-Specific Extensions
 ```python
 # Finance knowledge graphs
-class FinanceAgent(AdvancedWorkflowAgent):
+class FinanceAgent(WorkflowAgent):
     def get_finance_schema(self):
         return {
             "nodes": ["Company", "Person", "Transaction"],
@@ -424,7 +408,7 @@ class FinanceAgent(AdvancedWorkflowAgent):
         }
 
 # Social network analysis  
-class SocialAgent(AdvancedWorkflowAgent):
+class SocialAgent(WorkflowAgent):
     def get_social_schema(self):
         return {
             "nodes": ["Person", "Group", "Event"],

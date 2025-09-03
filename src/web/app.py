@@ -42,7 +42,6 @@ st.set_page_config(
     page_title="Helix Navigator",
     page_icon="🔬",
     layout="wide",
-    initial_sidebar_state="collapsed",
 )
 
 st.markdown(
@@ -233,7 +232,7 @@ def main_interface(workflow_agent, graph_interface):
                     Learn the Fundamentals
                 </h2>
                 <p style="margin: 0; text-align: center; color: #3730a3;">
-                    Master the core concepts behind knowledge graphs and AI workflows
+                    Master the core concepts behind knowledge graphs and Agentic workflows
                 </p>
             </div>
             """,
@@ -324,7 +323,7 @@ def main_interface(workflow_agent, graph_interface):
                     Try the Workflow Agent
                 </h2>
                 <p style="margin: 0; text-align: center; color: #166534;">
-                    Ask questions and see how our LangGraph workflow processes them step by step
+                    Ask questions and see how the LangGraph workflow processes them step by step
                 </p>
             </div>
             """,
@@ -393,7 +392,7 @@ def main_interface(workflow_agent, graph_interface):
                     Explore Database Queries
                 </h2>
                 <p style="margin: 0; text-align: center; color: #92400e;">
-                    Try writing your own Cypher queries and see the results instantly
+                    Try writing your own Cypher queries and see the results
                 </p>
             </div>
             """,
@@ -466,9 +465,6 @@ def main():
             <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #1f2937;">
                 Helix Navigator
             </h1>
-            <p style="font-size: 1.2rem; color: #6b7280; margin-top: 0;">
-                Learn LangGraph and Knowledge Graphs through biomedical AI applications
-            </p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -476,20 +472,6 @@ def main():
 
     # Main interface
     main_interface(workflow_agent, graph_interface)
-
-    # Footer
-    st.markdown(
-        """
-        <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
-                    border-radius: 12px; text-align: center; border: 1px solid #e5e7eb;">
-            <p style="margin: 0; color: #64748b; font-size: 0.9rem; font-weight: 500;">
-                Built with <strong>Streamlit</strong>, <strong>LangGraph</strong>, and
-                <strong>Neo4j</strong>
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 if __name__ == "__main__":

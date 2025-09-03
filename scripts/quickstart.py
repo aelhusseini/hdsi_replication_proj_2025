@@ -9,7 +9,7 @@ connectivity testing, and demonstrates core functionality through sample queries
 The script validates:
 - Environment variable configuration
 - Neo4j database connection and data availability
-- Basic query execution through the TemplateQueryAgent
+- Basic query execution through the GraphInterface
 - System readiness for interactive use
 
 Usage:
@@ -39,7 +39,7 @@ sys.path.append(str(project_root))
 from dotenv import load_dotenv  # noqa: E402
 
 from src.agents.graph_interface import GraphInterface  # noqa: E402
-from src.agents.template_query_agent import TemplateQueryAgent  # noqa: E402
+# Basic query functionality using GraphInterface
 
 # Load environment variables
 load_dotenv()
@@ -159,7 +159,7 @@ def run_sample_queries() -> bool:
     Sample Query Types:
         1. Gene-Disease Associations: "What genes are associated with diabetes?"
         2. Drug Treatments: "What drugs treat hypertension?"
-        3. Gene-Protein Encoding: "What protein does GENE_ALPHA encode?"
+        3. Gene-Protein Encoding: "What protein does gene encode?"
 
     Each query demonstrates:
         - Different node types (genes, proteins, diseases, drugs)
@@ -188,13 +188,15 @@ def run_sample_queries() -> bool:
             raise ValueError("NEO4J_PASSWORD environment variable is required")
 
         graph = GraphInterface(uri, user, password)
-        agent = TemplateQueryAgent(graph)
 
         logger.info("\n📊 Running sample queries...\n")
 
         # Query 1: Gene-Disease associations (demonstrates LINKED_TO relationships)
         logger.info("Query 1: What genes are associated with diabetes?")
-        results = agent.get_genes_for_disease("diabetes")
+        query = """MATCH (g:Gene)-[:LINKED_TO]->(d:Disease)
+                   WHERE toLower(d.disease_name) CONTAINS toLower('diabetes')
+                   RETURN g.gene_name as gene, d.disease_name as disease LIMIT 20"""
+        results = graph.execute_query(query)
         if results:
             logger.info(f"Found {len(results)} genes:")
             for r in results[:3]:  # Show first 3 results
@@ -204,19 +206,29 @@ def run_sample_queries() -> bool:
 
         # Query 2: Drug treatments (demonstrates TREATS relationships)
         logger.info("\nQuery 2: What drugs treat hypertension?")
-        results = agent.get_drugs_for_disease("hypertension")
+        query = """MATCH (dr:Drug)-[t:TREATS]->(d:Disease)
+                   WHERE toLower(d.disease_name) CONTAINS toLower('hypertension')
+                   RETURN dr.drug_name as drug, d.disease_name as disease, 
+                          t.efficacy as efficacy ORDER BY t.efficacy DESC LIMIT 20"""
+        results = graph.execute_query(query)
         if results:
             logger.info(f"Found {len(results)} drugs:")
             for r in results[:3]:  # Show first 3 results with efficacy
-                logger.info(f"  - {r['drug']} (efficacy: {r['efficacy']})")
+                efficacy = r.get('efficacy', 'unknown')
+                logger.info(f"  - {r['drug']} (efficacy: {efficacy})")
 
         # Query 3: Gene-protein encoding (demonstrates ENCODES relationships)
         logger.info("\nQuery 3: What protein does GENE_ALPHA encode?")
-        results = agent.get_protein_for_gene("GENE_ALPHA")
+        query = """MATCH (g:Gene)-[:ENCODES]->(p:Protein)
+                   WHERE g.gene_name = 'GENE_ALPHA'
+                   RETURN g.gene_name as gene, p.protein_name as protein, 
+                          p.molecular_weight as molecular_weight"""
+        results = graph.execute_query(query)
         if results:
             r = results[0]
+            weight = r.get('molecular_weight', 'unknown')
             logger.info(
-                f"  - {r['gene']} encodes {r['protein']} (MW: {r['molecular_weight']})"
+                f"  - {r['gene']} encodes {r['protein']} (MW: {weight})"
             )
 
         graph.close()

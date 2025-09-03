@@ -66,9 +66,9 @@ class WorkflowAgent:
     4. Execute: Run queries against the Neo4j knowledge graph
     5. Format: Convert results into human-readable responses
 
-    Comparison to Other Agents:
-    - vs AdvancedWorkflowAgent: Same workflow, simpler implementation
-    - vs TemplateQueryAgent: Uses AI vs pre-written templates
+    This agent demonstrates the core LangGraph workflow pattern for
+    educational purposes, providing a complete implementation for learning
+    LangGraph concepts through biomedical applications.
     """
 
     def __init__(self, graph_interface: GraphInterface, anthropic_api_key: str):
@@ -403,37 +403,35 @@ def demonstrate_workflow_steps():
 def create_workflow_graph(config=None):
     """
     Factory function for LangGraph Studio.
-    
+
     LangGraph Studio expects a factory function that creates the graph.
     This function sets up the agent and returns the compiled workflow.
     """
     import os
+
     from dotenv import load_dotenv
-    
+
     # Load environment variables
     load_dotenv()
-    
+
     from .graph_interface import GraphInterface
-    
+
     # Get environment variables
     neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     neo4j_user = os.getenv("NEO4J_USER", "neo4j")
     neo4j_password = os.getenv("NEO4J_PASSWORD", "")
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
-    
+
     # Create graph interface
     graph_interface = GraphInterface(
-        uri=neo4j_uri,
-        user=neo4j_user,
-        password=neo4j_password
+        uri=neo4j_uri, user=neo4j_user, password=neo4j_password
     )
-    
+
     # Create workflow agent
     agent = WorkflowAgent(
-        graph_interface=graph_interface,
-        anthropic_api_key=anthropic_api_key
+        graph_interface=graph_interface, anthropic_api_key=anthropic_api_key
     )
-    
+
     # Return the compiled workflow
     return agent.workflow
 

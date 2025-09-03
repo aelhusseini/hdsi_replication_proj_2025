@@ -57,8 +57,7 @@ docker run --name neo4j-learning -p 7474:7474 -p 7687:7687 \
 
 ### 4. Load Data
 ```bash
-pdm run generate-data    # Generate biomedical dataset
-pdm run load-data        # Load into Neo4j
+pdm run load-data        # Load existing CSV data into Neo4j
 pdm run quickstart       # Verify setup
 ```
 

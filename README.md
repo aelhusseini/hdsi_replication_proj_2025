@@ -85,11 +85,9 @@ pdm run lint            # Check quality
 
 **Full commands**: See [Reference Guide](docs/reference.md)
 
-## Three Agent Types
+## AI Agent
 
-**WorkflowAgent** (main) - LangGraph implementation with transparent processing  
-**AdvancedWorkflowAgent** (reference) - Production patterns with advanced error handling  
-**TemplateQueryAgent** (reference) - Fast template-based queries without AI
+**WorkflowAgent** - LangGraph implementation with transparent processing for learning core LangGraph concepts through biomedical applications
 
 ## Example Questions
 
