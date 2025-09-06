@@ -1,10 +1,10 @@
-# 🔧 Technical Guide
+# Technical Guide
 
 Complete technical documentation for developers working with Helix Navigator.
 
-**📖 Prerequisites**: This guide assumes familiarity with the concepts covered in [foundations-and-background.md](foundations-and-background.md). If you're new to AI, knowledge graphs, or the biomedical domain, please read that guide first for essential background knowledge.
+**Prerequisites**: This guide assumes familiarity with concepts covered in [Foundations Guide](foundations-and-background.md).
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Overview
 The project uses a modular architecture combining Neo4j graph database, LangGraph workflow engine, Streamlit interface for interactive learning, and LangGraph Studio for visual debugging.
@@ -23,10 +23,10 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
                               │
 ┌─────────────────────────────▼───────────────────────────────────────────┐
 │                         Agent Layer                                     │
-│ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────────────────┐ │
-│ │ WorkflowAgent   │ │AdvancedWorkflow │ │ TemplateQueryAgent         │ │
-│ │ (Educational)   │ │ (Production)    │ │ (Templates)                │ │
-│ └─────────────────┘ └─────────────────┘ └─────────────────────────────┘ │
+│                     ┌─────────────────┐                               │
+│                     │ WorkflowAgent   │                               │
+│                     │ (Educational)   │                               │
+│                     └─────────────────┘                               │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
 ┌─────────────────────────────▼───────────────────────────────────────────┐
@@ -56,100 +56,122 @@ The project uses a modular architecture combining Neo4j graph database, LangGrap
 - **Real-time query execution** and results display
 - **Learning feedback** and step-by-step explanations
 
-#### 2. LangGraph Studio Integration (`langgraph_studio.py`)
-- **Visual workflow debugging** with real-time graph visualization
-- **Factory function** for Studio compatibility: `create_graph()`
-- **Configuration** via `langgraph.json` for dependencies and graph paths
-- **Studio Features**:
-  - 🎨 **Interactive Graph Visualization**: See your 5-step workflow as nodes and edges
-  - 🔍 **Real-time State Inspection**: Monitor state transformations at each step
-  - 📊 **Step-by-step Execution**: Debug complex AI reasoning workflows
-  - 💬 **Direct Testing**: Send biomedical questions directly to the graph
-  - 🧪 **Performance Monitoring**: Track execution times and resource usage
+#### 2. LangGraph Studio Integration (`langgraph-studio/langgraph_studio.py`)
+- Visual workflow debugging with real-time graph visualization
+- Factory function for Studio compatibility: `create_graph()`
+- Configuration via `langgraph-studio/langgraph.json` for dependencies and graph paths
+- **Features**: Interactive visualization, state inspection, step-by-step execution, direct testing, performance monitoring
 
 **Studio Architecture Pattern**:
 ```python
 def create_graph():
-    # Environment setup with dotenv
+    """Create and return the workflow graph for LangGraph Studio."""
+    # Load environment variables
     load_dotenv()
     
-    # Create database interface
-    graph_interface = GraphInterface(...)
+    # Get environment variables
+    neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    neo4j_user = os.getenv("NEO4J_USER", "neo4j")
+    neo4j_password = os.getenv("NEO4J_PASSWORD", "")
+    anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
     
-    # Create educational workflow agent
-    agent = WorkflowAgent(graph_interface, api_key)
+    # Create graph interface
+    graph_interface = GraphInterface(
+        uri=neo4j_uri, user=neo4j_user, password=neo4j_password
+    )
+    
+    # Create workflow agent
+    agent = WorkflowAgent(
+        graph_interface=graph_interface, anthropic_api_key=anthropic_api_key
+    )
     
     # Return compiled LangGraph for Studio
     return agent.workflow
+
+# Create the graph instance for Studio
+graph = create_graph()
 ```
 
 #### 3. Agent Types (`src/agents/`)
 
-**AdvancedWorkflowAgent** - Production LangGraph implementation (learning reference):
-```python
-class AdvancedWorkflowAgent:
-    def __init__(self, graph_interface, anthropic_key):
-        self.graph = graph_interface
-        self.client = Anthropic(api_key=anthropic_key)
-        self.workflow = self._build_workflow()
-    
-    def _build_workflow(self):
-        # LangGraph state machine with 5 nodes:
-        # classify → extract → generate → execute → format
-        workflow = StateGraph(AgentState)
-        workflow.add_node("classify", self.classify_question)
-        workflow.add_node("extract", self.extract_entities)
-        workflow.add_node("generate", self.generate_cypher_query)
-        workflow.add_node("execute", self.execute_query)
-        workflow.add_node("format", self.format_response)
-        return workflow.compile()
-```
-
 **WorkflowAgent** - Educational LangGraph implementation (used in web app):
 ```python
 class WorkflowAgent:
-    # Educational LangGraph implementation
-    # Used in the main Streamlit web application
-    # Simplified for learning core concepts
-    # Demonstrates basic workflow patterns
+    """LangGraph workflow agent for biomedical knowledge graphs."""
+    
+    # Class constants
+    MODEL_NAME = "claude-sonnet-4-20250514"
+    DEFAULT_MAX_TOKENS = 200
+    
+    def __init__(self, graph_interface: GraphInterface, anthropic_api_key: str):
+        self.graph_db = graph_interface
+        self.anthropic = Anthropic(api_key=anthropic_api_key)
+        self.schema = self.graph_db.get_schema_info()
+        self.property_values = self._get_key_property_values()
+        self.workflow = self._create_workflow()
+    
+    def _get_key_property_values(self) -> Dict[str, List[str]]:
+        """Get property values dynamically from all nodes and relationships.
+        
+        This method discovers all available properties in the database schema and
+        collects sample values for each property. This enables the LLM to generate
+        more accurate queries by knowing what property values actually exist.
+        
+        Returns:
+            Dict mapping property names to lists of sample values from the database
+        """
+    
+    def _create_workflow(self):
+        # LangGraph state machine with 5 nodes:
+        # classify → extract → generate → execute → format
+        workflow = StateGraph(WorkflowState)
+        workflow.add_node("classify", self.classify_question)
+        workflow.add_node("extract", self.extract_entities)
+        workflow.add_node("generate", self.generate_query)
+        workflow.add_node("execute", self.execute_query)
+        workflow.add_node("format", self.format_answer)
+        return workflow.compile()
 ```
 
-**TemplateQueryAgent** - Template-based for beginners:
-```python
-class TemplateQueryAgent:
-    # Pre-built query templates
-    # Good for understanding Cypher patterns
-    # No AI generation, just parameterized queries
-```
-
-#### 3. Graph Interface (`src/agents/graph_interface.py`)
+#### 4. Graph Interface (`src/agents/graph_interface.py`)
 ```python
 class GraphInterface:
-    def execute_query(self, query: str, parameters: dict = None):
-        # Executes Cypher queries safely
-        # Handles connection management
-        # Validates query syntax
+    """Thread-safe Neo4j database wrapper with security and error handling."""
     
-    def get_schema_info(self):
-        # Returns node labels and relationship types
-        # Used for query generation and validation
+    def execute_query(self, cypher_query: str, parameters: Optional[Dict[str, Any]] = None):
+        """Execute parameterized Cypher query and return results as dictionaries."""
+        # Executes Cypher queries safely with parameterization
+        # Handles connection management and error logging
+        # Returns structured results as list of dictionaries
+    
+    def get_schema_info(self) -> Dict[str, Any]:
+        """Get database schema: node labels, relationship types, and properties."""
+        # Returns comprehensive schema information
+        # Includes node labels, relationship types, and property mappings
+        # Used for dynamic query generation and validation
+    
+    def get_property_values(self, node_label: str, property_name: str, limit: int = 20):
+        """Get sample property values for a given node type and property."""
+        # Discovers actual property values in the database
+        # Supports both node and relationship property discovery
+        # Enables context-aware query generation
 ```
 
-## 🧬 Data Model
+## Data Model
 
 ### Node Types
 ```cypher
 // Genes with properties
-(:Gene {gene_name: "GENE_ALPHA", gene_id: "GA001", chromosome: "1"})
+(:Gene {gene_name: "TP53", gene_id: "G001", chromosome: "2", function: "metabolism", expression_level: "medium"})
 
 // Proteins with molecular details
-(:Protein {protein_name: "PROT_ALPHA", protein_id: "PA001", molecular_weight: 45.2})
+(:Protein {protein_name: "PROT_001", protein_id: "P001", molecular_weight: 45.2, function: "enzyme", localization: "cytoplasm"})
 
-// Diseases with classifications
-(:Disease {disease_name: "diabetes", disease_id: "D001", category: "metabolic"})
+// Diseases with classifications  
+(:Disease {disease_name: "Hypertension", disease_id: "D001", category: "cardiovascular", prevalence: "uncommon", severity: "life_threatening"})
 
 // Drugs with mechanisms
-(:Drug {drug_name: "AlphaCure", drug_id: "DR001", drug_type: "small_molecule"})
+(:Drug {drug_name: "AlphaCure", drug_id: "DR001", type: "small_molecule", mechanism: "inhibitor", approval_status: "approved"})
 ```
 
 ### Relationship Types
@@ -175,9 +197,9 @@ MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease)
 RETURN g.gene_name, p.protein_name, d.disease_name
 LIMIT 5
 
-// Find treatments for diabetes
+// Find treatments for hypertension
 MATCH (dr:Drug)-[:TREATS]->(d:Disease)
-WHERE toLower(d.disease_name) CONTAINS 'diabetes'
+WHERE toLower(d.disease_name) CONTAINS 'hypertension'
 RETURN dr.drug_name, d.disease_name
 
 // Complex pathway: Gene → Protein → Disease ← Drug
@@ -186,19 +208,20 @@ RETURN g.gene_name, p.protein_name, d.disease_name, dr.drug_name
 LIMIT 3
 ```
 
-## 🤖 LangGraph Workflow Implementation
+## LangGraph Workflow Implementation
 
 ### State Definition
 ```python
-from typing import TypedDict, List, Optional
+from typing import TypedDict, List, Optional, Dict, Any
 
-class AgentState(TypedDict):
-    question: str
-    question_type: str
-    entities: List[str]
+class WorkflowState(TypedDict):
+    """State that flows through the workflow steps."""
+    user_question: str
+    question_type: Optional[str]
+    entities: Optional[List[str]]
     cypher_query: Optional[str]
-    query_results: List[dict]
-    answer: str
+    results: Optional[List[Dict]]
+    final_answer: Optional[str]
     error: Optional[str]
 ```
 
@@ -206,9 +229,9 @@ class AgentState(TypedDict):
 
 #### 1. Classification Node
 ```python
-def classify_question(state: AgentState) -> AgentState:
+def classify_question(state: WorkflowState) -> WorkflowState:
     """Classify the type of biomedical question."""
-    question = state["question"]
+    question = state["user_question"]
     
     prompt = f"""
     Classify this biomedical question into one of these types:
@@ -220,8 +243,8 @@ def classify_question(state: AgentState) -> AgentState:
     Question: {question}
     """
     
-    response = self.client.messages.create(
-        model="claude-3-haiku-20240307",
+    response = self.anthropic.messages.create(
+        model="claude-sonnet-4-20250514",
         messages=[{"role": "user", "content": prompt}]
     )
     
@@ -231,9 +254,9 @@ def classify_question(state: AgentState) -> AgentState:
 
 #### 2. Entity Extraction Node
 ```python
-def extract_entities(state: AgentState) -> AgentState:
+def extract_entities(state: WorkflowState) -> WorkflowState:
     """Extract biomedical entities from the question."""
-    question = state["question"]
+    question = state["user_question"]
     
     prompt = f"""
     Extract biomedical entities from this question.
@@ -244,14 +267,14 @@ def extract_entities(state: AgentState) -> AgentState:
     Return as comma-separated list:
     """
     
-    # ... implementation
+    # Implementation extracts relevant entities
     state["entities"] = entities
     return state
 ```
 
 #### 3. Query Generation Node
 ```python
-def generate_cypher_query(state: AgentState) -> AgentState:
+def generate_cypher_query(state: WorkflowState) -> WorkflowState:
     """Generate Cypher query based on classification and entities."""
     question_type = state["question_type"]
     entities = state["entities"]
@@ -265,54 +288,67 @@ def generate_cypher_query(state: AgentState) -> AgentState:
         RETURN g.gene_name, d.disease_name
         LIMIT 10
         """
-    # ... other query types
+    # Additional query types handled similarly
     
     state["cypher_query"] = query
     return state
 ```
 
-## 📊 Testing Strategy
+## Testing Strategy
 
 ### Test Coverage
 ```bash
 tests/
-├── test_advanced_workflow_agent.py # 7 tests - Production LangGraph workflow
 ├── test_app.py                    # 7 tests - Web interface & NetworkX
-├── test_graph_interface.py        # 4 tests - Database operations
-├── test_template_query_agent.py   # 6 tests - Template queries
+├── test_graph_interface.py        # 4 tests - Database operations  
 └── test_workflow_agent.py         # 3 tests - Learning workflow
 ```
 
 ### Key Test Patterns
 ```python
 # Mock external dependencies
-@patch('anthropic.Anthropic')
+@patch('src.agents.workflow_agent.Anthropic')
 def test_classify_question(self, mock_anthropic):
-    # Test AI classification without API calls
+    """Test question classification."""
+    state = WorkflowState(
+        user_question="What genes are associated with diabetes?",
+        question_type=None,
+        # ... other fields
+    )
     
 # Validate database operations
 def test_execute_query(self):
-    # Test Cypher execution with mock results
+    """Test Cypher execution with mock results."""
+    # Test parameterized queries with mock graph interface
     
 # Test web visualization
 @patch("networkx.spring_layout")
 def test_create_network_visualization(self, mock_spring_layout):
-    # Test NetworkX graph creation
+    """Test NetworkX graph creation and Plotly visualization."""
+    # Test graph layout and interactive visualization
 ```
 
-## 🛠️ Development Patterns
+## Development Patterns
 
-### Code Quality
+### Code Quality Standards
 ```bash
-# Line length: 88 characters (Black standard)
-# Formatting: Black + isort
-pdm run format
+# Project uses PDM for dependency management
+pdm install                    # Install dependencies
 
-# Linting: Flake8 + MyPy
-pdm run lint
+# Code formatting (88 character line length)
+pdm run format                # Black + isort formatting
 
-# Testing: Pytest with coverage
-pdm run test
+# Code quality checks
+pdm run lint                  # Flake8 + MyPy static analysis
+
+# Testing with comprehensive coverage
+pdm run test                  # Pytest with 14 total tests
+
+# Application commands
+pdm run app                   # Launch Streamlit interface
+pdm run langgraph            # Launch LangGraph Studio
+pdm run load-data            # Load biomedical data into Neo4j
+pdm run quickstart           # Verify system setup
 ```
 
 ### Security Best Practices
@@ -344,20 +380,24 @@ def execute_query(self, query: str, parameters: dict = None):
         raise RuntimeError(f"Query execution failed: {str(e)}")
 ```
 
-## 🚀 Deployment Considerations
+## Deployment Considerations
 
-### Environment Variables
+### Environment Configuration
 ```bash
-# Required for production
+# Required environment variables (create .env file)
 ANTHROPIC_API_KEY=sk-ant-your-production-key
-NEO4J_URI=bolt://production-neo4j:7687
+NEO4J_URI=bolt://localhost:7687              # Local development
 NEO4J_USER=neo4j
-NEO4J_PASSWORD=secure-production-password
+NEO4J_PASSWORD=your-neo4j-password
 
-# Optional for configuration
-APP_ENV=production
+# Optional configuration
+APP_ENV=development
 LOG_LEVEL=INFO
 MAX_QUERY_RESULTS=100
+QUERY_TIMEOUT=30
+
+# LangGraph Studio integration
+LANGSMITH_API_KEY=lsv2_pt_your-key-here     # For Studio debugging
 ```
 
 ### Performance Optimization
@@ -377,64 +417,44 @@ CREATE INDEX ON :Drug(drug_name)
 CREATE INDEX ON :Protein(protein_name)
 ```
 
-### Monitoring
+### Educational Architecture
+
+The technical architecture is designed specifically for learning:
+
 ```python
-# Add timing to queries
-import time
-def execute_query(self, query: str, parameters: dict = None):
-    start_time = time.time()
+# Dynamic Schema Discovery
+class WorkflowAgent:
+    def _get_key_property_values(self) -> Dict[str, List[str]]:
+        """Dynamically discover database properties for accurate query generation."""
+        # Replaces hardcoded schema with runtime discovery
+        # Enables more intelligent query generation
+        # Supports both node and relationship properties
+    
+    def _get_llm_response(self, prompt: str, max_tokens: Optional[int] = None) -> str:
+        """Centralized LLM interaction using Claude Sonnet 4."""
+        # Uses claude-sonnet-4-20250514 model
+        # Configurable token limits for different query types
+        # Consistent error handling across all LLM calls
+```
+
+### Monitoring and Debugging
+```python
+# Built-in logging for development
+import logging
+logger = logging.getLogger(__name__)
+
+def execute_query(self, cypher_query: str, parameters: Optional[Dict[str, Any]] = None):
+    """Execute queries with comprehensive error handling."""
     try:
-        result = session.run(query, parameters or {})
-        execution_time = time.time() - start_time
-        logger.info(f"Query executed in {execution_time:.2f}s")
-        return result
+        # Execute with session management
+        with self.driver.session() as session:
+            result = session.run(cast(Query, cypher_query), parameters or {})
+            return [record.data() for record in result]
     except Exception as e:
-        logger.error(f"Query failed: {str(e)}")
+        logger.error(f"Query execution error: {e}")
         raise
 ```
 
-## 📚 Extension Points
+---
 
-### Adding New Agent Types
-```python
-class CustomAgent:
-    def __init__(self, graph_interface, custom_config):
-        self.graph = graph_interface
-        self.config = custom_config
-    
-    def answer_question(self, question: str):
-        # Implement your custom logic
-        pass
-```
-
-### Custom Visualizations
-```python
-def create_custom_visualization(results, viz_type):
-    if viz_type == "heatmap":
-        # Create correlation heatmap
-        pass
-    elif viz_type == "sankey":
-        # Create pathway flow diagram  
-        pass
-```
-
-### Domain-Specific Extensions
-```python
-# Finance knowledge graphs
-class FinanceAgent(AdvancedWorkflowAgent):
-    def get_finance_schema(self):
-        return {
-            "nodes": ["Company", "Person", "Transaction"],
-            "relationships": ["OWNS", "TRANSACTS", "MANAGES"]
-        }
-
-# Social network analysis  
-class SocialAgent(AdvancedWorkflowAgent):
-    def get_social_schema(self):
-        return {
-            "nodes": ["Person", "Group", "Event"],
-            "relationships": ["FRIENDS", "MEMBER_OF", "ATTENDED"]
-        }
-```
-
-This technical guide provides the foundation for understanding, extending, and deploying the project in various contexts while maintaining the learning focus that makes knowledge graphs and LangGraph accessible to users.
+*Navigate: [← README](../README.md) | [Getting Started](getting-started.md) | [Foundations Guide](foundations-and-background.md) | [Reference](reference.md)*

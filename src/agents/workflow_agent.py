@@ -1,351 +1,373 @@
 """
-🎓 ACTIVE AGENT: Educational LangGraph Workflow for Biomedical Knowledge Graphs
+LangGraph workflow agent for biomedical knowledge graphs.
 
-✅ This is the primary agent used in the web application!
-
-This educational agent demonstrates core LangGraph workflow concepts through
-biomedical AI applications. Users learn by building real AI systems that answer
-biomedical questions using natural language processing and graph databases.
-
-Learning Focus:
-1. LangGraph workflow orchestration and state management
-2. Knowledge graph querying with natural language interfaces
-3. Multi-step AI reasoning for complex domain questions
-4. Integration of language models with structured knowledge
-
-Educational Design:
-- Simple, transparent 5-step workflow for clarity
-- Extensive comments and print statements for learning
-- Real biomedical examples with genes, proteins, diseases, drugs
-- Progressive complexity from basic to advanced concepts
+5-step workflow: Classify → Extract → Generate → Execute → Format
 """
 
 import json
-from typing import Dict, List, Optional, TypedDict
+import os
+from typing import Any, Dict, List, Optional, TypedDict
 
 from anthropic import Anthropic
+from dotenv import load_dotenv
 from langgraph.graph import END, StateGraph
 
 from .graph_interface import GraphInterface
 
 
 class WorkflowState(TypedDict):
-    """
-    State that flows through our simplified workflow.
+    """State that flows through the workflow steps."""
 
-    Think of this as a shared notebook that each step can read and write to.
-    Each field gets filled in as we progress through the workflow.
-    """
-
-    user_question: str  # Original question from user
-    question_type: Optional[str]  # What kind of biomedical question is this?
-    entities: Optional[List[str]]  # Important terms we found (genes, diseases, etc.)
-    cypher_query: Optional[str]  # The database query we generated
-    results: Optional[List[Dict]]  # What we found in the database
-    final_answer: Optional[str]  # Human-readable response
-    error: Optional[str]  # If something went wrong
+    user_question: str
+    question_type: Optional[str]
+    entities: Optional[List[str]]
+    cypher_query: Optional[str]
+    results: Optional[List[Dict]]
+    final_answer: Optional[str]
+    error: Optional[str]
 
 
 class WorkflowAgent:
-    """
-    An educational LangGraph workflow agent for biomedical knowledge graphs.
+    """LangGraph workflow agent for biomedical knowledge graphs."""
 
-    This agent demonstrates the fundamental LangGraph workflow pattern:
-    Input → Classify → Extract → Generate → Execute → Format → Output
+    # Class constants
+    MODEL_NAME = "claude-sonnet-4-20250514"
+    DEFAULT_MAX_TOKENS = 200
 
-    Educational Value:
-    - Learn LangGraph state management through clear examples
-    - Understand multi-step AI reasoning with biomedical applications
-    - See how natural language converts to structured graph queries
-    - Experience real-world AI agent architecture patterns
-
-    Workflow Steps:
-    1. Classify: Determine the type of biomedical question
-    2. Extract: Find specific entities (genes, diseases, drugs)
-    3. Generate: Create appropriate Cypher database queries
-    4. Execute: Run queries against the Neo4j knowledge graph
-    5. Format: Convert results into human-readable responses
-
-    Comparison to Other Agents:
-    - vs AdvancedWorkflowAgent: Same workflow, simpler implementation
-    - vs TemplateQueryAgent: Uses AI vs pre-written templates
-    """
+    # Default schema query
+    SCHEMA_QUERY = (
+        "MATCH (n) RETURN labels(n) as node_type, count(n) as count "
+        "ORDER BY count DESC LIMIT 10"
+    )
 
     def __init__(self, graph_interface: GraphInterface, anthropic_api_key: str):
         self.graph_db = graph_interface
         self.anthropic = Anthropic(api_key=anthropic_api_key)
-
-        # Get the database structure so we know what data is available
         self.schema = self.graph_db.get_schema_info()
-
-        # Build our workflow - this is the heart of LangGraph!
+        self.property_values = self._get_key_property_values()
         self.workflow = self._create_workflow()
 
-    def _create_workflow(self):
+    def _get_key_property_values(self) -> Dict[str, List[str]]:
+        """Get property values dynamically from all nodes and relationships.
+        
+        This method discovers all available properties in the database schema and
+        collects sample values for each property. This enables the LLM to generate
+        more accurate queries by knowing what property values actually exist.
+        
+        Returns:
+            Dict mapping property names to lists of sample values from the database
         """
-        Create our LangGraph workflow - the heart of the educational agent.
+        values = {}
+        try:
+            # Discover and collect property values from all node types in the database
+            # This replaces hardcoded property lists with dynamic schema discovery
+            for node_label in self.schema.get('node_labels', []):
+                # Get all properties that exist for this node type
+                node_props = self.schema.get('node_properties', {}).get(node_label, [])
+                for prop_name in node_props:
+                    # Avoid duplicate property names (same property might exist on multiple node types)
+                    if prop_name not in values:
+                        # Query the database for actual property values (limited to 20 for performance)
+                        prop_values = self.graph_db.get_property_values(node_label, prop_name)
+                        # Only store properties that have actual values in the database
+                        if prop_values:
+                            values[prop_name] = prop_values
+            
+            # Discover and collect property values from all relationship types
+            # This ensures we capture relationship-specific properties like confidence, weight, etc.
+            for rel_type in self.schema.get('relationship_types', []):
+                # GraphInterface expects 'REL_' prefix for relationship queries
+                rel_label = f"REL_{rel_type}"
+                # Get all properties that exist for this relationship type
+                rel_props = self.schema.get('relationship_properties', {}).get(rel_type, [])
+                for prop_name in rel_props:
+                    # Skip if we already have this property from a node type
+                    if prop_name not in values:
+                        try:
+                            # Query relationship properties using the REL_ prefix convention
+                            prop_values = self.graph_db.get_property_values(rel_label, prop_name)
+                            # Only store if the relationship actually has values for this property
+                            if prop_values:
+                                values[prop_name] = prop_values
+                        except Exception:
+                            # Some relationships might not have certain properties - skip gracefully
+                            continue
+                    
+        except Exception:
+            pass
+        return values
 
-        This method demonstrates core LangGraph concepts:
-        - Building a state graph with connected processing nodes
-        - Defining workflow steps and their relationships
-        - Creating a linear pipeline for educational clarity
+    def _get_llm_response(self, prompt: str, max_tokens: Optional[int] = None) -> str:
+        """Get response from LLM and handle content extraction."""
+        if max_tokens is None:
+            max_tokens = self.DEFAULT_MAX_TOKENS
 
-        Think of this as building a flowchart where each step processes
-        the shared state and passes it to the next step.
-        """
-        # Step 1: Create the graph structure
+        try:
+            response = self.anthropic.messages.create(
+                model=self.MODEL_NAME,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            content = response.content[0]
+            return content.text.strip() if hasattr(content, "text") else str(content)
+        except Exception as e:
+            raise RuntimeError(f"LLM response failed: {str(e)}")
+
+    def _create_workflow(self) -> Any:
+        """Create the LangGraph workflow."""
         workflow = StateGraph(WorkflowState)
 
-        # Step 2: Add our processing nodes (each node is a function)
         workflow.add_node("classify", self.classify_question)
         workflow.add_node("extract", self.extract_entities)
         workflow.add_node("generate", self.generate_query)
         workflow.add_node("execute", self.execute_query)
         workflow.add_node("format", self.format_answer)
 
-        # Step 3: Connect the nodes (define the flow)
-        workflow.add_edge("classify", "extract")  # classify → extract
-        workflow.add_edge("extract", "generate")  # extract → generate
-        workflow.add_edge("generate", "execute")  # generate → execute
-        workflow.add_edge("execute", "format")  # execute → format
-        workflow.add_edge("format", END)  # format → END
+        workflow.add_edge("classify", "extract")
+        workflow.add_edge("extract", "generate")
+        workflow.add_edge("generate", "execute")
+        workflow.add_edge("execute", "format")
+        workflow.add_edge("format", END)
 
-        # Step 4: Set where to start
         workflow.set_entry_point("classify")
-
-        # Step 5: Compile into executable workflow
         return workflow.compile()
 
+    def _build_classification_prompt(self, question: str) -> str:
+        """Build classification prompt with consistent formatting."""
+        return f"""Classify this biomedical question. Choose one:
+- gene_disease: genes and diseases
+- drug_treatment: drugs and treatments
+- protein_function: proteins and functions
+- general_db: database exploration
+- general_knowledge: biomedical concepts
+
+Question: {question}
+
+Respond with just the type."""
+
     def classify_question(self, state: WorkflowState) -> WorkflowState:
+        """Classify the biomedical question type using an LLM.
+        
+        Uses LLM-based classification instead of hardcoded keyword matching for
+        more flexible and accurate question type detection. This enables the agent
+        to handle nuanced questions that don't fit simple keyword patterns.
         """
-        Step 1: Figure out what type of biomedical question this is.
-
-        This helps us choose the right query pattern later.
-        Common types: gene-disease, drug-treatment, protein-function
-        """
-        prompt = f"""
-        What type of biomedical question is this? Choose one:
-        - gene_disease: asking about genes and diseases
-        - drug_treatment: asking about drugs and treatments
-        - protein_function: asking about proteins and their roles
-        - general: other biomedical questions
-
-        Question: {state['user_question']}
-
-        Just respond with the type (like "gene_disease").
-        """
-
-        # Ask Claude to classify the question
-        response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",  # Fast model for simple tasks
-            max_tokens=20,
-            messages=[{"role": "user", "content": prompt}],
-        )
-
-        # Extract the response and update our state
-        content = response.content[0]
-        if hasattr(content, "text"):
-            question_type = content.text.strip()
-        else:
-            question_type = str(content)
-        state["question_type"] = question_type
-
-        print(f"🔍 Question classified as: {question_type}")
+        try:
+            # Build classification prompt with available question types
+            prompt = self._build_classification_prompt(state["user_question"])
+            # Use minimal tokens since we only need a single classification word
+            state["question_type"] = self._get_llm_response(prompt, max_tokens=20)
+        except Exception as e:
+            # If classification fails, record error but continue with safe fallback
+            state["error"] = f"Classification failed: {str(e)}"
+            # Default to general knowledge to avoid database queries with malformed inputs
+            state["question_type"] = "general_knowledge"
         return state
 
     def extract_entities(self, state: WorkflowState) -> WorkflowState:
+        """Extract biomedical entities from the question.
+        
+        Uses the database schema to guide entity extraction, ensuring that
+        only entities that can actually be found in the database are extracted.
+        This improves query generation accuracy by providing relevant context.
         """
-        Step 2: Find the important biomedical terms in the question.
+        # Skip entity extraction for questions that don't need database-specific entities
+        question_type = state.get("question_type")
+        if question_type in ["general_db", "general_knowledge"]:
+            # General questions don't need specific entity extraction
+            state["entities"] = []
+            return state
 
-        These are the specific things we'll search for in our knowledge graph.
-        Examples: "diabetes", "GENE_ALPHA", "aspirin"
-        """
-        prompt = f"""
-        Extract the important biomedical terms from this question.
-        Look for specific names of:
-        - Genes (like GENE_ALPHA, BRCA1)
-        - Diseases (like diabetes, cancer)
-        - Drugs (like aspirin, AlphaCure)
-        - Proteins (like PROT_BETA, insulin)
+        # Build dynamic property information from actual database content
+        # This replaces hardcoded examples with real data from the database
+        property_info = []
+        for prop_name, values in self.property_values.items():
+            if values:  # Only show properties that have actual values in the database
+                # Show first 3 values as representative examples for the LLM
+                sample_values = ", ".join(values[:3])
+                property_info.append(f"- {prop_name}: {sample_values}")
+        
+        entity_types_str = ", ".join(self.schema.get('node_labels', []))
+        relationship_types_str = ", ".join(self.schema.get('relationship_types', []))
+        
+        prompt = f"""Extract biomedical terms and concepts from this question based on the database schema:
 
-        Question: {state['user_question']}
+Available entity types: {entity_types_str}
+Available relationships: {relationship_types_str}
 
-        Return just a simple list like: ["diabetes", "GENE_ALPHA"]
-        If you don't find any specific terms, return: []
-        """
+Available property values in database:
+{chr(10).join(property_info) if property_info else "- No specific property values available"}
 
-        response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",
-            max_tokens=100,
-            messages=[{"role": "user", "content": prompt}],
-        )
+Question: {state['user_question']}
+
+Extract ALL relevant terms including:
+- Specific entity names mentioned
+- Entity types referenced  
+- Property values or constraints
+- Relationship concepts
+- General biomedical concepts
+
+Return a JSON list: ["term1", "term2"] or []"""
 
         try:
-            # Try to parse the list from Claude's response
-            content = response.content[0]
-            if hasattr(content, "text"):
-                response_text = content.text.strip()
-            else:
-                response_text = str(content)
-            entities = json.loads(response_text)
-            state["entities"] = entities
-            print(f"🧬 Found entities: {entities}")
-        except Exception:
-            # If parsing fails, just use empty list
+            response_text = self._get_llm_response(prompt, max_tokens=100)
+
+            # Clean up response text before JSON parsing
+            cleaned_text = response_text.strip()
+            if cleaned_text.startswith("```json"):
+                cleaned_text = (
+                    cleaned_text.replace("```json", "").replace("```", "").strip()
+                )
+
+            state["entities"] = json.loads(cleaned_text)
+        except (json.JSONDecodeError, AttributeError):
+            # Fallback to empty list if JSON parsing fails
             state["entities"] = []
-            print("🧬 No specific entities found")
 
         return state
 
     def generate_query(self, state: WorkflowState) -> WorkflowState:
+        """Generate Cypher query based on question type.
+        
+        Creates database queries dynamically using the actual schema and property
+        values discovered from the database. This ensures queries are valid and
+        use only properties/relationships that actually exist.
         """
-        Step 3: Create a database query to find the answer.
+        question_type = state.get("question_type", "general")
 
-        This is where we convert natural language into Cypher (Neo4j's query language).
-        This is one of the most important learning concepts!
-        """
-        # Build context about our database structure
-        schema_info = f"""
-        Our knowledge graph has:
-        - Nodes: {', '.join(self.schema['node_labels'])}
-        - Relationships: {', '.join(self.schema['relationship_types'])}
-        Common patterns:
-        - Gene -[:ENCODES]-> Protein
-        - Gene -[:LINKED_TO]-> Disease
-        - Drug -[:TREATS]-> Disease
-        - Drug -[:TARGETS]-> Protein
-        """
+        # Database exploration questions use a simple schema overview query
+        if question_type == "general_db":
+            # Use predefined query to show database structure and content overview
+            state["cypher_query"] = self.SCHEMA_QUERY
+            return state
 
-        entities_text = f"Important terms: {state.get('entities', [])}"
+        # General knowledge questions don't need database queries
+        if question_type == "general_knowledge":
+            # Skip database query for conceptual questions that don't need data lookup
+            state["cypher_query"] = None
+            return state
 
-        prompt = f"""
-        Create a Neo4j Cypher query to answer this biomedical question.
-        {schema_info}
+        # Build dynamic relationship guide from actual database schema
+        # This replaces hardcoded relationship patterns with discovered relationships
+        relationship_guide = f"""
+Available relationships:
+{' | '.join([f'- {rel}' for rel in self.schema['relationship_types']])}"""
 
-        Question: {state['user_question']}
-        Question type: {state.get('question_type', 'general')}
-        {entities_text}
+        # Build comprehensive property information from database discovery
+        # This gives the LLM concrete examples of what property values exist
+        property_details = []
+        for prop_name, values in self.property_values.items():
+            if values:  # Only include properties with actual values in the database
+                # Auto-detect value type to help LLM understand data format
+                value_type = "text values" if isinstance(values[0], str) else "numeric values"
+                property_details.append(f"- {prop_name}: {values} ({value_type})")
+        
+        property_info = f"""Property names and values:
+Node properties: {self.schema['node_properties']}
+Available property values:
+{chr(10).join(property_details) if property_details else "- No specific property values available"}
+Use WHERE property IN [value1, value2] for filtering."""
+        prompt = f"""Create a Cypher query for this biomedical question:
 
-        Guidelines:
-        1. Use MATCH to find patterns
-        2. Use WHERE to filter (like: WHERE toLower(d.disease_name)
-           CONTAINS toLower("diabetes"))
-        3. Use RETURN to get results
-        4. Add LIMIT 10 for performance
-        Return ONLY the Cypher query, nothing else.
-        """
+Question: {state['user_question']}
+Type: {question_type}
+Schema: Nodes: {', '.join(self.schema['node_labels'])} | Relations: {', '.join(self.schema['relationship_types'])}  # noqa: E501
+{property_info}
+{relationship_guide}
+Entities: {state.get('entities', [])}
 
-        response = self.anthropic.messages.create(
-            model="claude-3-sonnet-20240229",  # More powerful model
-            max_tokens=200,
-            messages=[{"role": "user", "content": prompt}],
-        )
+Use MATCH, WHERE with CONTAINS for filtering, RETURN, LIMIT 10.
+IMPORTANT: Use property names from schema above and IN filtering for property values.
+Return only the Cypher query."""
 
-        # Clean up the query (remove code block formatting if present)
-        content = response.content[0]
-        if hasattr(content, "text"):
-            cypher_query = content.text.strip()
-        else:
-            cypher_query = str(content)
+        cypher_query = self._get_llm_response(prompt, max_tokens=150)
+
+        # Clean up LLM response formatting (remove markdown code blocks)
+        # LLMs often wrap code in ```cypher blocks, so we need to extract just the query
         if cypher_query.startswith("```"):
-            lines = cypher_query.split("\n")
             cypher_query = "\n".join(
                 line
-                for line in lines
-                if not line.startswith("```") and not line.startswith("cypher")
-            )
+                for line in cypher_query.split("\n")
+                # Remove markdown code block markers and language specifiers
+                if not line.startswith("```")
+                and not line.startswith("cypher")  # noqa: E501
+            ).strip()
 
         state["cypher_query"] = cypher_query
-        print(f"🔧 Generated query: {cypher_query}")
         return state
 
     def execute_query(self, state: WorkflowState) -> WorkflowState:
-        """
-        Step 4: Run our query against the knowledge graph.
-
-        This is where we actually search the database and get results.
+        """Execute the generated Cypher query against the database.
+        
+        Safely executes the LLM-generated query with error handling to prevent
+        crashes from malformed queries while capturing useful error information.
         """
         try:
-            # Execute the query we generated
             query = state.get("cypher_query")
-            if query:
-                results = self.graph_db.execute_query(query)
-            else:
-                results = []
-            state["results"] = results
-            print(f"📊 Found {len(results)} results")
-
+            # Execute query only if one was generated (some question types skip this step)
+            state["results"] = self.graph_db.execute_query(query) if query else []
         except Exception as e:
-            # If something goes wrong, save the error
+            # Capture query execution errors but continue workflow to provide helpful feedback
             state["error"] = f"Query failed: {str(e)}"
+            # Set empty results so the format step can handle the error gracefully
             state["results"] = []
-            print(f"❌ Query error: {e}")
 
         return state
 
     def format_answer(self, state: WorkflowState) -> WorkflowState:
+        """Format database results into human-readable answer.
+        
+        Takes raw database results and converts them into natural language
+        responses, handling different question types and error conditions.
         """
-        Step 5: Convert our database results into a human-readable answer.
-
-        This takes the raw data and makes it understandable for users.
-        """
-        # Handle errors first
+        # Handle any errors that occurred during the workflow
         if state.get("error"):
             state["final_answer"] = (
                 f"Sorry, I had trouble with that question: {state['error']}"
             )
             return state
 
-        # Handle empty results
-        results = state.get("results")
-        if not results or len(results) == 0:
-            state["final_answer"] = (
-                "I didn't find any information for that question. "
-                "Try asking about genes, diseases, or drugs in our database."
+        question_type = state.get("question_type")
+
+        # General knowledge questions use LLM knowledge instead of database results
+        if question_type == "general_knowledge":
+            # Generate answer from LLM's training knowledge rather than database lookup
+            state["final_answer"] = self._get_llm_response(
+                f"""Answer this general biomedical question using your knowledge:
+
+Question: {state['user_question']}
+
+Provide a clear, informative answer about biomedical concepts.""",
+                max_tokens=300,  # Allow more tokens for explanatory content
             )
             return state
 
-        # Format the results nicely
-        # results already defined above
-        prompt = f"""
-        Convert these database results into a clear, informative answer.
-        Original question: {state['user_question']}
-        Database results: {json.dumps(results[:5], indent=2)}
-        Total results found: {len(results)}
+        # Handle database-based answers using query results
+        results = state.get("results", [])
+        if not results:
+            # No results found - provide helpful guidance for next steps
+            state["final_answer"] = (
+                "I didn't find any information for that question. Try asking about "
+                "genes, diseases, or drugs in our database."
+            )
+            return state
 
-        Make the answer:
-        1. Easy to understand for users
-        2. Informative about the biomedical relationships
-        3. Mention how many results were found
+        # Convert raw database results into natural language using LLM
+        state["final_answer"] = self._get_llm_response(
+            f"""Convert these database results into a clear answer:
 
-        Keep it concise but helpful.
-        """
+Question: {state['user_question']}
+Results: {json.dumps(results[:5], indent=2)}
+Total found: {len(results)}
 
-        response = self.anthropic.messages.create(
-            model="claude-3-haiku-20240307",
-            max_tokens=300,
-            messages=[{"role": "user", "content": prompt}],
+Make it concise and informative.""",
+            max_tokens=250,  # Balanced token limit for informative but concise responses
         )
-
-        content = response.content[0]
-        if hasattr(content, "text"):
-            state["final_answer"] = content.text.strip()
-        else:
-            state["final_answer"] = str(content)
-        print("✅ Generated final answer")
         return state
 
-    def answer_question(self, question: str) -> Dict[str, object]:
-        """
-        Main method: Answer a biomedical question using our LangGraph workflow.
+    def answer_question(self, question: str) -> Dict[str, Any]:
+        """Answer a biomedical question using the LangGraph workflow."""  # noqa: E501
 
-        This is what users will call to see the agent in action.
-        It runs through all our steps and returns the complete result.
-        """
-        print("\n🎓 Learning Workflow Starting...")
-        print(f"Question: {question}\n")
-
-        # Create initial state
         initial_state = WorkflowState(
             user_question=question,
             question_type=None,
@@ -356,89 +378,32 @@ class WorkflowAgent:
             error=None,
         )
 
-        # Run the workflow! This is where LangGraph magic happens
         final_state = self.workflow.invoke(initial_state)
 
-        print("\n🎯 Workflow Complete!\n")
-
-        # Return everything for detailed inspection
         return {
             "answer": final_state.get("final_answer", "No answer generated"),
             "question_type": final_state.get("question_type"),
             "entities": final_state.get("entities", []),
             "cypher_query": final_state.get("cypher_query"),
             "results_count": len(final_state.get("results", [])),
-            "raw_results": final_state.get("results", [])[
-                :3
-            ],  # Show first 3 for learning
+            "raw_results": final_state.get("results", [])[:3],
             "error": final_state.get("error"),
         }
 
 
-# Helper function for users
-def demonstrate_workflow_steps():
-    """
-    Show users what each step in the workflow does.
-    This is for learning purposes only.
-    """
-    steps = [
-        ("1. Classify", "Determine what type of biomedical question this is"),
-        ("2. Extract", "Find important biomedical terms (genes, diseases, drugs)"),
-        ("3. Generate", "Create a database query to find the answer"),
-        ("4. Execute", "Run the query against our knowledge graph"),
-        ("5. Format", "Convert results into a human-readable answer"),
-    ]
-
-    print("🎓 LangGraph Workflow Steps:")
-    print("=" * 50)
-    for step_name, description in steps:
-        print(f"{step_name}: {description}")
-    print("=" * 50)
-    print(
-        "Each step reads the current state, does its work, and updates "
-        "the state for the next step!"
-    )
-
-
-def create_workflow_graph(config=None):
-    """
-    Factory function for LangGraph Studio.
-    
-    LangGraph Studio expects a factory function that creates the graph.
-    This function sets up the agent and returns the compiled workflow.
-    """
-    import os
-    from dotenv import load_dotenv
-    
-    # Load environment variables
+def create_workflow_graph() -> Any:
+    """Factory function for LangGraph Studio."""
     load_dotenv()
-    
-    from .graph_interface import GraphInterface
-    
-    # Get environment variables
-    neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    neo4j_user = os.getenv("NEO4J_USER", "neo4j")
-    neo4j_password = os.getenv("NEO4J_PASSWORD", "")
-    anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "")
-    
-    # Create graph interface
+
     graph_interface = GraphInterface(
-        uri=neo4j_uri,
-        user=neo4j_user,
-        password=neo4j_password
+        uri=os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+        user=os.getenv("NEO4J_USER", "neo4j"),
+        password=os.getenv("NEO4J_PASSWORD", ""),
     )
-    
-    # Create workflow agent
+
     agent = WorkflowAgent(
         graph_interface=graph_interface,
-        anthropic_api_key=anthropic_api_key
+        anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
     )
-    
-    # Return the compiled workflow
+
     return agent.workflow
-
-
-# Create a module-level graph for LangGraph Studio
-def get_workflow_graph():
-    """Get the workflow graph for LangGraph Studio."""
-    return create_workflow_graph()

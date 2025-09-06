@@ -39,11 +39,11 @@ lint = [
 [tool.pdm.scripts]
 app = "streamlit run src/web/app.py"
 load-data = "python scripts/load_data.py"
-generate-data = "python scripts/generate_expanded_dataset.py"
 quickstart = "python scripts/quickstart.py"
 test = "pytest tests/ -v"
 format = {shell = "black . && isort ."}
 lint = {shell = "flake8 . && mypy ."}
+langgraph = {shell = "langgraph dev --config langgraph-studio/langgraph.json"}
 
 [build-system]
 requires = ["pdm-backend"]
