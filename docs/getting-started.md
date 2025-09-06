@@ -38,7 +38,7 @@ Edit `.env` with your API keys:
 ```bash
 ANTHROPIC_API_KEY=sk-ant-your_key_here
 NEO4J_PASSWORD=your_password
-LANGSMITH_API_KEY=lsv2_pt_your_key_here  # Optional
+LANGSMITH_API_KEY=lsv2_pt_your_key_here  
 ```
 
 ### 3. Start Database
@@ -109,4 +109,4 @@ pdm run quickstart      # System diagnostics
 
 ---
 
-*For help: [Foundations Guide](foundations-and-background.md) | [Reference](reference.md) | [Technical Guide](technical-guide.md)*
+*Navigate: [← README](../README.md) | [Foundations Guide](foundations-and-background.md) | [Reference](reference.md) | [Technical Guide](technical-guide.md)*

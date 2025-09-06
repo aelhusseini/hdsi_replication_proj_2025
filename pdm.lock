@@ -44,7 +44,7 @@ files = [
 
 [[package]]
 name = "anthropic"
-version = "0.64.0"
+version = "0.66.0"
 requires_python = ">=3.8"
 summary = "The official Python library for the anthropic API"
 groups = ["default"]
@@ -58,8 +58,8 @@ dependencies = [
     "typing-extensions<5,>=4.10",
 ]
 files = [
-    {file = "anthropic-0.64.0-py3-none-any.whl", hash = "sha256:6f5f7d913a6a95eb7f8e1bda4e75f76670e8acd8d4cd965e02e2a256b0429dd1"},
-    {file = "anthropic-0.64.0.tar.gz", hash = "sha256:3d496c91a63dff64f451b3e8e4b238a9640bf87b0c11d0b74ddc372ba5a3fe58"},
+    {file = "anthropic-0.66.0-py3-none-any.whl", hash = "sha256:67b8cd4486f3cdd09211598dc5325cc8e4e349c106a03041231d551603551c06"},
+    {file = "anthropic-0.66.0.tar.gz", hash = "sha256:5aa8b18da57dc27d83fc1d82c9fb860977e5adfae3e0c215d7ab2ebd70afb9cb"},
 ]
 
 [[package]]
@@ -965,7 +965,7 @@ files = [
 
 [[package]]
 name = "langgraph-cli"
-version = "0.4.0"
+version = "0.4.2"
 requires_python = ">=3.9"
 summary = "CLI for interacting with LangGraph API"
 groups = ["default"]
@@ -974,26 +974,26 @@ dependencies = [
     "langgraph-sdk>=0.1.0; python_version >= \"3.11\"",
 ]
 files = [
-    {file = "langgraph_cli-0.4.0-py3-none-any.whl", hash = "sha256:a7bc91d4e6112c4e186a74113764290a61f6a7c3385e50f9aeb58c18551e83d6"},
-    {file = "langgraph_cli-0.4.0.tar.gz", hash = "sha256:0478989dd1d90c42449f0cc5e7ae6fc57e6031104a600195810d848dbc7f6fde"},
+    {file = "langgraph_cli-0.4.2-py3-none-any.whl", hash = "sha256:d83b00f11f9840f153aeba5ad417b09cd7a5aa98ab4ad7f94e45fb089ed73785"},
+    {file = "langgraph_cli-0.4.2.tar.gz", hash = "sha256:074d93a2ebb9c60629a83bc4c149e837bd09e51222d48daacb498299d818ee9f"},
 ]
 
 [[package]]
 name = "langgraph-cli"
-version = "0.4.0"
+version = "0.4.2"
 extras = ["inmem"]
 requires_python = ">=3.9"
 summary = "CLI for interacting with LangGraph API"
 groups = ["default"]
 dependencies = [
     "langgraph-api<0.5.0,>=0.3; python_version >= \"3.11\"",
-    "langgraph-cli==0.4.0",
+    "langgraph-cli==0.4.2",
     "langgraph-runtime-inmem>=0.7; python_version >= \"3.11\"",
     "python-dotenv>=0.8.0",
 ]
 files = [
-    {file = "langgraph_cli-0.4.0-py3-none-any.whl", hash = "sha256:a7bc91d4e6112c4e186a74113764290a61f6a7c3385e50f9aeb58c18551e83d6"},
-    {file = "langgraph_cli-0.4.0.tar.gz", hash = "sha256:0478989dd1d90c42449f0cc5e7ae6fc57e6031104a600195810d848dbc7f6fde"},
+    {file = "langgraph_cli-0.4.2-py3-none-any.whl", hash = "sha256:d83b00f11f9840f153aeba5ad417b09cd7a5aa98ab4ad7f94e45fb089ed73785"},
+    {file = "langgraph_cli-0.4.2.tar.gz", hash = "sha256:074d93a2ebb9c60629a83bc4c149e837bd09e51222d48daacb498299d818ee9f"},
 ]
 
 [[package]]
@@ -1846,7 +1846,7 @@ files = [
 
 [[package]]
 name = "pytest"
-version = "8.4.1"
+version = "8.4.2"
 requires_python = ">=3.9"
 summary = "pytest: simple powerful testing with Python"
 groups = ["test"]
@@ -1860,8 +1860,8 @@ dependencies = [
     "tomli>=1; python_version < \"3.11\"",
 ]
 files = [
-    {file = "pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7"},
-    {file = "pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c"},
+    {file = "pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79"},
+    {file = "pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01"},
 ]
 
 [[package]]

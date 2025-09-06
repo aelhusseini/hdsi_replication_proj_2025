@@ -119,4 +119,4 @@ ORDER BY p.molecular_weight DESC LIMIT 5
 
 ---
 
-*For detailed implementation, see [technical-guide.md](technical-guide.md)*
+*Navigate: [← README](../README.md) | [Getting Started](getting-started.md) | [Foundations Guide](foundations-and-background.md) | [Technical Guide](technical-guide.md)*

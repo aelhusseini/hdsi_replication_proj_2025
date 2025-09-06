@@ -4,6 +4,8 @@
 
 An interactive educational project that teaches modern AI development through hands-on biomedical applications. Build AI agents that answer complex questions about genes, proteins, diseases, and drugs using graph databases and multi-step AI workflows.
 
+*Navigate: [Getting Started](docs/getting-started.md) | [Foundations Guide](docs/foundations-and-background.md) | [Reference](docs/reference.md) | [Technical Guide](docs/technical-guide.md)*
+
 
 ## What You'll Learn
 
@@ -45,8 +47,6 @@ pdm run load-data
 pdm run app
 ```
 
-**Detailed instructions**: See [Getting Started](docs/getting-started.md)
-
 ## Project Structure
 
 ```
@@ -61,7 +61,7 @@ pdm run app
 **Key Files**:
 - `src/agents/workflow_agent.py` - Main LangGraph agent
 - `src/web/app.py` - Interactive Streamlit interface
-- `docs/` - Complete documentation and guides
+- `docs/` - Complete documentation
 
 ## Running the Application
 

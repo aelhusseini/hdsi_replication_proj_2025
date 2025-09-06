@@ -1,7 +1,5 @@
 # Foundations and Background: Understanding the Building Blocks
 
-*A comprehensive guide for users with zero prior knowledge to understand and appreciate this biomedical AI knowledge graph project*
-
 ## Table of Contents
 
 1. [What This Document Covers](#what-this-document-covers)
@@ -26,7 +24,7 @@ This document provides the complete background knowledge needed to understand an
 
 ---
 
-## The Big Picture: Why This Project Matters
+## The Big Picture: Why This Matters
 
 ### The Challenge in Modern Medicine
 
@@ -130,17 +128,17 @@ Additional information about nodes and edges:
 ### Visual Example: Simple Biomedical Knowledge Graph
 
 ```
-[GENE_ALPHA] --encodes--> [PROTEIN_ALPHA] --associated_with--> [DIABETES]
-     |                                                            ^
-     |                                                            |
-     +--linked_to--> [HYPERTENSION] <--treats-- [DRUG_BETA] -----+
+[TP53] --encodes--> [TP53_protein] --associated_with--> [Hypertension]
+  |                                                         ^
+  |                                                         |
+  +--linked_to--> [Coronary_Artery_Disease] <--treats-- [Lisinopril]
 ```
 
 This shows:
-- Gene Alpha encodes Protein Alpha
-- Protein Alpha is associated with diabetes
-- Gene Alpha is also linked to hypertension
-- Drug Beta treats both diabetes and hypertension
+- TP53 gene encodes TP53 protein
+- TP53 protein is associated with hypertension
+- TP53 gene is also linked to coronary artery disease
+- Lisinopril treats both hypertension and coronary artery disease
 
 ### Why Knowledge Graphs Are Powerful
 
@@ -173,13 +171,13 @@ Think of these like spreadsheets:
 - Complex relationships require many table joins
 - Performance degrades with complex multi-step queries
 
-**Example Query**: "Find genes linked to diabetes"
+**Example Query**: "Find genes linked to hypertension"
 ```sql
-SELECT g.name 
+SELECT g.gene_name 
 FROM genes g
-JOIN gene_disease_links gdl ON g.id = gdl.gene_id
-JOIN diseases d ON gdl.disease_id = d.id
-WHERE d.name = 'diabetes'
+JOIN gene_disease_links gdl ON g.gene_id = gdl.gene_id
+JOIN diseases d ON gdl.disease_id = d.disease_id
+WHERE d.disease_name = 'Hypertension'
 ```
 
 ### Graph Databases
@@ -190,10 +188,10 @@ Think of these like networks:
 - Complex traversals are natural and fast
 - Performance improves with relationship-heavy queries
 
-**Example Query**: "Find genes linked to diabetes"
+**Example Query**: "Find genes linked to hypertension"
 ```cypher
-MATCH (g:Gene)-[:LINKED_TO]->(d:Disease {name: 'diabetes'})
-RETURN g.name
+MATCH (g:Gene)-[:LINKED_TO]->(d:Disease {disease_name: 'Hypertension'})
+RETURN g.gene_name
 ```
 
 ### Why We Use Neo4j (Graph Database) for This Project
@@ -208,6 +206,7 @@ RETURN g.name
 Finding multi-hop relationships is straightforward:
 ```cypher
 MATCH path = (gene:Gene)-[:ENCODES]->(protein:Protein)-[:ASSOCIATED_WITH]->(disease:Disease)<-[:TREATS]-(drug:Drug)
+WHERE gene.gene_name = 'TP53'
 RETURN path
 ```
 
@@ -250,11 +249,11 @@ Keeping track of information across multiple steps:
 ### Simple LangGraph Example
 
 ```
-User Question: "What drugs treat diseases linked to Gene Alpha?"
+User Question: "What drugs treat diseases linked to TP53?"
 
 Agent Workflow:
-1. Parse question → Extract entity "Gene Alpha"
-2. Query database → Find diseases linked to Gene Alpha
+1. Parse question → Extract entity "TP53"
+2. Query database → Find diseases linked to TP53
 3. For each disease → Find drugs that treat it
 4. Synthesize results → Generate comprehensive answer
 ```
@@ -347,16 +346,16 @@ Extensive public databases of biomedical knowledge exist
 
 ```
 Gene → Protein Relationships:
-- GENE_ALPHA encodes PROTEIN_ALPHA
-- GENE_BETA encodes PROTEIN_BETA
+- TP53 encodes TP53_protein
+- BRCA1 encodes BRCA1_protein
 
 Gene/Protein → Disease Relationships:
-- GENE_ALPHA linked_to diabetes
-- PROTEIN_ALPHA associated_with hypertension
+- TP53 linked_to Hypertension
+- BRCA1_protein associated_with Coronary_Artery_Disease
 
 Drug → Target/Disease Relationships:
-- AlphaCure treats diabetes
-- BetaTherapy targets PROTEIN_BETA
+- Lisinopril treats Hypertension
+- Metoprolol targets TP53_protein
 ```
 
 ---
@@ -389,7 +388,7 @@ Drug → Target/Disease Relationships:
 
 ### Language Model: Anthropic Claude
 
-**What it is**: A large language model designed for helpful, harmless, and honest interactions
+**What it is**: A large language model designed for interactions
 
 **Why we use it**:
 - Excellent at understanding complex questions
@@ -460,7 +459,7 @@ User Interface (Streamlit)
 - **Side Effect Prediction**: Understand off-target effects
 - **Biomarker Discovery**: Find indicators for drug efficacy
 
-**Example**: A drug developed for diabetes might also work for Alzheimer's if both diseases share common protein pathways.
+**Example**: A drug developed for hypertension like Lisinopril might also work for heart failure if both diseases share common protein pathways.
 
 ### Personalized Medicine
 
@@ -504,54 +503,6 @@ User Interface (Streamlit)
 
 ---
 
-## Why This Approach is Revolutionary
-
-### 1. **Democratizes Advanced Analytics**
-
-**Before**: Required expertise in:
-- Database query languages
-- Bioinformatics tools
-- Statistical analysis
-- Programming
-
-**Now**: Natural language questions get expert-level analysis
-
-### 2. **Integrates Fragmented Knowledge**
-
-**Before**: Knowledge scattered across:
-- Different databases
-- Various formats
-- Incompatible systems
-- Siloed domains
-
-**Now**: Unified, interconnected knowledge accessible through single interface
-
-### 3. **Enables Serendipitous Discovery**
-
-**Before**: Limited to planned research directions
-
-**Now**: Can discover unexpected connections and generate novel hypotheses
-
-### 4. **Scales Human Expertise**
-
-**Before**: Limited by human memory and processing capacity
-
-**Now**: Combines human insight with computational power
-
-### 5. **Accelerates Learning and Research**
-
-**Before**: Years to become domain expert
-
-**Now**: Immediate access to expert-level knowledge with learning-friendly explanations
-
-### 6. **Bridges Domain Gaps**
-
-**Before**: Researchers specialized in narrow areas
-
-**Now**: Cross-disciplinary insights become accessible
-
----
-
 ## Getting Started: Your Learning Journey
 
 ### Phase 1: Understanding the Basics
@@ -563,8 +514,8 @@ User Interface (Streamlit)
 
 #### Activities:
 1. **Read this document** (you're doing it!)
-2. **Explore the web interface** - ask simple questions
-3. **Try the tutorial notebook** - hands-on learning
+2. **Explore the web interface** - ask simple questions and try hands-on learning
+3. **Use LangGraph Studio** - visualize workflows and debug agents
 4. **Practice basic Cypher queries** - learn the graph query language
 
 #### Success Metrics:
@@ -610,22 +561,22 @@ User Interface (Streamlit)
 
 ### Learning Resources in This Project
 
-#### 📖 **Documentation**
+#### **Documentation**
 - `getting-started.md` - Setup and first steps
 - `technical-guide.md` - Architecture deep dive
 - `reference.md` - Commands and examples
 
-#### 🎓 **Interactive Materials**
-- Streamlit web interface - immediate experimentation
-- Jupyter tutorial notebook - step-by-step learning
+#### **Interactive Materials**
+- Streamlit web interface - immediate experimentation and step-by-step learning
+- LangGraph Studio - visual workflow debugging and development
 - Practice exercises - progressive challenges
 
-#### 🔧 **Code Examples**
-- `workflow_agent.py` - Full-featured LangGraph implementation (used in web app)
-- `workflow_agent.py` - Educational LangGraph implementation
+#### **Code Examples**
+- `workflow_agent.py` - Educational LangGraph implementation (used in web app)
 - `graph_interface.py` - Neo4j database interface
+- `langgraph-studio/` - Visual debugging and workflow development tools
 
-#### ✅ **Validation**
+#### **Validation**
 - 14 automated tests - verify your understanding
 - Quickstart script - ensure everything works
 - Example queries - test your knowledge
@@ -647,12 +598,7 @@ User Interface (Streamlit)
 - Consider how these techniques work in this domain
 - Practice with the provided examples and datasets
 
-#### 4. **Join the Community**
-- Explore related projects on GitHub
-- Share your learnings and applications
-- Contribute back to open source
-
-#### 5. **Master the Core Concepts**
+#### 4. **Master the Core Concepts**
 - Focus on understanding the fundamental principles
 - Practice with the provided examples and exercises
 - Build expertise in the technologies demonstrated
@@ -677,16 +623,6 @@ The future belongs to systems that can:
 
 This project gives you hands-on experience building exactly these kinds of systems.
 
-**Welcome to the future of intelligent information systems!**
-
 ---
 
-### Next Steps
-
-1. **Set up your environment** using `docs/getting-started.md`
-2. **Try the interactive interface** to see the system in action
-3. **Work through the tutorial notebook** for hands-on learning
-4. **Experiment with the practice exercises** to build your skills
-5. **Continue expanding your knowledge** - explore the advanced exercises and tutorials
-
-Remember: Every expert was once a beginner. The key is to start, experiment, and keep learning!
+*Navigate: [← README](../README.md) | [Getting Started](getting-started.md) | [Reference](reference.md) | [Technical Guide](technical-guide.md)*
