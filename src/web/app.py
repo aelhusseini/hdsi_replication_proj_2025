@@ -34,45 +34,49 @@ sys.path.append(str(src_dir))
 from agents.graph_interface import GraphInterface  # noqa: E402
 from agents.workflow_agent import WorkflowAgent  # noqa: E402
 
-# Load environment variables
+# Load environment variables and configure page
 load_dotenv()
+st.set_page_config(page_title="Helix Navigator", page_icon="🔬", layout="wide")
 
-# Page configuration
-st.set_page_config(
-    page_title="Helix Navigator",
-    page_icon="🔬",
-    layout="wide",
-)
+# Constants
+EXAMPLE_QUESTIONS = [
+    "Which drugs have high efficacy for treating diseases?",
+    "Which approved drugs treat cardiovascular diseases?",
+    "Which genes encode proteins that are biomarkers for diseases?",
+    "What drugs target proteins with high confidence disease associations?",
+    "Which approved drugs target specific proteins?",
+    "Which genes are linked to multiple disease categories?",
+    "What proteins have causal associations with diseases?",
+]
 
-st.markdown(
-    """
-<style>
-    .main {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    .stButton > button {
-        width: 100%;
-        border-radius: 8px;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white;
-        font-weight: 500;
-        border: none;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 8px 8px 0 0;
-        font-weight: 500;
-    }
-    
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-</style>
-""",
-    unsafe_allow_html=True,
-)
+QUERY_EXAMPLES = {
+    "Browse gene catalog": "MATCH (g:Gene) RETURN g.gene_name, g.chromosome, g.function ORDER BY g.gene_name LIMIT 15",
+    "High-efficacy treatments": (
+        "MATCH (dr:Drug)-[t:TREATS]->(d:Disease) "
+        "WHERE t.efficacy IN ['high', 'very_high'] "
+        "RETURN dr.drug_name, d.disease_name, t.efficacy "
+        "ORDER BY t.efficacy DESC, dr.drug_name LIMIT 20"
+    ),
+    "Multi-pathway drug discovery": (
+        "MATCH (dr:Drug)-[:TARGETS]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease) "
+        "WHERE dr.approval_status = 'approved' "
+        "RETURN dr.drug_name, p.protein_name, d.disease_name, d.category "
+        "ORDER BY d.category, dr.drug_name LIMIT 25"
+    ),
+    "Treatment options by disease category": (
+        "MATCH (dr:Drug)-[:TREATS]->(d:Disease) "
+        "RETURN d.category, count(DISTINCT dr) as available_drugs "
+        "ORDER BY available_drugs DESC"
+    ),
+    "Biomarker discovery": (
+        "MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[a:ASSOCIATED_WITH]->(d:Disease) "
+        "WHERE a.association_type = 'biomarker' AND a.confidence IN ['high', 'very_high'] "
+        "RETURN g.gene_name, p.protein_name, d.disease_name, d.category "
+        "ORDER BY d.category, g.gene_name LIMIT 30"
+    ),
+    "Custom query": "",
+}
+
 
 
 @st.cache_resource
@@ -96,15 +100,13 @@ def create_network_visualization(results, relationship_type):
     if not results or len(results) == 0:
         return None
 
-    # Create nodes and edges based on result structure
+    # Extract nodes and edges
     nodes = set()
     edges = []
-
     for result in results:
         keys = list(result.keys())
         if len(keys) >= 2:
-            source = str(result[keys[0]])
-            target = str(result[keys[1]])
+            source, target = str(result[keys[0]]), str(result[keys[1]])
             nodes.add(source)
             nodes.add(target)
             edges.append((source, target))
@@ -112,132 +114,149 @@ def create_network_visualization(results, relationship_type):
     if not nodes:
         return None
 
-    # Create plotly figure
+    # Create simple network visualization
     import networkx as nx
 
     G = nx.Graph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
 
-    pos = nx.spring_layout(G)
+    # Use circular layout as fallback since spring_layout might require scipy
+    try:
+        pos = nx.spring_layout(G)
+    except ImportError:
+        # Fallback to circular layout if scipy is missing
+        pos = nx.circular_layout(G)
+    except Exception:
+        # Ultimate fallback to random layout
+        pos = nx.random_layout(G)
 
-    edge_trace = []
-    for edge in G.edges():
-        x0, y0 = pos[edge[0]]
-        x1, y1 = pos[edge[1]]
-        edge_trace.append(
-            go.Scatter(
-                x=[x0, x1, None],
-                y=[y0, y1, None],
-                mode="lines",
-                line=dict(width=2, color="#888"),
-                hoverinfo="none",
-            )
-        )
+    # Create traces
+    edge_trace = go.Scatter(
+        x=sum([[pos[edge[0]][0], pos[edge[1]][0], None] for edge in G.edges()], []),
+        y=sum([[pos[edge[0]][1], pos[edge[1]][1], None] for edge in G.edges()], []),
+        mode="lines",
+        line=dict(width=1, color="#888"),
+        hoverinfo="none",
+    )
 
     node_trace = go.Scatter(
         x=[pos[node][0] for node in G.nodes()],
         y=[pos[node][1] for node in G.nodes()],
         mode="markers+text",
-        text=[node for node in G.nodes()],
+        text=list(G.nodes()),
         textposition="top center",
-        marker=dict(size=20, color="lightblue", line=dict(width=2, color="darkblue")),
+        marker=dict(size=15, color="lightblue"),
     )
 
-    fig = go.Figure(data=edge_trace + [node_trace])
-    fig.update_layout(
-        showlegend=False,
-        hovermode="closest",
-        margin=dict(b=0, l=0, r=0, t=40),
-        title=f"{relationship_type} Network",
-        height=500,
+    return go.Figure(
+        data=[edge_trace, node_trace],
+        layout=go.Layout(
+            showlegend=False,
+            hovermode="closest",
+            margin=dict(b=0, l=0, r=0, t=40),
+            title=f"{relationship_type} Network",
+            height=400,
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        ),
     )
-    fig.update_xaxes(showgrid=False, zeroline=False, showticklabels=False)
-    fig.update_yaxes(showgrid=False, zeroline=False, showticklabels=False)
-
-    return fig
 
 
 def display_learning_workflow_steps():
-    st.markdown(
-        """
-    ### Understanding the LangGraph Workflow
+    st.subheader("LangGraph Workflows")
+    st.markdown("""
+    LangGraph builds **multi-step AI agents** that follow structured workflows. Instead of one-shot responses, 
+    agents maintain state and work through problems step by step.
+    """)
 
-    Our agent follows these steps to answer your questions:
-    """
-    )
+    st.markdown("**Key Benefits:**")
+    st.markdown("• Each step builds on the previous one's output")
+    st.markdown("• Transparent - you can see the agent's reasoning process")
+    st.markdown("• Reliable - structured approach reduces errors")
+    
+    st.markdown("---")
+    
+    st.markdown("**Our Agent's 5-Step Process:**")
 
     steps = [
-        (
-            "**1. Classify**",
-            "Determine what type of biomedical question this is "
-            "(gene-disease, drug-treatment, etc.)",
-        ),
-        (
-            "**2. Extract**",
-            "Find important biomedical terms like gene names, diseases, and drugs",
-        ),
-        ("**3. Generate**", "Create a Cypher database query to find the answer"),
-        ("**4. Execute**", "Run the query against our knowledge graph"),
-        ("**5. Format**", "Convert results into a human-readable answer"),
+        ("1. Classify", "Determine what type of question this is"),
+        ("2. Extract", "Find key terms like gene names or diseases"),
+        ("3. Generate", "Build a database query based on the question"),
+        ("4. Execute", "Run the query and get results"),
+        ("5. Format", "Turn database results into a readable answer"),
     ]
 
     for step_name, description in steps:
-        st.markdown(f"{step_name}: {description}")
+        st.markdown(f"**{step_name}**: {description}")
 
-    st.info(
-        "**Key Learning Point**: Each step reads the current state, "
-        "does its work, and updates the state for the next step. "
-        "This is the core concept of LangGraph!"
-    )
+    st.markdown("---")
+    st.markdown("**Question Classification Types:**")
+    st.markdown("The agent can identify and handle these types of biomedical questions:")
+    
+    question_types = [
+        ("gene_disease", "Questions about genes and diseases", "Which genes are linked to heart disease?"),
+        ("drug_treatment", "Questions about drugs and treatments", "What drugs treat hypertension?"),
+        ("protein_function", "Questions about proteins and functions", "What proteins does TP53 encode?"),
+        ("general_db", "Database exploration queries", "Show me all available genes"),
+        ("general_knowledge", "Biomedical concept questions", "What is hypertension?"),
+    ]
+    
+    for qtype, description, example in question_types:
+        st.markdown(f"• **{qtype}**: {description}")
+        st.markdown(f"  *Example: \"{example}\"*")
+
+    st.info("Each step updates the shared state, allowing complex reasoning chains.")
 
 
 def display_knowledge_graph_concepts():
-    st.markdown(
-        """
-    ### Knowledge Graph Fundamentals
+    st.subheader("Knowledge Graph Fundamentals")
+    st.markdown("""
+    Knowledge graphs store information as connected networks of **nodes** (entities) and **relationships** (edges). 
+    Think of it like a social network, but for data - everything is connected to everything else.
+    """)
 
-    **What is a Knowledge Graph?**
-    A knowledge graph represents information as nodes (entities) and relationships (edges).
-
-    **Our Biomedical Graph:**
-    - **Genes**: Genetic sequences (e.g., TP53, BRCA1)
-    - **Proteins**: Encoded by genes (e.g., TP53_protein)
-    - **Diseases**: Medical conditions (e.g., diabetes, hypertension)
-    - **Drugs**: Medications (e.g., Lisinopril, Metformin)
-
-    **Relationships:**
-    - Gene `--[ENCODES]-->` Protein
-    - Gene `--[LINKED_TO]-->` Disease
-    - Protein `--[ASSOCIATED_WITH]-->` Disease
-    - Drug `--[TREATS]-->` Disease
-    - Drug `--[TARGETS]-->` Protein
-    """
-    )
+    st.markdown("**Why Use Knowledge Graphs?**")
+    st.markdown("• Find complex patterns across connected data")
+    st.markdown("• Naturally represent real-world relationships")
+    st.markdown("• Query using graph languages like Cypher")
+    
+    st.markdown("---")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**Entities (Nodes):**")
+        entities = [
+            "**Genes** (TP53, BRCA1, MYC)",
+            "**Proteins** (TP53, BRCA1, MYC_iso1)", 
+            "**Diseases** (Hypertension, Heart_Failure)",
+            "**Drugs** (Lisinopril, Metoprolol)",
+        ]
+        for entity in entities:
+            st.markdown(f"• {entity}")
+    
+    with col2:
+        st.markdown("**Relationships (Edges):**")
+        relationships = [
+            "**ENCODES** - Gene → Protein",
+            "**LINKED_TO** - Gene → Disease",
+            "**TREATS** - Drug → Disease", 
+            "**TARGETS** - Drug → Protein",
+            "**ASSOCIATED_WITH** - Protein → Disease"
+        ]
+        for rel in relationships:
+            st.markdown(f"• {rel}")
+    
+    st.info("Each relationship can have properties like confidence scores or efficacy ratings.")
 
 
 def main_interface(workflow_agent, graph_interface):
-
-    st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-
     tab1, tab2, tab3 = st.tabs(["Concepts", "Try the Agent", "Explore Queries"])
 
     with tab1:
-        st.markdown(
-            """
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
-                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
-                        border: 1px solid #93c5fd;">
-                <h2 style="margin: 0 0 0.5rem 0; color: #1e40af; text-align: center;">
-                    Learn the Fundamentals
-                </h2>
-                <p style="margin: 0; text-align: center; color: #3730a3;">
-                    Master the core concepts behind knowledge graphs and Agentic workflows
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.header("Learn the Fundamentals")
+        st.markdown("Master the core concepts behind knowledge graphs and AI workflows")
 
         concept_choice = st.selectbox(
             "Choose a concept to explore:",
@@ -245,7 +264,6 @@ def main_interface(workflow_agent, graph_interface):
                 "Knowledge Graphs",
                 "LangGraph Workflows",
                 "Cypher Queries",
-                "Biomedical Applications",
             ],
         )
 
@@ -261,89 +279,30 @@ def main_interface(workflow_agent, graph_interface):
             display_learning_workflow_steps()
 
         elif concept_choice == "Cypher Queries":
-            st.markdown(
-                """
-            ### Cypher Query Language
+            st.markdown("### Cypher Query Language")
+            st.markdown("Cypher is a query language for graph databases.")
 
-            Cypher is Neo4j's query language for graphs. Think of it like SQL for graphs!
-
-            **Basic Pattern:**
-            ```cypher
-            MATCH (pattern)
-            WHERE (conditions)
-            RETURN (what you want)
-            ```
-
-            **Examples:**
-            ```cypher
-            // Find all genes
-            MATCH (g:Gene) RETURN g.gene_name LIMIT 5
-
-            // Find gene-protein relationships
-            MATCH (g:Gene)-[:ENCODES]->(p:Protein)
-            RETURN g.gene_name, p.protein_name LIMIT 5
-
-            // Find drugs that treat diabetes
-            MATCH (dr:Drug)-[:TREATS]->(d:Disease)
-            WHERE toLower(d.disease_name) CONTAINS 'diabetes'
-            RETURN dr.drug_name, d.disease_name
-            ```
-            """
+            st.markdown("**Basic Pattern:**")
+            st.code(
+                "MATCH (pattern) WHERE (conditions) RETURN (results)", language="cypher"
             )
 
-        elif concept_choice == "Biomedical Applications":
-            st.markdown(
-                """
-            ### Real-World Applications
+            st.markdown("**Examples:**")
+            examples = [
+                "MATCH (g:Gene) RETURN g.gene_name LIMIT 5",
+                "MATCH (g:Gene)-[:ENCODES]->(p:Protein) RETURN g.gene_name, p.protein_name LIMIT 5",
+                "MATCH (dr:Drug)-[:TREATS]->(d:Disease) WHERE toLower(d.disease_name) CONTAINS 'diabetes' RETURN dr.drug_name",
+            ]
+            for example in examples:
+                st.code(example, language="cypher")
 
-            **Drug Discovery:**
-            - Find new drug targets
-            - Predict drug side effects
-            - Repurpose existing drugs
-
-            **Personalized Medicine:**
-            - Match patients to treatments based on genetics
-            - Predict disease risk
-            - Optimize treatment plans
-
-            **Research Acceleration:**
-            - Literature mining and synthesis
-            - Hypothesis generation
-            - Cross-domain connections
-            """
-            )
 
     with tab2:
-        st.markdown(
-            """
-            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); 
-                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
-                        border: 1px solid #86efac;">
-                <h2 style="margin: 0 0 0.5rem 0; color: #15803d; text-align: center;">
-                    Try the Workflow Agent
-                </h2>
-                <p style="margin: 0; text-align: center; color: #166534;">
-                    Ask questions and see how the LangGraph workflow processes them step by step
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # Example questions
-        example_questions = [
-            "What protein does TP53 encode?",
-            "What diseases is BRCA1 linked to?",
-            "What drugs treat hypertension?",
-            "What drugs treat Alzheimer_Disease?",
-            "What genes are associated with diabetes?",
-            "What genes are linked to both diabetes and hypertension?",
-            "Which genes are linked to neurological disorders?",
-            "What proteins are associated with cancer?",
-        ]
+        st.header("Try the Workflow Agent")
+        st.markdown("Ask questions and see how the LangGraph workflow processes them step by step")
 
         st.markdown("**Try these example questions:**")
-        selected_example = st.selectbox("Choose an example:", [""] + example_questions)
+        selected_example = st.selectbox("Choose an example:", [""] + EXAMPLE_QUESTIONS)
 
         question_input = st.text_input(
             "Your question:",
@@ -383,46 +342,17 @@ def main_interface(workflow_agent, graph_interface):
                 st.warning("Please enter a question!")
 
     with tab3:
-        st.markdown(
-            """
-            <div style="background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%); 
-                        padding: 2rem; border-radius: 12px; margin-bottom: 2rem; 
-                        border: 1px solid #fcd34d;">
-                <h2 style="margin: 0 0 0.5rem 0; color: #d97706; text-align: center;">
-                    Explore Database Queries
-                </h2>
-                <p style="margin: 0; text-align: center; color: #92400e;">
-                    Try writing your own Cypher queries and see the results
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # Example queries
-        query_examples = {
-            "Simple: All genes": "MATCH (g:Gene) RETURN g.gene_name LIMIT 5",
-            "Relationships: Gene encodes protein": (
-                "MATCH (g:Gene)-[:ENCODES]->(p:Protein) "
-                "RETURN g.gene_name, p.protein_name LIMIT 5"
-            ),
-            "Complex: Gene to disease pathway": (
-                "MATCH (g:Gene)-[:ENCODES]->(p:Protein)"
-                "-[:ASSOCIATED_WITH]->(d:Disease) "
-                "RETURN g.gene_name, p.protein_name, d.disease_name LIMIT 5"
-            ),
-            "Custom query": "",
-        }
+        st.header("Explore Database Queries")
+        st.markdown("Try writing your own Cypher queries and see the results")
 
         selected_query = st.selectbox(
-            "Choose a query to try:", list(query_examples.keys())
+            "Choose a query to try:", list(QUERY_EXAMPLES.keys())
         )
 
         query_text = st.text_area(
             "Cypher Query:",
-            value=query_examples[selected_query],
+            value=QUERY_EXAMPLES[selected_query],
             height=100,
-            help="Write your Cypher query here",
         )
 
         if st.button("Execute Query"):
@@ -437,13 +367,22 @@ def main_interface(workflow_agent, graph_interface):
 
                     if results:
                         df = pd.DataFrame(results)
-                        st.dataframe(df, use_container_width=True)
+                        st.dataframe(df, width='stretch')
 
                         # Network visualization
                         if len(df.columns) >= 2:
-                            fig = create_network_visualization(results, "Query Results")
-                            if fig:
-                                st.plotly_chart(fig, use_container_width=True)
+                            try:
+                                fig = create_network_visualization(
+                                    results, "Query Results"
+                                )
+                                if fig:
+                                    st.plotly_chart(fig, width='stretch')
+                            except ImportError as e:
+                                st.info(
+                                    f"Network visualization unavailable (missing dependency: {e})"
+                                )
+                            except Exception as e:
+                                st.info(f"Network visualization unavailable: {str(e)}")
                     else:
                         st.info("No results found.")
 
@@ -459,16 +398,8 @@ def main():
     workflow_agent, graph_interface = initialize_agent()
 
     # Header
-    st.markdown(
-        """
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <h1 style="font-size: 3rem; margin-bottom: 0.5rem; color: #1f2937;">
-                Helix Navigator
-            </h1>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.title("Helix Navigator")
+    st.markdown("Interactive biomedical AI discovery platform powered by LangGraph & knowledge graphs")
 
     # Main interface
     main_interface(workflow_agent, graph_interface)

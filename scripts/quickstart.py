@@ -39,6 +39,7 @@ sys.path.append(str(project_root))
 from dotenv import load_dotenv  # noqa: E402
 
 from src.agents.graph_interface import GraphInterface  # noqa: E402
+
 # Basic query functionality using GraphInterface
 
 # Load environment variables
@@ -214,7 +215,7 @@ def run_sample_queries() -> bool:
         if results:
             logger.info(f"Found {len(results)} drugs:")
             for r in results[:3]:  # Show first 3 results with efficacy
-                efficacy = r.get('efficacy', 'unknown')
+                efficacy = r.get("efficacy", "unknown")
                 logger.info(f"  - {r['drug']} (efficacy: {efficacy})")
 
         # Query 3: Gene-protein encoding (demonstrates ENCODES relationships)
@@ -226,10 +227,8 @@ def run_sample_queries() -> bool:
         results = graph.execute_query(query)
         if results:
             r = results[0]
-            weight = r.get('molecular_weight', 'unknown')
-            logger.info(
-                f"  - {r['gene']} encodes {r['protein']} (MW: {weight})"
-            )
+            weight = r.get("molecular_weight", "unknown")
+            logger.info(f"  - {r['gene']} encodes {r['protein']} (MW: {weight})")
 
         graph.close()
         logger.info("\n✓ Sample queries completed successfully")
