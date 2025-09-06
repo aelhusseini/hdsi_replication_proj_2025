@@ -274,7 +274,7 @@ def print_next_steps():
     print("   - What protein does GENE_ALPHA encode?")
     print("\n4. Explore the Neo4j browser:")
     print("   http://localhost:7474")
-    print("\nFor more information, see docs/USER_GUIDE.md")
+    print("\nFor more information, see docs/getting-started.md")
 
 
 def main():

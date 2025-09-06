@@ -17,8 +17,8 @@ An interactive educational project that teaches modern AI development through ha
 
 1. **New to these concepts?** Read the [Foundations Guide](docs/foundations-and-background.md)
 2. **Setup**: Follow [Getting Started](docs/getting-started.md) for installation
-3. **Learn**: Try the interactive tutorial: `docs/tutorials/langgraph-tutorial.ipynb`
-4. **Practice**: Work through exercises in `docs/exercises/practice-exercises.py`
+3. **Learn**: Use the interactive Streamlit web interface
+4. **Practice**: Work through the exercises in the web app
 
 ## Technology Stack
 
@@ -59,9 +59,9 @@ pdm run app
 ```
 
 **Key Files**:
-- `src/agents/workflow_agent.py` - Main educational LangGraph agent
-- `docs/tutorials/langgraph-tutorial.ipynb` - Interactive tutorial
-- `docs/exercises/practice-exercises.py` - Progressive challenges
+- `src/agents/workflow_agent.py` - Main LangGraph agent
+- `src/web/app.py` - Interactive Streamlit interface
+- `docs/` - Complete documentation and guides
 
 ## Running the Application
 
@@ -78,7 +78,7 @@ pdm run langgraph    # Start LangGraph Studio
 
 ### Development
 ```bash
-pdm run test            # Run tests (27 tests)
+pdm run test            # Run tests (14 tests)
 pdm run format          # Format code
 pdm run lint            # Check quality
 ```
@@ -91,12 +91,11 @@ pdm run lint            # Check quality
 
 ## Example Questions
 
-- **"What protein does TP53 encode?"** 
-- **"What diseases is BRCA1 linked to?"** 
-- **"What drugs treat hypertension?"** 
-- **"What drugs treat Alzheimer_Disease?"** 
-- **"What genes are associated with diabetes?"** 
-- **"What genes are linked to both diabetes and hypertension?"** 
-- **"Which genes are linked to neurological disorders?"** 
-- **"What proteins are associated with cancer?"** 
+- **"Which drugs have high efficacy for treating diseases?"**
+- **"Which approved drugs treat cardiovascular diseases?"**
+- **"Which genes encode proteins that are biomarkers for diseases?"**
+- **"What drugs target proteins with high confidence disease associations?"**
+- **"Which approved drugs target specific proteins?"**
+- **"Which genes are linked to multiple disease categories?"**
+- **"What proteins have causal associations with diseases?"** 
 

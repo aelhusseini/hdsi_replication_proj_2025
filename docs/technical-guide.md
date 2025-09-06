@@ -101,7 +101,7 @@ class WorkflowAgent:
         return workflow.compile()
 ```
 
-#### 3. Graph Interface (`src/agents/graph_interface.py`)
+#### 4. Graph Interface (`src/agents/graph_interface.py`)
 ```python
 class GraphInterface:
     def execute_query(self, query: str, parameters: dict = None):
@@ -114,21 +114,21 @@ class GraphInterface:
         # Used for query generation and validation
 ```
 
-## 🧬 Data Model
+## Data Model
 
 ### Node Types
 ```cypher
 // Genes with properties
-(:Gene {gene_name: "GENE_ALPHA", gene_id: "GA001", chromosome: "1"})
+(:Gene {gene_name: "TP53", gene_id: "G001", chromosome: "2"})
 
 // Proteins with molecular details
-(:Protein {protein_name: "PROT_ALPHA", protein_id: "PA001", molecular_weight: 45.2})
+(:Protein {protein_name: "PROT_ALPHA", protein_id: "P001", molecular_weight: 45.2})
 
 // Diseases with classifications
-(:Disease {disease_name: "diabetes", disease_id: "D001", category: "metabolic"})
+(:Disease {disease_name: "Hypertension", disease_id: "D001", category: "cardiovascular"})
 
 // Drugs with mechanisms
-(:Drug {drug_name: "AlphaCure", drug_id: "DR001", drug_type: "small_molecule"})
+(:Drug {drug_name: "Lisinopril", drug_id: "DR001", type: "small_molecule"})
 ```
 
 ### Relationship Types
@@ -154,9 +154,9 @@ MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[:ASSOCIATED_WITH]->(d:Disease)
 RETURN g.gene_name, p.protein_name, d.disease_name
 LIMIT 5
 
-// Find treatments for diabetes
+// Find treatments for hypertension
 MATCH (dr:Drug)-[:TREATS]->(d:Disease)
-WHERE toLower(d.disease_name) CONTAINS 'diabetes'
+WHERE toLower(d.disease_name) CONTAINS 'hypertension'
 RETURN dr.drug_name, d.disease_name
 
 // Complex pathway: Gene → Protein → Disease ← Drug
@@ -165,7 +165,7 @@ RETURN g.gene_name, p.protein_name, d.disease_name, dr.drug_name
 LIMIT 3
 ```
 
-## 🤖 LangGraph Workflow Implementation
+## LangGraph Workflow Implementation
 
 ### State Definition
 ```python
@@ -200,7 +200,7 @@ def classify_question(state: AgentState) -> AgentState:
     """
     
     response = self.client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-3-5-sonnet-20241022",
         messages=[{"role": "user", "content": prompt}]
     )
     
@@ -223,7 +223,7 @@ def extract_entities(state: AgentState) -> AgentState:
     Return as comma-separated list:
     """
     
-    # ... implementation
+    # Implementation extracts relevant entities
     state["entities"] = entities
     return state
 ```
@@ -244,21 +244,19 @@ def generate_cypher_query(state: AgentState) -> AgentState:
         RETURN g.gene_name, d.disease_name
         LIMIT 10
         """
-    # ... other query types
+    # Additional query types handled similarly
     
     state["cypher_query"] = query
     return state
 ```
 
-## 📊 Testing Strategy
+## Testing Strategy
 
 ### Test Coverage
 ```bash
 tests/
-├── test_advanced_workflow_agent.py # 7 tests - Production LangGraph workflow
 ├── test_app.py                    # 7 tests - Web interface & NetworkX
-├── test_graph_interface.py        # 4 tests - Database operations
-├── test_template_query_agent.py   # 6 tests - Template queries
+├── test_graph_interface.py        # 4 tests - Database operations  
 └── test_workflow_agent.py         # 3 tests - Learning workflow
 ```
 
@@ -279,7 +277,7 @@ def test_create_network_visualization(self, mock_spring_layout):
     # Test NetworkX graph creation
 ```
 
-## 🛠️ Development Patterns
+## Development Patterns
 
 ### Code Quality
 ```bash
@@ -323,7 +321,7 @@ def execute_query(self, query: str, parameters: dict = None):
         raise RuntimeError(f"Query execution failed: {str(e)}")
 ```
 
-## 🚀 Deployment Considerations
+## Deployment Considerations
 
 ### Environment Variables
 ```bash
@@ -371,49 +369,3 @@ def execute_query(self, query: str, parameters: dict = None):
         logger.error(f"Query failed: {str(e)}")
         raise
 ```
-
-## 📚 Extension Points
-
-### Adding New Agent Types
-```python
-class CustomAgent:
-    def __init__(self, graph_interface, custom_config):
-        self.graph = graph_interface
-        self.config = custom_config
-    
-    def answer_question(self, question: str):
-        # Implement your custom logic
-        pass
-```
-
-### Custom Visualizations
-```python
-def create_custom_visualization(results, viz_type):
-    if viz_type == "heatmap":
-        # Create correlation heatmap
-        pass
-    elif viz_type == "sankey":
-        # Create pathway flow diagram  
-        pass
-```
-
-### Domain-Specific Extensions
-```python
-# Finance knowledge graphs
-class FinanceAgent(WorkflowAgent):
-    def get_finance_schema(self):
-        return {
-            "nodes": ["Company", "Person", "Transaction"],
-            "relationships": ["OWNS", "TRANSACTS", "MANAGES"]
-        }
-
-# Social network analysis  
-class SocialAgent(WorkflowAgent):
-    def get_social_schema(self):
-        return {
-            "nodes": ["Person", "Group", "Event"],
-            "relationships": ["FRIENDS", "MEMBER_OF", "ATTENDED"]
-        }
-```
-
-This technical guide provides the foundation for understanding, extending, and deploying the project in various contexts while maintaining the learning focus that makes knowledge graphs and LangGraph accessible to users.

@@ -622,11 +622,11 @@ User Interface (Streamlit)
 
 #### 🔧 **Code Examples**
 - `workflow_agent.py` - Full-featured LangGraph implementation (used in web app)
-- `advanced_workflow_agent.py` - Production LangGraph patterns (learning reference)
-- `template_query_agent.py` - Template-based approach (beginner reference)
+- `workflow_agent.py` - Educational LangGraph implementation
+- `graph_interface.py` - Neo4j database interface
 
 #### ✅ **Validation**
-- 27 automated tests - verify your understanding
+- 14 automated tests - verify your understanding
 - Quickstart script - ensure everything works
 - Example queries - test your knowledge
 
