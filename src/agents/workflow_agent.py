@@ -47,7 +47,7 @@ class WorkflowAgent:
         self.property_values = self._get_key_property_values()
         self.workflow = self._create_workflow()
 
-    def _get_key_property_values(self) -> Dict[str, List[str]]:
+    def _get_key_property_values(self) -> Dict[str, List[Any]]:
         """Get property values dynamically from all nodes and relationships.
 
         This method discovers all available properties in the database schema and
@@ -199,7 +199,7 @@ Respond with just the type."""
         for prop_name, values in self.property_values.items():
             if values:  # Only show properties with actual values in database
                 # Show first 3 values as representative examples for the LLM
-                sample_values = ", ".join(values[:3])
+                sample_values = ", ".join(str(v) for v in values[:3])
                 property_info.append(f"- {prop_name}: {sample_values}")
 
         entity_types_str = ", ".join(self.schema.get("node_labels", []))

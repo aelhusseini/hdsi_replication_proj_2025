@@ -80,7 +80,7 @@ class GraphInterface:
                 "relationship_properties": rel_properties,
             }
 
-    def get_property_values(self, label: str, property_name: str) -> List[str]:
+    def get_property_values(self, label: str, property_name: str) -> List[Any]:
         """Get distinct values for a property across nodes/relationships."""
         try:
             query = (
