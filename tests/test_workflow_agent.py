@@ -16,7 +16,19 @@ class TestWorkflowAgent:
         self.mock_graph_interface.get_schema_info.return_value = {
             "node_labels": ["Gene", "Protein", "Disease", "Drug"],
             "relationship_types": ["ENCODES", "TREATS", "TARGETS"],
+            "node_properties": {
+                "Gene": ["gene_id", "gene_name"],
+                "Protein": ["protein_id", "protein_name"],
+                "Disease": ["disease_id", "disease_name"],
+                "Drug": ["drug_id", "drug_name"],
+            },
+            "relationship_properties": {},
         }
+        self.mock_graph_interface.get_property_values.return_value = [
+            "diabetes",
+            "hypertension",
+            "cancer",
+        ]
 
         self.mock_anthropic_client = Mock()
         mock_anthropic.return_value = self.mock_anthropic_client

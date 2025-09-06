@@ -18,14 +18,15 @@ import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Add the parent directory to Python path so we can import from src
 parent_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(parent_dir))
 
-from dotenv import load_dotenv
-
-from src.agents.graph_interface import GraphInterface
-from src.agents.workflow_agent import WorkflowAgent
+# These imports must come after sys.path modification
+from src.agents.graph_interface import GraphInterface  # noqa: E402
+from src.agents.workflow_agent import WorkflowAgent  # noqa: E402
 
 # Load environment variables
 load_dotenv()

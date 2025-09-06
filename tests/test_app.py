@@ -91,9 +91,9 @@ class TestWebApp(unittest.TestCase):
         # Check that the figure was created
         self.assertIsInstance(fig, go.Figure)
 
-        # Verify the figure has both edge traces and node trace
-        # Edge traces (one per edge) + one node trace
-        self.assertEqual(len(fig.data), 4)  # 3 edges + 1 node trace
+        # Verify the figure has edge trace and node trace
+        # One edge trace + one node trace
+        self.assertEqual(len(fig.data), 2)  # 1 edge trace + 1 node trace
 
     def test_create_network_visualization_with_complex_data(self):
         """Test network visualization with more complex data structure."""

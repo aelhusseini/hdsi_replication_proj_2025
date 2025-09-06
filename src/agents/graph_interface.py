@@ -49,7 +49,8 @@ class GraphInterface:
             rel_types_result = session.run(
                 cast(
                     Query,
-                    "CALL db.relationshipTypes() YIELD relationshipType RETURN collect(relationshipType) as types",
+                    "CALL db.relationshipTypes() YIELD relationshipType "
+                    "RETURN collect(relationshipType) as types",
                 )
             ).single()
 
@@ -82,14 +83,21 @@ class GraphInterface:
     def get_property_values(self, label: str, property_name: str) -> List[str]:
         """Get distinct values for a property across nodes/relationships."""
         try:
-            query = f"MATCH (n:{label}) RETURN DISTINCT n.{property_name} as value LIMIT 20"
+            query = (
+                f"MATCH (n:{label}) RETURN DISTINCT n.{property_name} as value LIMIT 20"
+            )
             if label.startswith("REL_"):  # Handle relationships
                 rel_type = label.replace("REL_", "")
-                query = f"MATCH ()-[r:{rel_type}]->() RETURN DISTINCT r.{property_name} as value LIMIT 20"
-            
+                query = (
+                    f"MATCH ()-[r:{rel_type}]->() RETURN DISTINCT "
+                    f"r.{property_name} as value LIMIT 20"
+                )
+
             with self.driver.session() as session:
                 result = session.run(cast(Query, query))
-                return [record["value"] for record in result if record["value"] is not None]
+                return [
+                    record["value"] for record in result if record["value"] is not None
+                ]
         except Exception:
             return []
 

@@ -50,7 +50,10 @@ EXAMPLE_QUESTIONS = [
 ]
 
 QUERY_EXAMPLES = {
-    "Browse gene catalog": "MATCH (g:Gene) RETURN g.gene_name, g.chromosome, g.function ORDER BY g.gene_name LIMIT 15",
+    "Browse gene catalog": (
+        "MATCH (g:Gene) RETURN g.gene_name, g.chromosome, g.function "
+        "ORDER BY g.gene_name LIMIT 15"
+    ),
     "High-efficacy treatments": (
         "MATCH (dr:Drug)-[t:TREATS]->(d:Disease) "
         "WHERE t.efficacy IN ['high', 'very_high'] "
@@ -70,13 +73,13 @@ QUERY_EXAMPLES = {
     ),
     "Biomarker discovery": (
         "MATCH (g:Gene)-[:ENCODES]->(p:Protein)-[a:ASSOCIATED_WITH]->(d:Disease) "
-        "WHERE a.association_type = 'biomarker' AND a.confidence IN ['high', 'very_high'] "
+        "WHERE a.association_type = 'biomarker' AND a.confidence IN "
+        "['high', 'very_high'] "
         "RETURN g.gene_name, p.protein_name, d.disease_name, d.category "
         "ORDER BY d.category, g.gene_name LIMIT 30"
     ),
     "Custom query": "",
 }
-
 
 
 @st.cache_resource
@@ -165,18 +168,21 @@ def create_network_visualization(results, relationship_type):
 
 def display_learning_workflow_steps():
     st.subheader("LangGraph Workflows")
-    st.markdown("""
-    LangGraph builds **multi-step AI agents** that follow structured workflows. Instead of one-shot responses, 
-    agents maintain state and work through problems step by step.
-    """)
+    st.markdown(
+        """
+    LangGraph builds **multi-step AI agents** that follow structured workflows.
+    Instead of one-shot responses, agents maintain state and work through
+    problems step by step.
+    """
+    )
 
     st.markdown("**Key Benefits:**")
     st.markdown("• Each step builds on the previous one's output")
     st.markdown("• Transparent - you can see the agent's reasoning process")
     st.markdown("• Reliable - structured approach reduces errors")
-    
+
     st.markdown("---")
-    
+
     st.markdown("**Our Agent's 5-Step Process:**")
 
     steps = [
@@ -192,63 +198,83 @@ def display_learning_workflow_steps():
 
     st.markdown("---")
     st.markdown("**Question Classification Types:**")
-    st.markdown("The agent can identify and handle these types of biomedical questions:")
-    
+    st.markdown(
+        "The agent can identify and handle these types of biomedical questions:"
+    )
+
     question_types = [
-        ("gene_disease", "Questions about genes and diseases", "Which genes are linked to heart disease?"),
-        ("drug_treatment", "Questions about drugs and treatments", "What drugs treat hypertension?"),
-        ("protein_function", "Questions about proteins and functions", "What proteins does TP53 encode?"),
+        (
+            "gene_disease",
+            "Questions about genes and diseases",
+            "Which genes are linked to heart disease?",
+        ),
+        (
+            "drug_treatment",
+            "Questions about drugs and treatments",
+            "What drugs treat hypertension?",
+        ),
+        (
+            "protein_function",
+            "Questions about proteins and functions",
+            "What proteins does TP53 encode?",
+        ),
         ("general_db", "Database exploration queries", "Show me all available genes"),
         ("general_knowledge", "Biomedical concept questions", "What is hypertension?"),
     ]
-    
+
     for qtype, description, example in question_types:
         st.markdown(f"• **{qtype}**: {description}")
-        st.markdown(f"  *Example: \"{example}\"*")
+        st.markdown(f'  *Example: "{example}"*')
 
     st.info("Each step updates the shared state, allowing complex reasoning chains.")
 
 
 def display_knowledge_graph_concepts():
     st.subheader("Knowledge Graph Fundamentals")
-    st.markdown("""
-    Knowledge graphs store information as connected networks of **nodes** (entities) and **relationships** (edges). 
-    Think of it like a social network, but for data - everything is connected to everything else.
-    """)
+    st.markdown(
+        """
+    Knowledge graphs store information as connected networks of **nodes**
+    (entities) and **relationships** (edges). Think of it like a social network,
+    but for data - everything is connected to everything else.
+    """
+    )
 
     st.markdown("**Why Use Knowledge Graphs?**")
     st.markdown("• Find complex patterns across connected data")
     st.markdown("• Naturally represent real-world relationships")
     st.markdown("• Query using graph languages like Cypher")
-    
+
     st.markdown("---")
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown("**Entities (Nodes):**")
         entities = [
             "**Genes** (TP53, BRCA1, MYC)",
-            "**Proteins** (TP53, BRCA1, MYC_iso1)", 
+            "**Proteins** (TP53, BRCA1, MYC_iso1)",
             "**Diseases** (Hypertension, Heart_Failure)",
             "**Drugs** (Lisinopril, Metoprolol)",
         ]
         for entity in entities:
             st.markdown(f"• {entity}")
-    
+
     with col2:
         st.markdown("**Relationships (Edges):**")
         relationships = [
             "**ENCODES** - Gene → Protein",
             "**LINKED_TO** - Gene → Disease",
-            "**TREATS** - Drug → Disease", 
+            "**TREATS** - Drug → Disease",
             "**TARGETS** - Drug → Protein",
-            "**ASSOCIATED_WITH** - Protein → Disease"
+            "**ASSOCIATED_WITH** - Protein → Disease",
         ]
         for rel in relationships:
             st.markdown(f"• {rel}")
-    
-    st.info("Each relationship can have properties like confidence scores or efficacy ratings.")
+
+    st.info(
+        "Each relationship can have properties like confidence scores or "
+        "efficacy ratings."
+    )
 
 
 def main_interface(workflow_agent, graph_interface):
@@ -284,22 +310,32 @@ def main_interface(workflow_agent, graph_interface):
 
             st.markdown("**Basic Pattern:**")
             st.code(
-                "MATCH (pattern) WHERE (conditions) RETURN (results)", language="cypher"
+                "MATCH (pattern) WHERE (conditions) RETURN (results)",
+                language="cypher",
             )
 
             st.markdown("**Examples:**")
             examples = [
                 "MATCH (g:Gene) RETURN g.gene_name LIMIT 5",
-                "MATCH (g:Gene)-[:ENCODES]->(p:Protein) RETURN g.gene_name, p.protein_name LIMIT 5",
-                "MATCH (dr:Drug)-[:TREATS]->(d:Disease) WHERE toLower(d.disease_name) CONTAINS 'diabetes' RETURN dr.drug_name",
+                (
+                    "MATCH (g:Gene)-[:ENCODES]->(p:Protein) "
+                    "RETURN g.gene_name, p.protein_name LIMIT 5"
+                ),
+                (
+                    "MATCH (dr:Drug)-[:TREATS]->(d:Disease) "
+                    "WHERE toLower(d.disease_name) CONTAINS 'diabetes' "
+                    "RETURN dr.drug_name"
+                ),
             ]
             for example in examples:
                 st.code(example, language="cypher")
 
-
     with tab2:
         st.header("Try the Workflow Agent")
-        st.markdown("Ask questions and see how the LangGraph workflow processes them step by step")
+        st.markdown(
+            "Ask questions and see how the LangGraph workflow processes them "
+            "step by step"
+        )
 
         st.markdown("**Try these example questions:**")
         selected_example = st.selectbox("Choose an example:", [""] + EXAMPLE_QUESTIONS)
@@ -367,7 +403,7 @@ def main_interface(workflow_agent, graph_interface):
 
                     if results:
                         df = pd.DataFrame(results)
-                        st.dataframe(df, width='stretch')
+                        st.dataframe(df, width="stretch")
 
                         # Network visualization
                         if len(df.columns) >= 2:
@@ -376,10 +412,11 @@ def main_interface(workflow_agent, graph_interface):
                                     results, "Query Results"
                                 )
                                 if fig:
-                                    st.plotly_chart(fig, width='stretch')
+                                    st.plotly_chart(fig, width="stretch")
                             except ImportError as e:
                                 st.info(
-                                    f"Network visualization unavailable (missing dependency: {e})"
+                                    f"Network visualization unavailable "
+                                    f"(missing dependency: {e})"
                                 )
                             except Exception as e:
                                 st.info(f"Network visualization unavailable: {str(e)}")
@@ -399,7 +436,10 @@ def main():
 
     # Header
     st.title("Helix Navigator")
-    st.markdown("Interactive biomedical AI discovery platform powered by LangGraph & knowledge graphs")
+    st.markdown(
+        "Interactive biomedical AI discovery platform powered by LangGraph & "
+        "knowledge graphs"
+    )
 
     # Main interface
     main_interface(workflow_agent, graph_interface)

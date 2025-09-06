@@ -209,7 +209,7 @@ def run_sample_queries() -> bool:
         logger.info("\nQuery 2: What drugs treat hypertension?")
         query = """MATCH (dr:Drug)-[t:TREATS]->(d:Disease)
                    WHERE toLower(d.disease_name) CONTAINS toLower('hypertension')
-                   RETURN dr.drug_name as drug, d.disease_name as disease, 
+                   RETURN dr.drug_name as drug, d.disease_name as disease,
                           t.efficacy as efficacy ORDER BY t.efficacy DESC LIMIT 20"""
         results = graph.execute_query(query)
         if results:
@@ -222,7 +222,7 @@ def run_sample_queries() -> bool:
         logger.info("\nQuery 3: What protein does GENE_ALPHA encode?")
         query = """MATCH (g:Gene)-[:ENCODES]->(p:Protein)
                    WHERE g.gene_name = 'GENE_ALPHA'
-                   RETURN g.gene_name as gene, p.protein_name as protein, 
+                   RETURN g.gene_name as gene, p.protein_name as protein,
                           p.molecular_weight as molecular_weight"""
         results = graph.execute_query(query)
         if results:

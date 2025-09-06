@@ -72,14 +72,28 @@ class TestGraphInterface:
         drug_props = Mock()
         drug_props.single.return_value = {"props": ["drug_id", "drug_name"]}
 
-        mock_session.run.side_effect = [
-            labels_result,
-            types_result,
-            gene_props,
-            protein_props,
-            disease_props,
-            drug_props,
-        ]
+        # Create a more flexible mock that handles dynamic queries
+        def mock_run_side_effect(query):
+            query_str = str(query)
+            if "db.labels()" in query_str:
+                return labels_result
+            elif "db.relationshipTypes()" in query_str:
+                return types_result
+            elif "MATCH (n:Gene)" in query_str:
+                return gene_props
+            elif "MATCH (n:Protein)" in query_str:
+                return protein_props
+            elif "MATCH (n:Disease)" in query_str:
+                return disease_props
+            elif "MATCH (n:Drug)" in query_str:
+                return drug_props
+            else:
+                # For relationship property queries, return empty properties
+                mock_result = Mock()
+                mock_result.single.return_value = None
+                return mock_result
+
+        mock_session.run.side_effect = mock_run_side_effect
         mock_session_cm = Mock()
         mock_session_cm.__enter__ = Mock(return_value=mock_session)
         mock_session_cm.__exit__ = Mock(return_value=None)
