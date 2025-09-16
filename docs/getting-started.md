@@ -27,7 +27,7 @@ AI systems that combine:
 
 ### 1. Setup Project
 ```bash
-git clone <repository-url>
+git clone https://github.com/your-org/hdsi_replication_proj_2025.git
 cd hdsi_replication_proj_2025
 pdm install
 cp .env.example .env
@@ -37,8 +37,10 @@ cp .env.example .env
 Edit `.env` with your API keys:
 ```bash
 ANTHROPIC_API_KEY=sk-ant-your_key_here
-NEO4J_PASSWORD=your_password
-LANGSMITH_API_KEY=lsv2_pt_your_key_here  
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_password_here
+LANGSMITH_API_KEY=lsv2_pt_your_key_here
 ```
 
 ### 3. Start Database
@@ -50,11 +52,6 @@ LANGSMITH_API_KEY=lsv2_pt_your_key_here
 4. Set password (must match NEO4J_PASSWORD in your .env file)
 5. Start the database (green play button)
 6. Verify connection: Neo4j Browser opens at http://localhost:7474
-
-**Alternative - Neo4j Aura (Cloud)**:
-1. Create free account at [neo4j.com/aura](https://neo4j.com/aura/)
-2. Create database instance
-3. Update .env with provided connection details
 
 ### 4. Load Data
 ```bash
@@ -71,7 +68,7 @@ pdm run app              # http://localhost:8501
 
 **LangGraph Studio** (debugging):
 ```bash
-pdm run langgraph dev    # Visual workflow debugging
+pdm run langgraph        # Visual workflow debugging
 ```
 
 ## Web Interface
